@@ -16,7 +16,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 	 dh $@ --with python2
 
 override_dh_auto_configure:
-	 cd src && mv debian debian.deprecated && ln -s ../debian .
+	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
 		-DBUILD_CONFIG=debian \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
@@ -25,16 +25,12 @@ override_dh_auto_configure:
 		-DUSE_FSAL_ZFS=NO \
 		-DUSE_FSAL_XFS=YES \
 		-DUSE_FSAL_CEPH=NO \
-		-DUSE_FSAL_LUSTRE=NO \
-		-DUSE_FSAL_SHOOK=NO \
+		-DUSE_FSAL_RGW=NO \
 		-DUSE_FSAL_GPFS=YES \
-		-DUSE_FSAL_HPSS=NO \
 		-DUSE_FSAL_PANFS=NO \
-		-DUSE_FSAL_PT=NO \
 		-DUSE_FSAL_GLUSTER=YES \
 		-DUSE_SYSTEM_NTIRPC=YES \
 		-DUSE_9P_RDMA=NO \
-		-DUSE_FSAL_LUSTRE_UP=NO \
 		-DUSE_LTTNG=NO \
 		-DUSE_ADMIN_TOOLS=YES \
 		-DUSE_GUI_ADMIN_TOOLS=YES \
@@ -42,8 +38,7 @@ override_dh_auto_configure:
 		-DUSE_FSAL_PROXY=ON \
 		-DUSE_DBUS=ON \
 		-DUSE_9P=ON \
-		-DDISTNAME_HAS_GIT_DATA=OFF \
-		-DALLOCATOR=jemalloc
+		-DDISTNAME_HAS_GIT_DATA=OFF
 
 override_dh_auto_build:
 	cd src && dh_auto_build
@@ -61,4 +56,4 @@ override_dh_install:
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/defaults
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
-	make -C src/obj-*-linux-gnu install && dh_install --sourcedir=./src
+	make -C src/obj-*-linux-gnu* install && dh_install --sourcedir=./src
