@@ -1,3 +1,15 @@
+nfs-ganesha (2.4.1-ubuntu1~yakkety2) yakkety; urgency=medium
+
+  * nfs-ganesha 2.4.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 31 Oct 2016 09:45:51 -0400
+
+nfs-ganesha (2.4.1-ubuntu1~yakkety1) yakkety; urgency=medium
+
+  * nfs-ganesha 2.4.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 31 Oct 2016 09:40:51 -0400
+
 nfs-ganesha (2.4.0-ubuntu1~yakkety1) yakkety; urgency=medium
 
   * nfs-ganesha 2.4.0 GA
