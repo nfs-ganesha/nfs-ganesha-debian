@@ -2,7 +2,7 @@ Source: nfs-ganesha
 Section: net
 Priority: optional
 Maintainer: Philippe Deniel <philippe.deniel@cea.fr>
-Standards-Version: 3.9.6
+Standards-Version: 3.9.7
 Homepage: http://nfs-ganesha.sourceforge.net
 Build-Depends: debhelper (>= 9),
                quilt,
