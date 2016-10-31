@@ -10,6 +10,8 @@
 export PREFIX=/usr
 export DESTDIR=$(CURDIR)/debian/tmp
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
