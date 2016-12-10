@@ -10,10 +10,9 @@ Build-Depends: debhelper (>= 9),
                flex,
                cmake,
                libdbus-1-dev,
-               libjemalloc-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev,
+               libntirpc-dev (>= 1.4.3),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -21,7 +20,7 @@ Build-Depends: debhelper (>= 9),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               glusterfs-common,
+               glusterfs-common (>= 3.8.4),
                python-dev,
                dh-python,
                python-qt4,
@@ -49,7 +48,7 @@ Multi-Arch: same
 Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
-         nfs-ganesha (= ${binary:Version})
+         nfs-ganesha (=${binary:Version})
 Description: nfs-ganesha fsal libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
