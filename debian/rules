@@ -1,10 +1,16 @@
 #!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
 %:
 	dh $@
 
 override_dh_auto_configure:
 	cd cmake/build_configurations && ln -s everything.cmake debian.cmake
-	dh_auto_configure -- -DBUILD_CONFIG=debian -DTIRPC_EPOLL=1 -DUSE_GSS=ON
+	dh_auto_configure -- \
+		-DBUILD_CONFIG=debian \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DTIRPC_EPOLL=1 -DUSE_GSS=ON
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_install:
