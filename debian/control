@@ -1,9 +1,9 @@
 Source: nfs-ganesha
 Section: net
 Priority: optional
-Maintainer: Philippe Deniel <philippe.deniel@cea.fr>
-Standards-Version: 3.9.6
-Homepage: http://nfs-ganesha.sourceforge.net
+Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
+Standards-Version: 3.9.8
+Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 9),
                quilt,
                bison,
@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 9),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 1.4.1),
+               libntirpc-dev (>= 1.4.3),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,

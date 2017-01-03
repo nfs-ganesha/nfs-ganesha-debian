@@ -1,0 +1,11 @@
+--- nfs-ganesha-2.4.1/src/CMakeLists.txt.orig	2016-10-31 20:03:39.484000000 -0400
++++ nfs-ganesha-2.4.1/src/CMakeLists.txt	2016-10-31 20:09:20.140000000 -0400
+@@ -577,7 +577,7 @@
+ 
+ if(USE_FSAL_XFS)
+   if(EXISTS /lib/libhandle.so)
+-    check_library_exists(handle "open_by_handle" "lib" HAVE_XFS_LIB)
++    check_library_exists(handle "open_by_handle" "/./lib" HAVE_XFS_LIB)
+     if(HAVE_XFS_LIB)
+       set(PATH_LIBHANDLE "/lib/libhandle.so" CACHE INTERNAL "debian stretch and ubuntu xenial hack")
+     endif(HAVE_XFS_LIB)
