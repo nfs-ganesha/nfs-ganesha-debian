@@ -1,19 +1,18 @@
 Source: nfs-ganesha
 Section: net
 Priority: optional
-Maintainer: Philippe Deniel <philippe.deniel@cea.fr>
+Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
 Standards-Version: 3.9.6
-Homepage: http://nfs-ganesha.sourceforge.net
+Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 9),
                quilt,
                bison,
                flex,
                cmake,
                libdbus-1-dev,
-               libjemalloc-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev,
+               libntirpc-dev (>= 1.4.3),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -21,7 +20,7 @@ Build-Depends: debhelper (>= 9),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               glusterfs-common (>= 3.7.11),
+               glusterfs-common (>= 3.8.6),
                python-dev,
                dh-python,
                python-qt4,
