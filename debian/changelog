@@ -1,3 +1,9 @@
+nfs-ganesha (2.4.2-ubuntu1~zesty1) zesty; urgency=medium
+
+  * nfs-ganesha 2.4.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 24 Jan 2076 09:45:51 -0400
+
 nfs-ganesha (2.4.1-ubuntu1~zesty2) zesty; urgency=medium
 
   * nfs-ganesha 2.4.1 GA (w/ FSAL_CEPH))
