@@ -1,0 +1,20 @@
+--- nfs-ganesha-2.4.1/src/cmake/modules/FindCephFS.cmake.orig	2016-12-25 08:38:06.376000000 -0500
++++ nfs-ganesha-2.4.1/src/cmake/modules/FindCephFS.cmake	2016-12-25 08:38:56.040000000 -0500
+@@ -29,7 +29,7 @@
+   find_path(CEPHFS_LIBRARY_DIR
+     NAMES libcephfs.so
+     PATHS ${CEPH_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     NO_DEFAULT_PATH
+     DOC "The CephFS libraries")
+ endif(CEPH_PREFIX)
+@@ -46,7 +46,7 @@
+   find_path(CEPHFS_LIBRARY_DIR
+     NAMES libcephfs.so
+     PATHS ${CEPH_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     DOC "The CephFS libraries")
+ endif (NOT CEPHFS_LIBRARY_DIR)
+ 
