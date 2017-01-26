@@ -1,3 +1,9 @@
+nfs-ganesha (2.4.2-ubuntu1~trusty1) trusty; urgency=medium
+
+  * nfs-ganesha 2.4.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 26 Jan 2017 09:09:51 -0400
+
 nfs-ganesha (2.4.1-ubuntu1~trusty7) trusty; urgency=medium
 
   * nfs-ganesha 2.4.1 GA plus upcall
