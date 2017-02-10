@@ -19,7 +19,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 override_dh_auto_configure:
 	 cd src && ln -s ../debian .
-	 cd src && dh_auto_configure -- \
+	 cmake src/ \
 		-DCMAKE_BUILD_TYPE=Maintainer \
 		-DUSE_FSAL_CEPH=YES \
 		-DUSE_FSAL_RGW=YES \
