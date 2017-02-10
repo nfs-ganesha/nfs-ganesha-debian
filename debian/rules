@@ -20,27 +20,11 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_auto_configure:
 	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
-		-DBUILD_CONFIG=debian \
-		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
-		-DCMAKE_BUILD_TYPE=Debug \
-		-DUSE_FSAL_NULL=YES \
-		-DUSE_FSAL_ZFS=NO \
-		-DUSE_FSAL_XFS=YES \
+		-DCMAKE_BUILD_TYPE=Maintainer \
 		-DUSE_FSAL_CEPH=YES \
 		-DUSE_FSAL_RGW=YES \
-		-DUSE_FSAL_GPFS=YES \
-		-DUSE_FSAL_PANFS=NO \
-		-DUSE_FSAL_GLUSTER=YES \
-		-DUSE_SYSTEM_NTIRPC=YES \
-		-DUSE_9P_RDMA=NO \
-		-DUSE_LTTNG=NO \
-		-DUSE_ADMIN_TOOLS=YES \
-		-DUSE_GUI_ADMIN_TOOLS=YES \
-		-DUSE_FSAL_VFS=ON \
-		-DUSE_FSAL_PROXY=ON \
-		-DUSE_DBUS=ON \
-		-DUSE_9P=ON \
-		-DDISTNAME_HAS_GIT_DATA=OFF
+		-DUSE_FSAL_GLUSTER=NO \
+		-DUSE_SYSTEM_NTIRPC=NO \
 
 override_dh_auto_build:
 	cd src && dh_auto_build
