@@ -3,4 +3,5 @@ usr/sbin
 usr/lib
 usr/lib/pkgconfig
 usr/include
+usr/include/ntirpc
 etc/ganesha

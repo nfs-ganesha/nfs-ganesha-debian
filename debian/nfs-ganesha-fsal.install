@@ -4,3 +4,4 @@ usr/lib/*/ganesha/libfsalvfs.so*
 usr/lib/*/ganesha/libfsalxfs.so*
 usr/lib/*/ganesha/libfsalgluster.so*
 usr/lib/*/ganesha/libfsalgpfs.so*
+usr/lib/*/ganesha/libntirpc.so*
