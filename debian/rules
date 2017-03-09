@@ -15,12 +15,12 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	 dh $@ --with python2
+	 dh $@ --with python2 --sourcedirectory=src --builddirectory=build --parallel
 
 override_dh_auto_configure:
-	 cd src && ln -s ../debian .
-	 cmake src/ \
-		-DCMAKE_BUILD_TYPE=Debug \
+	 mkdir build && cd build && cmake ../src \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DLIB_INSTALL_DIR:PATH="lib/$(DEB_HOST_MULTIARCH)" \
 		-DUSE_FSAL_NULL=ON \
 		-DUSE_FSAL_ZFS=OFF \
 		-DUSE_FSAL_XFS=ON \
@@ -40,10 +40,14 @@ override_dh_auto_configure:
 		-DUSE_9P=ON \
 		-DDISTNAME_HAS_GIT_DATA=OFF
 
-override_dh_auto_build:
-	cd src && dh_auto_build
+#override_dh_auto_build:
+#	cd src && dh_auto_build
 
 override_dh_auto_test:
+
+override_dh_clean:
+	dh_clean
+	rm -f src/nfs-ganesha.spec src/scripts/systemd/nfs-ganesha-config.service
 
 override_dh_install:
 	mkdir -p debian/tmp/etc/ganesha/
@@ -56,3 +60,4 @@ override_dh_install:
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/defaults
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
+	make -C build install && dh_install --sourcedir=./src

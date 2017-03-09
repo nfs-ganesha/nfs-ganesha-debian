@@ -1,3 +1,9 @@
+nfs-ganesha (2.5-dev.17) UNRELEASED; urgency=medium
+
+  * nfs-ganesha 2.5 dev.17 with in-tree ntirpc
+
+ -- Ali Maredia <amaredia@redhat.com>  Thu, 09 Mar 2017 03:24:40 -0500
+
 nfs-ganesha (2.4.1-ubuntu1~xenial6) xenial; urgency=medium
 
   * nfs-ganesha 2.4.1 plus upcall
