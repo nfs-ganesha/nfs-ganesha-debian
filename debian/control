@@ -82,3 +82,15 @@ Description: Documentation for nfs-ganesha
  .
  This package contains documentation and examples for nfs-ganesha
 
+Package: nfs-ganesha-ceph
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         nfs-ganesha (=${binary:Version})
+Description: nfs-ganesha fsal ceph libraries
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ This package contains a library for a ceph FSAL and an example ceph.conf file

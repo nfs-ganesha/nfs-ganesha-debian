@@ -56,6 +56,7 @@ override_dh_install:
 	mkdir -p debian/tmp/etc/logrotate.d/
 	mkdir -p debian/tmp/etc/dbus-1/system.d/
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
+	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/ceph.conf
 	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/defaults
