@@ -1,3 +1,9 @@
+nfs-ganesha (2.4.3-ubuntu1~xenial1) xenial; urgency=medium
+
+  * nfs-ganesha 2.4.3
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 20 Mar 2017 09:50:51 -0400
+
 nfs-ganesha (2.4.2-ubuntu1~xenial1) xenial; urgency=medium
 
   * nfs-ganesha 2.4.2
