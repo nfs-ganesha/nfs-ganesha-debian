@@ -20,7 +20,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_auto_configure:
 	 mkdir build && cd build && cmake ../src \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
-		-DLIB_INSTALL_DIR:PATH="lib/$(DEB_HOST_MULTIARCH)" \
+		-DLIB_INSTALL_DIR:PATH="$(PREFIX)/lib/$(DEB_HOST_MULTIARCH)" \
 		-DUSE_FSAL_NULL=ON \
 		-DUSE_FSAL_ZFS=OFF \
 		-DUSE_FSAL_XFS=ON \
