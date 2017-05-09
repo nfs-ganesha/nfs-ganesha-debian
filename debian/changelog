@@ -1,3 +1,9 @@
+libntirpc (1.4.4-ubuntu1~yakkety1) yakkety; urgency=medium
+
+  * libntirpc-1.4.4 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 8 May 2017 09:09:51 -0400
+
 libntirpc (1.4.3-ubuntu1~yakkety1) yakkety; urgency=medium
 
   * libntirpc-1.4.3 GA
