@@ -1,3 +1,9 @@
+libntirpc (1.4.4-ubuntu1~wily1) wily; urgency=medium
+
+  * libntirpc-1.4.4 GA
+
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Tue, 8 May 2017 02:30:09 +0100
+
 libntirpc (1.4.3-ubuntu1~wily1) wily; urgency=medium
 
   * libntirpc-1.4.3 GA
