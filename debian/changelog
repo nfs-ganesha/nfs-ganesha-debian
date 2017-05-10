@@ -1,3 +1,21 @@
+nfs-ganesha (2.4.5-1) jessie; urgency=medium
+
+  * nfs-ganesha 2.4.5 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 10 Apr 2017 15:30:00 -0400
+
+nfs-ganesha (2.4.4-1) jessie; urgency=medium
+
+  * nfs-ganesha 2.4.4 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 21 Mar 2017 15:30:00 -0400
+
+nfs-ganesha (2.4.2-1) jessie; urgency=medium
+
+  * nfs-ganesha 224.2 GA
+
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Fri, 27 Jan 2017 15:30:00 +0200
+
 nfs-ganesha (2.4.1-1) jessie; urgency=medium
 
   * nfs-ganesha 2.4.1 GA
