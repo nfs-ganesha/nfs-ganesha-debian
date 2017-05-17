@@ -21,21 +21,20 @@ override_dh_auto_configure:
 	 mkdir build && cd build && cmake ../src \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		-DLIB_INSTALL_DIR:PATH="$(PREFIX)/lib/$(DEB_HOST_MULTIARCH)" \
-		-DUSE_FSAL_NULL=ON \
+		-DUSE_FSAL_NULL=OFF \
+		-DUSE_FSAL_MEM=OFF \
 		-DUSE_FSAL_ZFS=OFF \
-		-DUSE_FSAL_XFS=ON \
+		-DUSE_FSAL_XFS=OFF \
 		-DUSE_FSAL_CEPH=ON \
 		-DUSE_FSAL_RGW=ON \
-		-DUSE_FSAL_GPFS=ON \
-		-DUSE_FSAL_PANFS=OFF \
+		-DUSE_FSAL_GPFS=OFF \
 		-DUSE_FSAL_GLUSTER=OFF \
 		-DUSE_SYSTEM_NTIRPC=OFF \
 		-DUSE_9P_RDMA=OFF \
 		-DUSE_LTTNG=OFF \
 		-DUSE_ADMIN_TOOLS=ON \
-		-DUSE_GUI_ADMIN_TOOLS=ON \
-		-DUSE_FSAL_VFS=ON \
-		-DUSE_FSAL_PROXY=ON \
+		-DUSE_GUI_ADMIN_TOOLS=OFF \
+		-DUSE_FSAL_PROXY=OFF \
 		-DUSE_DBUS=ON \
 		-DUSE_9P=ON \
 		-DDISTNAME_HAS_GIT_DATA=OFF
@@ -51,14 +50,18 @@ override_dh_clean:
 
 override_dh_install:
 	mkdir -p debian/tmp/etc/ganesha/
-	mkdir -p debian/tmp/lib/systemd/system
-	mkdir -p debian/tmp/etc/defaults
-	mkdir -p debian/tmp/etc/logrotate.d/
 	mkdir -p debian/tmp/etc/dbus-1/system.d/
+	mkdir -p debian/tmp/etc/sysconfig
+	mkdir -p debian/tmp/etc/logrotate.d/
+	mkdir -p debian/tmp/lib/systemd/system
+	mkdir -p debian/tmp/var/run/ganesha
+	mkdir -p debian/tmp/etc/defaults
+	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/ganesha
+	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
 	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/ceph.conf
-	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
+	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/rgw.conf
+	cp src/config_samples/rgw_bucket.conf debian/tmp/etc/ganesha/rgw_bucket.conf
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/defaults
-	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 	make -C build install && dh_install --sourcedir=./src
