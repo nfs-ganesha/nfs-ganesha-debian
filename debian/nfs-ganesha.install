@@ -3,7 +3,6 @@ etc/logrotate.d/ganesha
 etc/defaults/nfs-ganesha
 etc/dbus-1/system.d/org.ganesha.nfsd.conf
 lib/systemd/system/nfs-ganesha*
-usr/lib/*/libntirpc.so*
 usr/bin/ganesha.nfsd
 config_samples/* usr/share/doc/nfs-ganesha-doc/config_samples/
 usr/lib/python*/site-packages
