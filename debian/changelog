@@ -1,3 +1,9 @@
+nfs-ganesha (2.4.5-2) jessie; urgency=medium
+
+  * nfs-ganesha 2.4.5 rebuild with libntirpc-1.4.4
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 22 May 2017 15:30:00 -0400
+
 nfs-ganesha (2.4.5-1) jessie; urgency=medium
 
   * nfs-ganesha 2.4.5 GA
