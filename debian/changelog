@@ -1,3 +1,10 @@
+libntirpc (1.4.4-1) jessie; urgency=low
+
+  [ Gluster Packager ]
+  * libntirpc-1.4.4 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 22 May 2017 13:52:51 -0400
+
 libntirpc (1.4.3-1) jessie; urgency=low
 
   [ Gluster Packager ]
