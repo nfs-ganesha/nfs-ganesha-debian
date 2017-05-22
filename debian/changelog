@@ -1,3 +1,9 @@
+nfs-ganesha (2.4.5-ubuntu1~yakkety2) yakkety; urgency=medium
+
+  * nfs-ganesha 2.4.5 rebuild with libntirpc-1.4.4
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 22 May 2017 09:45:51 -0400
+
 nfs-ganesha (2.4.5-ubuntu1~yakkety1) yakkety; urgency=medium
 
   * nfs-ganesha 2.4.5 
