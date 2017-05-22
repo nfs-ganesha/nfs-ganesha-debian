@@ -1,8 +1,8 @@
-nfs-ganesha (2.4.5-ubuntu1~xenial1) xenial; urgency=medium
+nfs-ganesha (2.4.5-ubuntu1~xenial2) xenial; urgency=medium
 
-  * nfs-ganesha 2.4.5
+  * nfs-ganesha 2.4.5 rebuild with libntirpc-1.4.4
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 7 Apr 2017 09:50:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 22 May 2017 09:50:51 -0400
 
 nfs-ganesha (2.4.4-ubuntu1~xenial1) xenial; urgency=medium
 
