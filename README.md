@@ -11,4 +11,6 @@ and in the [Launchpad PPAs], respectively.
 The interesting stuff is in branches dedicated to nfs-ganesha, (lib)ntirpc,
 and & distro releases.
 
-  [Launchpad PPAs]: https://launchpad.net/~gluster
+[nfs-ganesha] https://github.com/nfs-ganesha
+[download.gluster.org] https://download.gluster.org/pub/gluster/nfs-ganesha
+[Launchpad PPAs]: https://launchpad.net/~gluster
