@@ -1,3 +1,9 @@
+libntirpc (1.5.2-ubuntu1~artful1) artful; urgency=medium
+
+  * libntirpc-1.5.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sun, 18 Jun 2017 09:09:51 -0400
+
 libntirpc (1.5.2-ubuntu1~zesty1) zesty; urgency=medium
 
   * libntirpc-1.5.2 GA
