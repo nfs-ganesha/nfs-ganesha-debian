@@ -1,4 +1,4 @@
-libntirpc (1.5.2-1) jessie; urgency=low
+libntirpc (1.5.2-1) stretch; urgency=low
 
   [ Gluster Packager ]
   * libntirpc-1.5.2 GA
