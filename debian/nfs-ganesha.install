@@ -6,3 +6,4 @@ lib/systemd/system/nfs-ganesha*
 usr/bin/ganesha.nfsd
 config_samples/* usr/share/doc/nfs-ganesha-doc/config_samples/
 usr/lib/python*/site-packages
+usr/lib/*/libntirpc.so*
