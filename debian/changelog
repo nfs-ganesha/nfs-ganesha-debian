@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.0-3) buster; urgency=medium
+
+  * nfs-ganesha 2.5.0 w/ nfs-ganesha-config.sh
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 11 Jul 2017 15:30:00 -0400
+
 nfs-ganesha (2.5.0-2) buster; urgency=medium
 
   * nfs-ganesha 2.5.0 nfs-ganesha.service
