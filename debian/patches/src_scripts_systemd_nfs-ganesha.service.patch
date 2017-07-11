@@ -5,7 +5,7 @@
  Type=forking
  Environment="NOFILE=1048576"
 -EnvironmentFile=-/run/sysconfig/ganesha
-+EnvironmentFile=-/etc/default/ganesha
++EnvironmentFile=-/etc/default/nfs-ganesha
  ExecStart=/bin/bash -c "${NUMACTL} ${NUMAOPTS} /usr/bin/ganesha.nfsd ${OPTIONS} ${EPOCH}"
  ExecStartPost=-/bin/bash -c "prlimit --pid $MAINPID --nofile=$NOFILE:$NOFILE"
  ExecReload=/bin/dbus-send --system   --dest=org.ganesha.nfsd --type=method_call /org/ganesha/nfsd/admin  org.ganesha.nfsd.admin.reload

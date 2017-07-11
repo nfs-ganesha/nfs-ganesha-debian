@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.0-3) stretch; urgency=medium
+
+  * nfs-ganesha 2.5.0 with nfs-ganesha-config.sh
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 11 Jul 2017 15:30:00 -0400
+
 nfs-ganesha (2.5.0-2) stretch; urgency=medium
 
   * nfs-ganesha 2.5.0 systemd/nfs-ganesha
