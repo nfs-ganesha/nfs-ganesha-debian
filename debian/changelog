@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.0-ubuntu1~zesty5) zesty; urgency=medium
+
+  * nfs-ganesha 2.5.0 w/ fsal subpackages
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 14 Jul 2017 09:45:52 -0400
+
 nfs-ganesha (2.5.0-ubuntu1~zesty4) zesty; urgency=medium
 
   * nfs-ganesha 2.5.0 w/ nfs-ganesha-config.sh
