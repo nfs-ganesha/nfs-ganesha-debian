@@ -1,0 +1,2 @@
+usr/lib/*/ganesha/libfsalvfs.so*
+etc/ganesha/vfs.conf
