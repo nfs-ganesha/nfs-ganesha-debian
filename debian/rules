@@ -54,6 +54,15 @@ override_dh_install:
 	mkdir -p debian/tmp/etc/dbus-1/system.d/
 	mkdir -p debian/tmp/usr/lib/
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
+	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/vfs.conf
+	cp src/config_samples/xfs.conf debian/tmp/etc/ganesha/xfs.conf
+	cp src/config_samples/mem.conf debian/tmp/etc/ganesha/mem.conf
+	cp src/config_samples/gluster.conf debian/tmp/etc/ganesha/gluster.conf
+	cp src/config_samples/gpfs.conf debian/tmp/etc/ganesha/gpfs.conf
+	cp src/config_samples/gpfs.ganesha.exports.conf debian/tmp/etc/ganesha/gpfs.ganesha.exports.conf
+	cp src/config_samples/gpfs.ganesha.log.conf debian/tmp/etc/ganesha/gpfs.ganesha.log.conf
+	cp src/config_samples/gpfs.ganesha.main.conf debian/tmp/etc/ganesha/gpfs.ganesha.main.conf
+	cp src/config_samples/gpfs.ganesha.nfsd.conf debian/tmp/etc/ganesha/gpfs.ganesha.nfsd.conf
 	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
