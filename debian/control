@@ -143,14 +143,4 @@ Description: nfs-ganesha fsal ceph libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
- This package contains a library for a GPFS FSAL and conf files.
-
-Package: libntirpc1
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends},
-Description: nfs-ganesha is a NFS server in User Space
- NFS-GANESHA is a NFS Server running in user space with a large cache.
- It comes with various backend modules to support different file systems
- and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
- HPSS, LUSTRE, XFS and ZFS.
- This package contains a copy of libntirpc needed by nfs-ganesha
+This package contains a library for a GPFS FSAL and conf files.
