@@ -1,8 +1,8 @@
 etc/ganesha/ganesha.conf
 etc/logrotate.d/nfs-ganesha
 etc/default/nfs-ganesha
-etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 lib/systemd/system/nfs-ganesha*
 usr/bin/ganesha.nfsd
 usr/lib/nfs-ganesha-config.sh
+config_samples/* usr/share/doc/nfs-ganesha-doc/config_samples/
 
