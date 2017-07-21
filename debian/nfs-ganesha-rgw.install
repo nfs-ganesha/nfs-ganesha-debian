@@ -1,0 +1,3 @@
+usr/lib/*/ganesha/libfsalrgw.so*
+etc/ganesha/rgw.conf
+etc/ganesha/rgw_bucket.conf
