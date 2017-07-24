@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.1-1) buster; urgency=medium
+
+  * nfs-ganesha 2.5.1 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Wed, 22 Jul 2017 15:30:00 -0400
+
 nfs-ganesha (2.5.0-5) buster; urgency=medium
 
   * nfs-ganesha 2.5.0 rebuild w/ libntirpc-1.5.3

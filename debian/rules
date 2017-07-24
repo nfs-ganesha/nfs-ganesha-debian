@@ -39,7 +39,8 @@ override_dh_auto_configure:
 		-DUSE_FSAL_PROXY=ON \
 		-DUSE_DBUS=ON \
 		-DUSE_9P=ON \
-		-DDISTNAME_HAS_GIT_DATA=OFF
+		-DDISTNAME_HAS_GIT_DATA=OFF \
+		-DUSE_MAN_PAGE=YES
 
 override_dh_auto_build:
 	cd src && dh_auto_build
@@ -53,6 +54,7 @@ override_dh_install:
 	mkdir -p debian/tmp/etc/logrotate.d/
 	mkdir -p debian/tmp/etc/dbus-1/system.d/
 	mkdir -p debian/tmp/usr/lib/
+	mkdir -p debian/tmp/usr/sbin/
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/vfs.conf
 	cp src/config_samples/xfs.conf debian/tmp/etc/ganesha/xfs.conf
@@ -69,4 +71,6 @@ override_dh_install:
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 	cp src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/
+	install -m 755 src/tools/mount.9P debian/tmp/usr/sbin/
 	make -C src/obj-*-linux-gnu* install && dh_install --sourcedir=./src
+
