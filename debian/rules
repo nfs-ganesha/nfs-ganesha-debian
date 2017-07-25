@@ -15,38 +15,36 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	 dh $@ --with python2
+	 dh $@ --sourcedirectory=src --builddirectory=build --parallel
 
 override_dh_auto_configure:
-	 cd src && ln -s ../debian .
-	 cd src && dh_auto_configure -- \
-		-DBUILD_CONFIG=debian \
+	 mkdir build && cd build && cmake ../src \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
-		-DUSE_FSAL_NULL=NO \
-		-DUSE_FSAL_MEM=NO \
-		-DUSE_FSAL_ZFS=NO \
-		-DUSE_FSAL_XFS=YES \
-		-DUSE_FSAL_CEPH=YES \
-		-DUSE_FSAL_RGW=YES \
-		-DUSE_FSAL_GPFS=NO \
-		-DUSE_FSAL_PANFS=NO \
-		-DUSE_FSAL_GLUSTER=NO \
-		-DUSE_SYSTEM_NTIRPC=YES \
-		-DUSE_9P_RDMA=NO \
-		-DUSE_LTTNG=NO \
-		-DUSE_ADMIN_TOOLS=NO \
-		-DUSE_GUI_ADMIN_TOOLS=NO \
-		-DUSE_FSAL_VFS=YES \
-		-DUSE_FSAL_PROXY=NO \
-		-DUSE_DBUS=NO \
-		-DUSE_9P=NO \
-		-DDISTNAME_HAS_GIT_DATA=NO
-
-override_dh_auto_build:
-	cd src && dh_auto_build
+		-DUSE_FSAL_NULL=OFF \
+		-DUSE_FSAL_MEM=OFF \
+		-DUSE_FSAL_ZFS=OFF \
+		-DUSE_FSAL_XFS=OFF \
+		-DUSE_FSAL_CEPH=ON \
+		-DUSE_FSAL_RGW=ON \
+		-DUSE_FSAL_GPFS=OFF \
+		-DUSE_FSAL_PANFS=OFF \
+		-DUSE_FSAL_GLUSTER=OFF \
+		-DUSE_SYSTEM_NTIRPC=ON \
+		-DUSE_9P_RDMA=OFF \
+		-DUSE_LTTNG=OFF \
+		-DUSE_ADMIN_TOOLS=OFF \
+		-DUSE_GUI_ADMIN_TOOLS=OFF \
+		-DUSE_DBUS=OFF \
+		-DUSE_FSAL_VFS=ON \
+		-DUSE_FSAL_PROXY=OFF \
+		-DUSE_9P=OFF \
+		-DDISTNAME_HAS_GIT_DATA=OFF
 
 override_dh_auto_test:
+
+override_dh_auto_clean:
+	dh_clean
 
 override_dh_install:
 	mkdir -p debian/tmp/etc/ganesha/
@@ -64,4 +62,4 @@ override_dh_install:
 	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
 	cp src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/
-	make -C src/obj-*-linux-gnu* install && dh_install --sourcedir=./src
+	make -C build install && dh_install --sourcedir=./src
