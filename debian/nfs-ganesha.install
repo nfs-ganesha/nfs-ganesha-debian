@@ -5,4 +5,6 @@ lib/systemd/system/nfs-ganesha*
 usr/bin/ganesha.nfsd
 usr/lib/nfs-ganesha-config.sh
 config_samples/* usr/share/doc/nfs-ganesha-doc/config_samples/
-
+usr/include/ntirpc/*
+usr/lib/pkgconfig/libntirpc.pc
+usr/lib/libntirpc.so*
