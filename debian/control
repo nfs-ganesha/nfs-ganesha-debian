@@ -9,6 +9,7 @@ Build-Depends: debhelper (>= 9),
                bison,
                flex,
                cmake,
+               libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
                libntirpc-dev (>= 1.5.2),
@@ -31,6 +32,7 @@ Depends: dbus, nfs-common, rpcbind,
          libwbclient0,
          libntirpc1 (>= 1.5.2),
          libtirpc1,
+         libntirpc1 (>= 1.5.3),
          daemon
 Description: nfs-ganesha is a NFS server in User Space
  NFS-GANESHA is a NFS Server running in user space with a large cache.
