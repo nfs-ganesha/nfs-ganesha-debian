@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.1-ubuntu1~artful1) artful; urgency=medium
+
+  * nfs-ganesha 2.5.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sun, 23 Jul 2017 09:45:51 -0400
+
 nfs-ganesha (2.5.0-ubuntu1~artful5) artful; urgency=medium
 
   * nfs-ganesha 2.5.0 w/ fsal subpackages
