@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -f /etc/ganesha/rgw.conf ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/rgw.conf /etc/ganesha/rgw.conf
+fi
+
+if [ ! -f /etc/ganesha/rgw_bucket.conf ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/rgw_bucket.conf /etc/ganesha/rgw_bucket.conf
+fi
