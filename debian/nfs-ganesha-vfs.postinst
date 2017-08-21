@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [ ! -f /etc/ganesha/vfs.conf ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/vfs.conf /etc/ganesha/vfs.conf
+fi

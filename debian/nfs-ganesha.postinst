@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ ! -f /etc/ganesha/ ]; then
+    mkdir /etc/ganesha
+fi
+
+if [ ! -f /etc/ganesha/ganesha.conf ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/vfs.conf /etc/ganesha/ganesha.conf
+fi
+
+if [ ! -f /etc/logrotate.d/nfs-ganesha ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/logrotate_ganesha /etc/logrotate.d/nfs-ganesha
+fi
+
+if [ ! -f /etc/dbus-1/system.d ]; then
+    mkdir -p /etc/dbus-1/system.d
+fi
+
+if [ ! -f /etc/dbus-1/system.d/nfs-ganesha-dbus.conf ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/nfs-ganesha-dbus.conf /etc/dbus-1/system.d/nfs-ganesha-dbus.conf
+fi
+
+if [ ! -f /etc/default/nfs-ganesha ]; then
+    cp /usr/share/doc/nfs-ganesha-doc/config_samples/nfs-ganesha-systemd-sysconfig /etc/default/nfs-ganesha
+fi
+
