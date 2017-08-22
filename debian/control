@@ -35,7 +35,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
-         libntirpc1 (>= 1.5.2),
+         libntirpc1 (>= 1.5.3),
          libtirpc1,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
@@ -90,7 +90,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal ceph libraries
+Description: nfs-ganesha fsal vfs libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
@@ -116,7 +116,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal ceph libraries
+Description: nfs-ganesha fsal mem libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
@@ -129,7 +129,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal ceph libraries
+Description: nfs-ganesha fsal nullfs libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
@@ -142,7 +142,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal ceph libraries
+Description: nfs-ganesha fsal proxy libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
