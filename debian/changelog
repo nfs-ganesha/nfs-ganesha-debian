@@ -1,3 +1,9 @@
+nfs-ganesha (2.5.3-1) jessie; urgency=medium
+
+  * nfs-ganesha 2.5.3 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 10 Oct 2017 15:30:00 -0400
+
 nfs-ganesha (2.5.2-1) jessie; urgency=medium
 
   * nfs-ganesha 2.5.2 GA
