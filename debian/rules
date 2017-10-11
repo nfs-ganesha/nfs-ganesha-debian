@@ -39,7 +39,9 @@ override_dh_auto_configure:
 		-DUSE_FSAL_VFS=ON \
 		-DUSE_FSAL_PROXY=OFF \
 		-DUSE_9P=OFF \
-		-DDISTNAME_HAS_GIT_DATA=OFF
+		-DDISTNAME_HAS_GIT_DATA=OFF \
+		-DRADOS_URLS=ON \
+		-DUSE_RADOS_RECOV=ON
 
 override_dh_auto_test:
 
