@@ -20,7 +20,7 @@ Build-Depends: debhelper (>= 9),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               glusterfs-common (>= 3.10.0),
+               glusterfs-common (>= 3.12.3),
                librgw-dev,
                libcephfs-dev,
                python-dev,
@@ -66,7 +66,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version}),
-         glusterfs-common (>= 3.10.0)
+         glusterfs-common (>= 3.12.3)
 Description: nfs-ganesha fsal gluster libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems

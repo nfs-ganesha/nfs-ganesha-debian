@@ -1,3 +1,15 @@
+nfs-ganesha (2.5.4-ubuntu1~bionic1) bionic; urgency=medium
+
+  * nfs-ganesha 2.5.4 
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 14 Nov 2017 09:45:51 -0400
+
+nfs-ganesha (2.5.3-ubuntu1~bionic1) bionic; urgency=medium
+
+  * nfs-ganesha 2.5.3 
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sat, 28 Oct 2017 09:45:51 -0400
+
 nfs-ganesha (2.5.3-ubuntu1~artful2) artful; urgency=medium
 
   * nfs-ganesha 2.5.3 GA
