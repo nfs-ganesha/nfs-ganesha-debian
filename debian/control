@@ -2,7 +2,7 @@ Source: nfs-ganesha
 Section: net
 Priority: optional
 Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
-Standards-Version: 3.9.8
+Standards-Version: 4.1.1
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 9),
                quilt,

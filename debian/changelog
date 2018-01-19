@@ -1,4 +1,4 @@
-nfs-ganesha (2.6.0-0.1rc3) stretch; urgency=medium
+nfs-ganesha (2.6.0-0.1rc3) buster; urgency=medium
 
   * nfs-ganesha 2.6 rc3
 
