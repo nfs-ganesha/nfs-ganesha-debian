@@ -1,4 +1,4 @@
-libntirpc (1.6.0-1) stretch; urgency=low
+libntirpc (1.6.0-1) buster; urgency=low
 
   [ Gluster Packager ]
   * libntirpc-1.6.0 GA
