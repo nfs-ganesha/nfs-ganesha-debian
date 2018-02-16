@@ -20,7 +20,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_auto_configure:
 	 mkdir build && cd build && cmake ../src \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
-		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DCMAKE_BUILD_TYPE=Maintainer \
 		-DUSE_FSAL_NULL=OFF \
 		-DUSE_FSAL_MEM=OFF \
 		-DUSE_FSAL_ZFS=OFF \
