@@ -61,8 +61,9 @@ override_dh_install:
 	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/rgw.conf
 	cp src/config_samples/rgw_bucket.conf debian/tmp/etc/ganesha/rgw_bucket.conf
 	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
-	cp src/scripts/systemd/nfs-ganesha.service.debian8 src/scripts/systemd/nfs-ganesha.service
-	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
+	cp src/scripts/systemd/nfs-ganesha.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha.service
+	cp src/scripts/systemd/nfs-ganesha-lock.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha-lock.service
+	cp src/scripts/systemd/nfs-ganesha-config.service debian/tmp/lib/systemd/system/nfs-ganesha-config.service
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha src/config_samples/nfs-ganesha-systemd-sysconfig
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
