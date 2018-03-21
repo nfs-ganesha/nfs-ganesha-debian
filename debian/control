@@ -5,7 +5,6 @@ Maintainer: Gluster Packager <glusterpackager@download.gluster.org>
 Standards-Version: 3.9.7
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 9),
-               quilt,
                bison,
                flex,
                cmake,
