@@ -1,6 +1,12 @@
+nfs-ganesha (2.6.1-1) buster; urgency=medium
+
+  * nfs-ganesha 2.6.1 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 22 Mar 2018 15:30:00 -0400
+
 nfs-ganesha (2.6.0-1) buster; urgency=medium
 
-  * nfs-ganesha 2.6 GA
+  * nfs-ganesha 2.6.0 GA
 
  -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 23 Feb 2018 15:30:00 -0400
 
