@@ -1,3 +1,9 @@
+nfs-ganesha (2.6.1-ubuntu1~xenial3) xenial; urgency=medium
+
+  * nfs-ganesha 2.6.1 w/ i386 and arm7hl
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 29 Mar 2018 09:50:51 -0400
+
 nfs-ganesha (2.6.1-ubuntu1~xenial2) xenial; urgency=medium
 
   * nfs-ganesha 2.6.1 respin w/ arm64 dependencies
