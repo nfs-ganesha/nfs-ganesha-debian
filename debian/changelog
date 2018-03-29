@@ -1,3 +1,9 @@
+libntirpc (1.6.2-ubuntu1~artful2) artful; urgency=medium
+
+  * libntirpc-1.6.2 rebuild w/ i386 and armv7hl
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 29 Mar 2018 09:09:51 -0400
+
 libntirpc (1.6.2-ubuntu1~artful1) artful; urgency=medium
 
   * libntirpc-1.6.2 GA
