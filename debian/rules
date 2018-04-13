@@ -20,7 +20,8 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_auto_configure:
 	 mkdir build && cd build && cmake ../src \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
-		-DCMAKE_BUILD_TYPE=Maintainer \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DSTRICT_PACKAGE=ON \
 		-DUSE_FSAL_NULL=OFF \
 		-DUSE_FSAL_MEM=OFF \
 		-DUSE_FSAL_ZFS=OFF \
@@ -40,8 +41,8 @@ override_dh_auto_configure:
 		-DUSE_FSAL_PROXY=OFF \
 		-DUSE_9P=OFF \
 		-DDISTNAME_HAS_GIT_DATA=OFF \
-		-DRADOS_URLS=ON \
-		-DUSE_RADOS_RECOV=ON
+	 	-DRADOS_URLS=ON \
+	 	-DUSE_RADOS_RECOV=ON
 
 override_dh_auto_test:
 
@@ -61,11 +62,13 @@ override_dh_install:
 	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/rgw.conf
 	cp src/config_samples/rgw_bucket.conf debian/tmp/etc/ganesha/rgw_bucket.conf
 	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
-	cp src/scripts/systemd/nfs-ganesha.service.debian8 src/scripts/systemd/nfs-ganesha.service
-	cp src/scripts/systemd/nfs-ganesha* debian/tmp/lib/systemd/system/
+	cp src/scripts/systemd/nfs-ganesha.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha.service
+	cp src/scripts/systemd/nfs-ganesha-lock.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha-lock.service
+	cp src/scripts/systemd/nfs-ganesha-config.service debian/tmp/lib/systemd/system/nfs-ganesha-config.service
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
 	cp src/scripts/systemd/sysconfig/nfs-ganesha src/config_samples/nfs-ganesha-systemd-sysconfig
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf src/config_samples/nfs-ganesha-dbus.conf
 	cp src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/
 	make -C build install && dh_install --sourcedir=./src
+
