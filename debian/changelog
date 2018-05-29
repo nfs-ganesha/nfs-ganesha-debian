@@ -1,8 +1,14 @@
+nfs-ganesha (2.6.2-ubuntu1~artful2) artful; urgency=medium
+
+  * nfs-ganesha 2.6.2 /usr/lib/ganesha/nfs-ganesha-config.sh
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 29 May 2018 09:45:51 -0400
+
 nfs-ganesha (2.6.2-ubuntu1~artful1) artful; urgency=medium
 
   * nfs-ganesha 2.6.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fry, 11 May 2018 09:45:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 11 May 2018 09:45:51 -0400
 
 nfs-ganesha (2.6.1-ubuntu1~artful3) artful; urgency=medium
 
