@@ -1,3 +1,9 @@
+libntirpc (1.6.3-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.6.3, rebuild w/ i386 and arm7hf
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 22 Aug 2018 09:09:51 -0400
+
 libntirpc (1.6.2-ubuntu1~bionic2) bionic; urgency=medium
 
   * libntirpc-1.6.2, rebuild w/ i386 and arm7hf
