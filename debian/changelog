@@ -1,3 +1,9 @@
+libntirpc (1.6.3-ubuntu1~xenial1) xenial; urgency=medium
+
+  * libntirpc-1.6.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 22 Aug 2018 09:09:51 -0400
+
 libntirpc (1.6.2-ubuntu1~xenial2) xenial; urgency=medium
 
   * libntirpc-1.6.2 rebuild w/ i386 and armv7hl
