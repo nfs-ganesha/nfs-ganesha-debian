@@ -34,6 +34,7 @@ override_dh_auto_configure:
 		-DUSE_SYSTEM_NTIRPC=OFF \
 		-DUSE_9P_RDMA=OFF \
 		-DUSE_LTTNG=ON \
+		-DLTTNG_PATH_HINT=/usr/lib/x86_64-linux-gnu \
 		-DUSE_ADMIN_TOOLS=OFF \
 		-DUSE_GUI_ADMIN_TOOLS=OFF \
 		-DUSE_DBUS=ON \
