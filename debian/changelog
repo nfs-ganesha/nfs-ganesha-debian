@@ -1,3 +1,9 @@
+libntirpc (1.7.0-ubuntu1~cosmic1) cosmic; urgency=medium
+
+  * libntirpc-1.7.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 18 Sep 2018 09:09:51 -0400
+
 libntirpc (1.6.3-ubuntu1~cosmic1) cosmic; urgency=medium
 
   * libntirpc-1.6.3 GA
