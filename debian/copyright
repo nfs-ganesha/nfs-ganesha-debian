@@ -1,0 +1,22 @@
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Name: glusterd2
+Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
+Source: https://github.org/glusterfs/glusterd2.git
+
+License: LGPL-3
+
+Copyright (c) 2018 Red Hat, Inc. <http://www.redhat.com>
+
+This is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License version 3 (LGPLv3)
+as published by the Free Software Foundation.
+
+This is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU Lesser General Public License 
+version 3 with the dpkg source package as the files COPYING-LGPLV3, 
+respectively. If not, see <http://www.gnu.org/licenses/>.
+
