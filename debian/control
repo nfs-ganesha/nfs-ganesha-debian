@@ -11,11 +11,16 @@ Build-Depends: debhelper (>= 9),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 1.6.3),
+               libntirpc-dev (>= 1.7.0),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
                libacl1-dev,
+               lttng-tools,
+               liblttng-ust-dev,
+               liblttng-ctl-dev,
+               liburcu-dev,
+               xfslibs-dev,
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
@@ -37,7 +42,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
-         libntirpc1 (>= 1.6.3),
+         libntirpc1 (>= 1.7.0),
          libtirpc1,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
@@ -99,7 +104,7 @@ Description: nfs-ganesha fsal vfs libraries
  HPSS, LUSTRE, XFS and ZFS.
  This package contains a library for a FSAL_VFS and an example vfs.conf file
 
-Package: nfs-ganesha-xfs
+Package: nfs-ganesha-rgw
 Multi-Arch: same
 Architecture: any
 Section: libs
@@ -110,7 +115,7 @@ Description: nfs-ganesha fsal xfs libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
- This package contains a library for a FSAL_XFS and an example xfs.conf file
+ This package contains a library for a FSAL_RGW and an example rgw.conf file
 
 Package: nfs-ganesha-mem
 Multi-Arch: same
