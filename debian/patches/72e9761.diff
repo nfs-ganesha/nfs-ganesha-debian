@@ -1,0 +1,78 @@
+From 72e9761728f8b50c4e776011e4d63e8062073e04 Mon Sep 17 00:00:00 2001
+From: Daniel Gryniewicz <dang@redhat.com>
+Date: Wed, 19 Sep 2018 13:22:24 -0400
+Subject: [PATCH] CMake - Find libraries on Debian
+
+Debian puts libs in /usr/lib64-linux-gnu.  Any cmake module that does
+find_path() on a libary needs to be patched to work on Debian
+
+Change-Id: I87a034208ea91291856cb9c7ad0363eb938591a1
+Signed-off-by: Daniel Gryniewicz <dang@redhat.com>
+---
+
+diff --git a/src/cmake/modules/FindLTTng.cmake b/src/cmake/modules/FindLTTng.cmake
+index a7fa9c0..88a793d 100644
+--- a/src/cmake/modules/FindLTTng.cmake
++++ b/src/cmake/modules/FindLTTng.cmake
+@@ -36,7 +36,7 @@
+ find_path(LTTNG_LIBRARY_DIR
+           NAMES liblttng-ust.so
+           PATHS ${LTTNG_PATH_HINT}
+-          PATH_SUFFIXES lib lib64
++	  PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+           DOC "The LTTng libraries")
+ 
+ find_library(LTTNG_UST_LIBRARY lttng-ust PATHS ${LTTNG_LIBRARY_DIR})
+@@ -54,7 +54,7 @@
+ find_path(LTTNG_CTL_LIBRARY_DIR
+           NAMES liblttng-ctl.so
+           PATHS ${LTTNG_PATH_HINT}
+-          PATH_SUFFIXES lib lib64
++	  PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+           DOC "The LTTng libraries")
+ 
+ find_library(LTTNG_CTL_LIBRARY lttng-ctl PATHS ${LTTNG_CTL_LIBRARY_DIR})
+diff --git a/src/cmake/modules/FindRADOS.cmake b/src/cmake/modules/FindRADOS.cmake
+index 52fe248..ee60fcd 100644
+--- a/src/cmake/modules/FindRADOS.cmake
++++ b/src/cmake/modules/FindRADOS.cmake
+@@ -26,7 +26,7 @@
+   find_path(RADOS_LIBRARY_DIR
+     NAMES librados.so
+     PATHS ${RADOS_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     NO_DEFAULT_PATH
+     DOC "The RADOS libraries")
+ endif(RADOS_PREFIX)
+@@ -44,7 +44,7 @@
+   find_path(RADOS_LIBRARY_DIR
+     NAMES librados.so
+     PATHS ${RADOS_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     DOC "The RADOS libraries")
+ endif (NOT RADOS_LIBRARY_DIR)
+ 
+diff --git a/src/cmake/modules/FindRGW.cmake b/src/cmake/modules/FindRGW.cmake
+index 0bd6a60..248ee0a 100644
+--- a/src/cmake/modules/FindRGW.cmake
++++ b/src/cmake/modules/FindRGW.cmake
+@@ -29,7 +29,7 @@
+   find_path(RGW_LIBRARY_DIR
+     NAMES librgw.so
+     PATHS ${RGW_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     NO_DEFAULT_PATH
+     DOC "The RGW libraries")
+ endif()
+@@ -45,7 +45,7 @@
+   find_path(RGW_LIBRARY_DIR
+     NAMES librgw.so
+     PATHS ${RGW_PREFIX}
+-    PATH_SUFFIXES lib lib64
++    PATH_SUFFIXES lib/${CMAKE_LIBRARY_ARCHITECTURE} lib lib64
+     DOC "The RGW libraries")
+ endif (NOT RGW_LIBRARY_DIR)
+ 
