@@ -1,3 +1,9 @@
+nfs-ganesha (2.6.3-2) buster; urgency=medium
+
+  * nfs-ganesha 2.6.3, gfapi logrotate
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 25 Sep 2018 15:30:00 -0400
+
 nfs-ganesha (2.6.3-1) buster; urgency=medium
 
   * nfs-ganesha 2.6.3 GA
