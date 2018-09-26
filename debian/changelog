@@ -1,3 +1,9 @@
+nfs-ganesha (2.6.3-ubuntu1~xenial2) xenial; urgency=medium
+
+  * nfs-ganesha 2.6.3 gfapi logrotate
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 26 Sep 2018 09:50:51 -0400
+
 nfs-ganesha (2.6.3-ubuntu1~xenial1) xenial; urgency=medium
 
   * nfs-ganesha 2.6.3 GA
