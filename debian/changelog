@@ -1,6 +1,12 @@
+nfs-ganesha (2.6.3-ubuntu1~cosmic2) cosmic; urgency=medium
+
+  * nfs-ganesha 2.6.3, gfapi logrotate
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 26 Sep 2018 09:45:51 -0400
+
 nfs-ganesha (2.6.3-ubuntu1~cosmic1) cosmic; urgency=medium
 
-  * nfs-ganesha 2.6.3, /usr/lib/ganesha/nfs-ganesha-config.sh
+  * nfs-ganesha 2.6.3
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 22 Aug 2018 09:45:51 -0400
 
