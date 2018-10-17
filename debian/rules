@@ -43,7 +43,10 @@ override_dh_auto_configure:
 		-DUSE_DBUS=ON \
 		-DUSE_9P=ON \
 		-DDISTNAME_HAS_GIT_DATA=OFF \
-		-DUSE_MAN_PAGE=YES
+		-DUSE_MAN_PAGE=YES \
+		-D_MSPAC_SUPPORT=YES \
+		-DSANITIZE_ADDRESS=NO
+
 
 override_dh_auto_build:
 	cd src && dh_auto_build
