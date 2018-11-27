@@ -22,7 +22,8 @@ Build-Depends: debhelper (>= 9),
                libcephfs-dev,
                pkgconf,
                liblttng-ust-dev,
-               liblttng-ctl-dev
+               liblttng-ctl-dev,
+               liburcu-dev,
 Vcs-Git: https://github.com/nfs-ganesha/nfs-ganesha.git
 
 Package: nfs-ganesha
