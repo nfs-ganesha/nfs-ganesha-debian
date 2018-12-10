@@ -1,8 +1,8 @@
-nfs-ganesha (2.7.1-1) stretch; urgency=medium
+nfs-ganesha (2.7.1-2) stretch; urgency=medium
 
-  * nfs-ganesha 2.7.1 GA
+  * nfs-ganesha 2.7.1 /w/ fsal-ceph
 
- -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 26 Nov 2018 15:30:00 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 10 Dec 2018 15:30:00 -0400
 
 nfs-ganesha (2.7.0-2) stretch; urgency=medium
 
