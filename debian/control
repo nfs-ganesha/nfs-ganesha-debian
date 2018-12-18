@@ -1,7 +1,7 @@
 Source: libntirpc
 Priority: standard
 Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
-Build-Depends: debhelper (>= 9), cmake, libkrb5-dev, libjemalloc-dev
+Build-Depends: debhelper (>= 9), cmake, libkrb5-dev
 Standards-Version: 3.9.7
 Section: libs
 Homepage: https://github.com/nfs-ganesha/ntirpc
@@ -23,7 +23,7 @@ Section: libs
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, libtirpc1
+Depends: ${shlibs:Depends}, ${misc:Depends}, libtirpc-common
 Description: new transport-independent RPC library
  This package contains a port of Sun's transport-independent RPC library to
  Linux. The library is intended as a replacement for the RPC code in the GNU C
