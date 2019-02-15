@@ -1,3 +1,9 @@
+nfs-ganesha (2.7.1-ubuntu1~disco4) disco; urgency=medium
+
+  * nfs-ganesha 2.7.1 w/ librados2
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 15 Feb 2019 09:45:51 -0400
+
 nfs-ganesha (2.7.1-ubuntu1~disco3) disco; urgency=medium
 
   * nfs-ganesha 2.7.1 rebuild w/ libntirpc
