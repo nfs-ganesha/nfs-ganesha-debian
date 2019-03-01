@@ -1,3 +1,69 @@
+libntirpc (1.7.2-ubuntu1~disco1) disco; urgency=medium
+
+  * libntirpc-1.7.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 1 Mar 2019 09:09:51 -0400
+
+libntirpc (1.7.1-ubuntu1~cosmic1) cosmic; urgency=medium
+
+  * libntirpc-1.7.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 17 Oct 2018 09:09:51 -0400
+
+libntirpc (1.7.0-ubuntu1~cosmic2) cosmic; urgency=medium
+
+  * libntirpc-1.7.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 18 Sep 2018 09:09:51 -0400
+
+libntirpc (1.6.3-ubuntu1~cosmic1) cosmic; urgency=medium
+
+  * libntirpc-1.6.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 22 Aug 2018 09:09:51 -0400
+
+libntirpc (1.6.2-ubuntu1~cosmic1) cosmic; urgency=medium
+
+  * libntirpc-1.6.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 11 May 2018 09:09:51 -0400
+
+libntirpc (1.6.2-ubuntu1~bionic2) bionic; urgency=medium
+
+  * libntirpc-1.6.2, rebuild w/ i386 and arm7hf
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 29 Mar 2018 09:09:51 -0400
+
+libntirpc (1.6.2-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.6.2 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 21 Mar 2018 09:09:51 -0400
+
+libntirpc (1.6.1-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.6.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 20 Feb 2018 09:09:51 -0400
+
+libntirpc (1.6.0-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.6.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 31 Jan 2018 09:09:51 -0400
+
+libntirpc (1.5.4-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.5.4 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 31 Jan 2018 09:09:51 -0400
+
+libntirpc (1.5.3-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.5.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sat, 28 Oct 2017 09:09:51 -0400
+
 libntirpc (1.7.1-ubuntu1~disco3) disco; urgency=medium
 
   * libntirpc-1.7.1 rebuild
