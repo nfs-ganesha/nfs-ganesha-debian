@@ -23,7 +23,7 @@ Section: libs
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, libtirpc1
+Depends: ${shlibs:Depends}, ${misc:Depends}, libtirpc3
 Description: new transport-independent RPC library
  This package contains a port of Sun's transport-independent RPC library to
  Linux. The library is intended as a replacement for the RPC code in the GNU C
