@@ -42,6 +42,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
+         liburcu6,
          libntirpc1 (>= 1.7.2),
          libtirpc1,
          daemon
