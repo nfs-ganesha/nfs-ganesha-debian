@@ -1,3 +1,9 @@
+nfs-ganesha (2.7.3-1) stretch; urgency=medium
+
+  * nfs-ganesha 2.7.3
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 9 Apr 2019 15:30:00 -0400
+
 nfs-ganesha (2.7.2-1) stretch; urgency=medium
 
   * nfs-ganesha 2.7.2
