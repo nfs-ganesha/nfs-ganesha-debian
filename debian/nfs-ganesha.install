@@ -9,3 +9,4 @@ config_samples/* usr/share/doc/nfs-ganesha-doc/config_samples/
 usr/include/ntirpc/*
 usr/lib/pkgconfig/libntirpc.pc
 usr/lib/libntirpc.so*
+usr/lib/libganesha_nfsd.so*
