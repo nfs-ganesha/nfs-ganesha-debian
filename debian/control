@@ -29,6 +29,7 @@ Vcs-Git: https://github.com/nfs-ganesha/nfs-ganesha.git
 Package: nfs-ganesha
 Architecture: any
 Depends: dbus, nfs-common, rpcbind,
+         ${shlib:Depends},
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
