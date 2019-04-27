@@ -81,6 +81,6 @@ override_dh_install:
 	cp src/scripts/systemd/nfs-ganesha-lock.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha-lock.service
 	cp src/scripts/systemd/sysconfig/nfs-ganesha debian/tmp/etc/default/
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
-	cp src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/ganesha/
-	install -m 755 src/tools/mount.9P debian/tmp/usr/sbin/
+	install -m 0755 src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/ganesha/
+	install -m 0755 src/tools/mount.9P debian/tmp/usr/sbin/
 	make -C src/obj-*-linux-gnu* install && dh_install --sourcedir=./src
