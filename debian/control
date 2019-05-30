@@ -1,7 +1,11 @@
 Source: libntirpc
 Priority: standard
 Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
-Build-Depends: debhelper (>= 9), cmake, libkrb5-dev, libjemalloc-dev
+Build-Depends: debhelper (>= 9),
+  cmake,
+  libkrb5-dev,
+  libjemalloc-dev,
+  liburcu-dev
 Standards-Version: 3.9.7
 Section: libs
 Homepage: https://github.com/nfs-ganesha/ntirpc

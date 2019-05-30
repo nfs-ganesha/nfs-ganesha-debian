@@ -1,3 +1,15 @@
+libntirpc (1.8.0-ubuntu1~xenial2) xenial; urgency=medium
+
+  * libntirpc-1.8.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 30 May 2019 09:09:51 -0400
+
+libntirpc (1.7.3-ubuntu1~xenial1) xenial; urgency=medium
+
+  * libntirpc-1.7.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 5 Apr 2019 09:09:51 -0400
+
 libntirpc (1.7.2-ubuntu1~xenial1) xenial; urgency=medium
 
   * libntirpc-1.7.2 GA
