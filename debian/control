@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 1.7.2),
+               libntirpc-dev (>= 1.8.0),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -24,14 +24,14 @@ Build-Depends: debhelper (>= 9),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               glusterfs-common (>= 3.12.3),
+               glusterfs-common (>= 6.0),
                librgw-dev,
                libcephfs-dev,
-               python-dev,
+               python3-dev,
                dh-python,
                dh-systemd,
-               python-qt4,
-               python-sphinx,
+               python3-pyqt4,
+               python3-sphinx,
                pyqt4-dev-tools,
                pkgconf
 Vcs-Git: https://github.com/nfs-ganesha/nfs-ganesha.git
@@ -44,7 +44,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu6,
-         libntirpc1 (>= 1.7.2),
+         libntirpc1 (>= 1.8.0),
          libtirpc1,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
@@ -72,7 +72,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version}),
-         glusterfs-common (>= 3.12.3)
+         glusterfs-common (>= 6.0)
 Description: nfs-ganesha fsal gluster libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
@@ -179,7 +179,7 @@ Architecture: all
 Section: python
 Provides: ${python:Provides}
 Depends: python-dbus,
-         python-qt4,
+         python3-qt4,
          ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
