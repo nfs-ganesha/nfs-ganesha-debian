@@ -177,8 +177,8 @@ Pre-Depends: ${misc:Pre-Depends}
 Architecture: all
 Section: python
 Provides: ${python:Provides}
-Depends: python-dbus,
-         python3-qt4,
+Depends: python3-dbus,
+         python3-pyqt4,
          ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
