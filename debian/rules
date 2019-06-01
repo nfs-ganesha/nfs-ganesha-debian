@@ -15,7 +15,7 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	 dh $@ --with python2,systemd
+	 dh $@ --with python3,systemd
 
 override_dh_auto_configure:
 	 cd src && ln -s ../debian .
@@ -33,7 +33,7 @@ override_dh_auto_configure:
 		-DUSE_FSAL_GLUSTER=YES \
 		-DUSE_SYSTEM_NTIRPC=YES \
 		-DUSE_9P_RDMA=NO \
-		-DUSE_LTTNG=YES \
+		-DUSE_LTTNG=NO \
 		-DUSE_ADMIN_TOOLS=YES \
 		-DUSE_RADOS_RECOV=YES \
 		-DUSE_RADOS_URLS=YES \
