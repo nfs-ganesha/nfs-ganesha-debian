@@ -4,4 +4,5 @@ etc/default/nfs-ganesha
 etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 lib/systemd/system/nfs-ganesha*
 usr/bin/ganesha.nfsd
+usr/lib/libganesha_nfsd.so*
 usr/lib/ganesha/nfs-ganesha-config.sh
