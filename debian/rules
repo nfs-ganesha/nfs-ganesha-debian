@@ -35,7 +35,7 @@ override_dh_auto_configure:
 		-DUSE_LTTNG=YES \
 		-DUSE_ADMIN_TOOLS=YES \
                 -DUSE_RADOS_RECOV=NO \
-                -DUSE_RADOS_URLS=NO \
+                -DRADOS_URLS=NO \
 		-DUSE_GUI_ADMIN_TOOLS=YES \
 		-DUSE_FSAL_VFS=ON \
 		-DUSE_FSAL_PROXY=ON \
