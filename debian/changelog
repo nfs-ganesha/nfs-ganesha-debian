@@ -1,8 +1,8 @@
-nfs-ganesha (2.8.0-ubuntu1~xenial1) xenial; urgency=medium
+nfs-ganesha (2.8.0-ubuntu1~xenial2) xenial; urgency=medium
 
-  * nfs-ganesha 2.8.0 GA
+  * nfs-ganesha 2.8.0.1
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 31 May 2019 09:50:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 12 Jun 2019 09:50:51 -0400
 
 nfs-ganesha (2.7.3-ubuntu1~xenial3) xenial; urgency=medium
 
