@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.0-ubuntu1~disco7) disco; urgency=medium
+
+  * nfs-ganesha 2.8.0.1
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  WEd, 12 Jun 2019 09:45:51 -0400
+
 nfs-ganesha (2.8.0-ubuntu1~disco6) disco; urgency=medium
 
   * nfs-ganesha 2.8.0 GA
