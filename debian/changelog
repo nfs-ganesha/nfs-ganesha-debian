@@ -1,8 +1,14 @@
+nfs-ganesha (2.8.0-ubuntu1~disco8) disco; urgency=medium
+
+  * nfs-ganesha 2.8.0.1 w/ -rados-grace .deb
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 13 Jun 2019 09:45:51 -0400
+
 nfs-ganesha (2.8.0-ubuntu1~disco7) disco; urgency=medium
 
   * nfs-ganesha 2.8.0.1
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  WEd, 12 Jun 2019 09:45:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 12 Jun 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.0-ubuntu1~disco6) disco; urgency=medium
 
