@@ -1,0 +1,2017 @@
+diff -ur nfs-ganesha-2.8.0.2/src/CMakeLists.txt nfs-ganesha-2.8.0.3/src/CMakeLists.txt
+--- nfs-ganesha-2.8.0.2/src/CMakeLists.txt	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/CMakeLists.txt	2019-06-28 18:19:39.000000000 -0400
+@@ -39,7 +39,7 @@
+ # Patch level is always ".0" for mainline (master).  It is blank for development.
+ # When starting a stable maintenance branch, this becomes ".N"
+ # where N is monotonically increasing starting at 1. Remember to include the "." !!
+-set(GANESHA_PATCH_LEVEL .0.2)
++set(GANESHA_PATCH_LEVEL .0.3)
+ 
+ # Extra version is for naming development/RC.  It is blank in master/stable branches
+ # so it can be available to end-users to name local variants/versions
+diff -ur nfs-ganesha-2.8.0.2/src/doc/man/ganesha-cache-config.rst nfs-ganesha-2.8.0.3/src/doc/man/ganesha-cache-config.rst
+--- nfs-ganesha-2.8.0.2/src/doc/man/ganesha-cache-config.rst	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/doc/man/ganesha-cache-config.rst	2019-06-28 18:19:39.000000000 -0400
+@@ -83,6 +83,11 @@
+     Number of failures to approach the high watermark before we disable caching,
+     when in extremis.
+ 
++Dirmap_HWMark(uint32, range 1 to UINT32_MAX, default 10000)
++    The point at which dirmap entries are reused.  This puts a practical limit
++    on the number of simultaneous readdirs that may be in progress on an export
++    for a whence-is-name FSAL (currently only FSAL_RGW)
++
+ See also
+ ==============================
+ :doc:`ganesha-config <ganesha-config>`\(8)
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/commonlib.c nfs-ganesha-2.8.0.3/src/FSAL/commonlib.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/commonlib.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/commonlib.c	2019-06-28 18:19:39.000000000 -0400
+@@ -1014,10 +1014,10 @@
+ 	dev_name = blkid_devno_to_devname(mnt_stat.st_dev);
+ 
+ 	if (dev_name == NULL) {
+-		LogInfo(COMPONENT_FSAL,
+-			"blkid_devno_to_devname of %s failed for dev %d.%d",
+-			fs->path, major(mnt_stat.st_dev),
+-			minor(mnt_stat.st_dev));
++		LogDebug(COMPONENT_FSAL,
++			 "blkid_devno_to_devname of %s failed for dev %d.%d",
++			 fs->path, major(mnt_stat.st_dev),
++			 minor(mnt_stat.st_dev));
+ 		goto out;
+ 	}
+ 
+@@ -1326,7 +1326,7 @@
+ 	return retval;
+ }
+ 
+-int resolve_posix_filesystem(const char *path,
++int reload_posix_filesystems(const char *path,
+ 			     struct fsal_module *fsal,
+ 			     struct fsal_export *exp,
+ 			     claim_filesystem_cb claim,
+@@ -1335,7 +1335,8 @@
+ {
+ 	int retval = 0;
+ 
+-	retval = populate_posix_file_systems(false);
++	retval = populate_posix_file_systems(true);
++
+ 	if (retval != 0) {
+ 		LogCrit(COMPONENT_FSAL,
+ 			"populate_posix_file_systems returned %s (%d)",
+@@ -1346,16 +1347,27 @@
+ 	retval = claim_posix_filesystems(path, fsal, exp,
+ 					 claim, unclaim, root_fs);
+ 
+-	/* second attempt to resolve file system with force option in case of
+-	 * ganesha isn't during startup.
+-	 */
+-	if (!nfs_init.init_complete || retval != EAGAIN)
+-		return retval;
++	if (retval != 0) {
++		if (retval == EAGAIN)
++			retval = ENOENT;
++		LogCrit(COMPONENT_FSAL,
++			"claim_posix_filesystems(%s) returned %s (%d)",
++			path, strerror(retval), retval);
++	}
+ 
+-	LogDebug(COMPONENT_FSAL,
+-		 "Call populate_posix_file_systems one more time");
++	return retval;
++}
+ 
+-	retval = populate_posix_file_systems(true);
++int resolve_posix_filesystem(const char *path,
++			     struct fsal_module *fsal,
++			     struct fsal_export *exp,
++			     claim_filesystem_cb claim,
++			     unclaim_filesystem_cb unclaim,
++			     struct fsal_filesystem **root_fs)
++{
++	int retval = 0;
++
++	retval = populate_posix_file_systems(false);
+ 	if (retval != 0) {
+ 		LogCrit(COMPONENT_FSAL,
+ 			"populate_posix_file_systems returned %s (%d)",
+@@ -1366,14 +1378,26 @@
+ 	retval = claim_posix_filesystems(path, fsal, exp,
+ 					 claim, unclaim, root_fs);
+ 
+-	if (retval != 0) {
+-		if (retval == EAGAIN)
+-			retval = ENOENT;
+-		LogCrit(COMPONENT_FSAL,
+-			"claim_posix_filesystems(%s) returned %s (%d)",
+-			path, strerror(retval), retval);
++	/* second attempt to resolve file system with force option in case of
++	 * ganesha isn't during startup.
++	 */
++	if (!nfs_init.init_complete || retval != EAGAIN) {
++		LogDebug(COMPONENT_FSAL,
++			 "Not trying to claim filesystems again because %s %s(%d)",
++			 nfs_init.init_complete
++				? "retval != EAGAIN"
++				: "init is not complete",
++			 strerror(retval), retval);
++		return retval;
+ 	}
+ 
++	LogDebug(COMPONENT_FSAL,
++		 "Attempting to find a filesystem for %s, reload filesystems",
++		 path);
++
++	retval =
++	    reload_posix_filesystems(path, fsal, exp, claim, unclaim, root_fs);
++
+ 	return retval;
+ }
+ 
+@@ -1485,6 +1509,7 @@
+ 	struct glist_head *glist;
+ 	struct fsal_filesystem *fs;
+ 	int retval = 0;
++	bool already_claimed = this->fsal == fsal;
+ 
+ 	/* Check if the filesystem is already directly exported by some other
+ 	 * FSAL - note we can only get here is this is the root filesystem for
+@@ -1528,9 +1553,15 @@
+ 		return retval;
+ 	}
+ 
+-	LogDebug(COMPONENT_FSAL,
+-		 "FSAL %s Claiming %s",
+-		 fsal->name, this->path);
++	if (already_claimed) {
++		LogDebug(COMPONENT_FSAL,
++			 "FSAL %s Repeat Claiming %s",
++			 fsal->name, this->path);
++	} else {
++		LogInfo(COMPONENT_FSAL,
++			"FSAL %s Claiming %s",
++			fsal->name, this->path);
++	}
+ 
+ 	/* Complete the claim */
+ 	this->fsal = fsal;
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/handle.c nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/handle.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/handle.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/handle.c	2019-06-28 18:19:39.000000000 -0400
+@@ -248,63 +248,142 @@
+ 	return status;
+ }
+ 
+-static fsal_status_t lookup_with_fd(struct vfs_fsal_obj_handle *parent_hdl,
+-				    int dirfd, const char *path,
+-				    struct fsal_obj_handle **handle,
+-				    struct attrlist *attrs_out)
++static fsal_status_t check_filesystem(struct vfs_fsal_obj_handle *parent_hdl,
++				      int dirfd, const char *path,
++				      struct stat *stat,
++				      struct fsal_filesystem **filesystem,
++				      bool *xfsal)
+ {
+-	struct vfs_fsal_obj_handle *hdl;
+ 	int retval;
+-	struct stat stat;
+-	vfs_file_handle_t *fh = NULL;
+ 	fsal_dev_t dev;
+-	struct fsal_filesystem *fs;
+-	bool xfsal = false;
+-	fsal_status_t status;
+-
+-	vfs_alloc_handle(fh);
++	struct fsal_filesystem *fs = NULL;
++	fsal_status_t status = { ERR_FSAL_NO_ERROR, 0 };
++	struct vfs_fsal_export *myexp_hdl =
++	    container_of(op_ctx->fsal_export, struct vfs_fsal_export, export);
+ 
+-	retval = fstatat(dirfd, path, &stat, AT_SYMLINK_NOFOLLOW);
++	retval = fstatat(dirfd, path, stat, AT_SYMLINK_NOFOLLOW);
+ 
+ 	if (retval < 0) {
+ 		retval = errno;
+ 		LogDebug(COMPONENT_FSAL, "Failed to open stat %s: %s", path,
+ 			 msg_fsal_err(posix2fsal_error(retval)));
+ 		status = posix2fsal_status(retval);
+-		return status;
++		goto out;
+ 	}
+ 
+-	dev = posix2fsal_devt(stat.st_dev);
++	dev = posix2fsal_devt(stat->st_dev);
+ 
+ 	fs = parent_hdl->obj_handle.fs;
+-	if ((dev.minor != parent_hdl->dev.minor) ||
+-	    (dev.major != parent_hdl->dev.major)) {
+-		/* XDEV */
++
++	if ((dev.minor == parent_hdl->dev.minor) &&
++	    (dev.major == parent_hdl->dev.major)) {
++		/* Filesystem is ok */
++		goto out;
++	}
++
++	/* XDEV */
++	fs = lookup_dev(&dev);
++
++	if (fs == NULL) {
++		LogInfo(COMPONENT_FSAL,
++			"Lookup of %s crosses filesystem boundary to unknown file system dev=%"
++			PRIu64".%"PRIu64" - reloading filesystems to find it",
++			path, dev.major, dev.minor);
++
++		retval = reload_posix_filesystems(op_ctx->ctx_export->fullpath,
++						  parent_hdl->obj_handle.fsal,
++						  op_ctx->fsal_export,
++						  vfs_claim_filesystem,
++						  vfs_unclaim_filesystem,
++						  &myexp_hdl->root_fs);
++
++		if (retval != 0) {
++			LogFullDebug(COMPONENT_FSAL,
++				     "resolve_posix_filesystem failed");
++			status = posix2fsal_status(EXDEV);
++			goto out;
++		}
++
+ 		fs = lookup_dev(&dev);
++
+ 		if (fs == NULL) {
+-			LogDebug(COMPONENT_FSAL,
+-				 "Lookup of %s crosses filesystem boundary to unknown file system dev=%"
+-				 PRIu64".%"PRIu64,
+-				 path, dev.major, dev.minor);
+-			status = fsalstat(ERR_FSAL_XDEV, EXDEV);
+-			return status;
++			LogFullDebug(COMPONENT_FSAL,
++				     "Filesystem still was not claimed");
++			status = posix2fsal_status(EXDEV);
++			goto out;
++		} else {
++			LogInfo(COMPONENT_FSAL,
++				"Filesystem %s has been added to export %d:%s",
++				fs->path, op_ctx->ctx_export->export_id,
++				op_ctx_export_path(op_ctx->ctx_export));
+ 		}
++	}
+ 
+-		if (fs->fsal != parent_hdl->obj_handle.fsal) {
+-			xfsal = true;
+-			LogDebug(COMPONENT_FSAL,
+-				 "Lookup of %s crosses filesystem boundary to file system %s into FSAL %s",
+-				 path, fs->path,
+-				 fs->fsal != NULL
+-					? fs->fsal->name
+-					: "(none)");
+-		} else {
+-			LogDebug(COMPONENT_FSAL,
+-				 "Lookup of %s crosses filesystem boundary to file system %s",
+-				 path, fs->path);
++	if (fs->fsal == NULL) {
++		/* The filesystem wasn't claimed, it must have been added after
++		 * we created this export. Go ahead and try to get it claimed.
++		 */
++		LogInfo(COMPONENT_FSAL,
++			"Lookup of %s crosses filesystem boundary to unclaimed file system %s - attempt to claim it",
++			path, fs->path);
++
++		retval = claim_posix_filesystems(op_ctx->ctx_export->fullpath,
++						 parent_hdl->obj_handle.fsal,
++						 op_ctx->fsal_export,
++						 vfs_claim_filesystem,
++						 vfs_unclaim_filesystem,
++						 &myexp_hdl->root_fs);
++
++		if (retval != 0) {
++			LogFullDebug(COMPONENT_FSAL,
++				     "claim_posix_filesystems failed");
++			status = posix2fsal_status(EXDEV);
++			goto out;
+ 		}
+ 	}
+ 
++	if (fs->fsal != parent_hdl->obj_handle.fsal) {
++		*xfsal = true;
++		LogDebug(COMPONENT_FSAL,
++			 "Lookup of %s crosses filesystem boundary to file system %s into FSAL %s",
++			 path, fs->path,
++			 fs->fsal != NULL
++				? fs->fsal->name
++				: "(none)");
++		goto out;
++	} else {
++		LogDebug(COMPONENT_FSAL,
++			 "Lookup of %s crosses filesystem boundary to file system %s",
++			 path, fs->path);
++		goto out;
++	}
++
++out:
++
++	*filesystem = fs;
++	return status;
++}
++
++static fsal_status_t lookup_with_fd(struct vfs_fsal_obj_handle *parent_hdl,
++				    int dirfd, const char *path,
++				    struct fsal_obj_handle **handle,
++				    struct attrlist *attrs_out)
++{
++	struct vfs_fsal_obj_handle *hdl;
++	int retval;
++	struct stat stat;
++	vfs_file_handle_t *fh = NULL;
++	struct fsal_filesystem *fs;
++	bool xfsal = false;
++	fsal_status_t status;
++
++	vfs_alloc_handle(fh);
++
++	status = check_filesystem(parent_hdl, dirfd, path, &stat, &fs, &xfsal);
++
++	if (FSAL_IS_ERROR(status))
++		return status;
++
+ 	if (xfsal || vfs_name_to_handle(dirfd, fs, path, fh) < 0) {
+ 		retval = errno;
+ 		if (((retval == ENOTTY) ||
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/subfsal_helpers.c nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/subfsal_helpers.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/subfsal_helpers.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/subfsal_helpers.c	2019-06-28 18:19:39.000000000 -0400
+@@ -110,19 +110,24 @@
+ 				  xattr_content, XATTR_BUFFERSIZE, &attrsize);
+ 
+ 	if (!FSAL_IS_ERROR(st)) {
+-		size_t len;
+ 		char *path = xattr_content;
+ 		char *server = strsep(&path, ":");
+ 
+ 		LogDebug(COMPONENT_FSAL, "user.fs_location: %s", xattr_content);
+ 
+-		attrs_out->fs_locations = nfs4_fs_locations_new(spath, path, 1);
+-		len = strlen(server);
+-		attrs_out->fs_locations->server[0].utf8string_len = len;
+-		attrs_out->fs_locations->server[0].utf8string_val =
+-							gsh_memdup(server, len);
+-		attrs_out->fs_locations->nservers = 1;
+-		FSAL_SET_MASK(attrs_out->valid_mask, ATTR4_FS_LOCATIONS);
++		if (!path) {
++			attrs_out->fs_locations = NULL;
++		} else {
++			attrs_out->fs_locations =
++				nfs4_fs_locations_new(spath, path, 1);
++
++			attrs_out->fs_locations->nservers = 1;
++			utf8string_dup(&attrs_out->fs_locations->server[0],
++					server, path - server - 1);
++
++			FSAL_SET_MASK(attrs_out->valid_mask,
++				      ATTR4_FS_LOCATIONS);
++		}
+ 	}
+ 
+ out:
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/vfs_methods.h nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/vfs_methods.h
+--- nfs-ganesha-2.8.0.2/src/FSAL/FSAL_VFS/vfs_methods.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/FSAL_VFS/vfs_methods.h	2019-06-28 18:19:39.000000000 -0400
+@@ -94,6 +94,9 @@
+ /* Internal VFS method linkage to export object
+  */
+ 
++int vfs_claim_filesystem(struct fsal_filesystem *fs, struct fsal_export *exp);
++void vfs_unclaim_filesystem(struct fsal_filesystem *fs);
++
+ fsal_status_t vfs_create_export(struct fsal_module *fsal_hdl,
+ 				void *parse_node,
+ 				struct config_error_type *err_type,
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/posix_acls.c nfs-ganesha-2.8.0.3/src/FSAL/posix_acls.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/posix_acls.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/posix_acls.c	2019-06-28 18:19:39.000000000 -0400
+@@ -255,7 +255,7 @@
+ 		ret = acl_get_entry(p_posixacl, ent, &entry);
+ 		if (ret == 0 || ret == -1) {
+ 			LogDebug(COMPONENT_FSAL,
+-					"No more ACL entires remaining");
++					"No more ACL entries remaining");
+ 			break;
+ 		}
+ 		if (acl_get_tag_type(entry, &tag) == -1) {
+@@ -385,6 +385,11 @@
+ 				d_entry = find_entry(dup_acl, ACL_USER_OBJ, 0);
+ 				ret = acl_get_entry(dup_acl, ACL_NEXT_ENTRY,
+ 						&d_entry);
++				if (ret == 0 || ret == -1) {
++					LogDebug(COMPONENT_FSAL,
++					"No more ACL entries remaining");
++					break;
++				}
+ 			} else
+ 				d_entry = find_entry(dup_acl, ACL_GROUP_OBJ, 0);
+ 
+@@ -418,7 +423,7 @@
+ 				ret = acl_get_entry(dup_acl, d_ent, &d_entry);
+ 				if (ret == 0 || ret == -1) {
+ 					LogDebug(COMPONENT_FSAL,
+-					"No more ACL entires remaining");
++					"No more ACL entries remaining");
+ 					break;
+ 				}
+ 			}
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_ext.h nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_ext.h
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_ext.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_ext.h	2019-06-28 18:19:39.000000000 -0400
+@@ -1,7 +1,7 @@
+ /*
+  * vim:noexpandtab:shiftwidth=8:tabstop=8:
+  *
+- * Copyright 2015-2017 Red Hat, Inc. and/or its affiliates.
++ * Copyright 2015-2019 Red Hat, Inc. and/or its affiliates.
+  * Author: Daniel Gryniewicz <dang@redhat.com>
+  *
+  * This program is free software; you can redistribute it and/or
+@@ -109,6 +109,9 @@
+ 	    we disable caching, when in extremis.  Defaults to 8,
+ 	    settable with Futility_Count */
+ 	uint32_t futility_count;
++	/** High water mark for dirent mapping entries.  Defaults to 10000,
++	    settable by Dirmap_HWMark. */
++	uint32_t dirmap_hwmark;
+ };
+ 
+ extern struct mdcache_parameter mdcache_param;
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_helpers.c nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_helpers.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_helpers.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_helpers.c	2019-06-28 18:19:39.000000000 -0400
+@@ -1625,6 +1625,8 @@
+ 	/** If whence_is_name, indicate if we are looking for caller's cookie.
+ 	 */
+ 	bool whence_search;
++	/** First hit on a search is the dirent we're looking for */
++	bool first_hit;
+ };
+ 
+ /**
+@@ -2282,12 +2284,20 @@
+ 
+ 	assert(new_dir_entry->chunk);
+ 
+-	if (state->whence_search && new_dir_entry->ck == state->cookie) {
+-		/* We have found the dirent the caller is looking for. */
+-		LogFullDebugAlt(COMPONENT_NFS_READDIR, COMPONENT_CACHE_INODE,
+-				"Found dirent %s caller is looking for cookie = %"
+-				PRIx64, name, state->cookie);
+-		*(state->dirent) = new_dir_entry;
++	if (state->whence_search) {
++		if (new_dir_entry->ck == state->cookie) {
++			/* This is the cookie we were looking for, but we want
++			 * the next dirent */
++			state->first_hit = true;
++		} else if (state->first_hit) {
++			/* We have found the dirent the caller wanted */
++			LogFullDebugAlt(COMPONENT_NFS_READDIR,
++					COMPONENT_CACHE_INODE,
++					"Found dirent %s caller is looking for cookie = %"
++					PRIx64, name, state->cookie);
++			*(state->dirent) = new_dir_entry;
++			state->first_hit = false;
++		}
+ 	}
+ 
+ 	if (op_ctx->fsal_export->exp_ops.fs_supports(
+@@ -2523,6 +2533,8 @@
+ 	struct mdcache_populate_cb_state state;
+ 	attrmask_t attrmask;
+ 	fsal_cookie_t *whence_ptr = &whence;
++	bool free_whence;
++	bool rescan = false;
+ 
+ 	attrmask = op_ctx->fsal_export->exp_ops.fs_supported_attrs(
+ 					op_ctx->fsal_export) | ATTR_RDATTR_ERR;
+@@ -2536,6 +2548,7 @@
+ 	state.whence_is_name = op_ctx->fsal_export->exp_ops.fs_supports(
+ 				op_ctx->fsal_export, fso_whence_is_name);
+ 	state.whence_search = state.whence_is_name && whence != 0;
++	state.first_hit = false;
+ 
+ 	/* Set up chunks */
+ 	state.first_chunk = mdcache_get_chunk(directory, prev_chunk, whence);
+@@ -2563,6 +2576,7 @@
+ 	 * prev_chunk has been updated to point to the last cached chunk.
+ 	 */
+ 	if (state.whence_is_name) {
++		free_whence = false;
+ 		if (state.prev_chunk != NULL) {
+ 			/* Start from end of prev_chunk */
+ 			/* If end of directory, mark last dirent as eod. */
+@@ -2572,13 +2586,20 @@
+ 						mdcache_dir_entry_t,
+ 						chunk_list);
+ 			whence_ptr = (fsal_cookie_t *)last->name;
++			if (!rescan) {
++				/* We have a name, we're not going to get this
++				 * one, but the next one */
++				state.first_hit = true;
++			}
+ 
+ 			if (state.whence_search) {
+ 				LogFullDebugAlt(COMPONENT_NFS_READDIR,
+ 						COMPONENT_CACHE_INODE,
+ 						"Calling FSAL readdir whence = %s, search %"
+-						PRIx64,
+-						last->name, state.cookie);
++						PRIx64 " dirent %s",
++						last->name, state.cookie,
++						*dirent != NULL ?
++						(*dirent)->name : "<NONE>");
+ 			} else {
+ 				LogFullDebugAlt(COMPONENT_NFS_READDIR,
+ 						COMPONENT_CACHE_INODE,
+@@ -2586,18 +2607,27 @@
+ 						last->name);
+ 			}
+ 		} else {
+-			/* Signal start from beginning by passing NULL pointer.
+-			 */
+-			whence_ptr = NULL;
+-			if (state.whence_search) {
+-				LogFullDebugAlt(COMPONENT_NFS_READDIR,
+-						COMPONENT_CACHE_INODE,
+-						"Calling FSAL readdir whence = NULL, search %"
+-						PRIx64, state.cookie);
++			/* This is a tri-choice.  That is, it's if, else-if,
++			 * else.  But, it can't be coded that way because
++			 * checkpatch won't allow assignment in an if. */
++			whence_ptr = mdc_lru_unmap_dirent(whence);
++			if (whence_ptr) {
++				free_whence = true;
++				state.first_hit = true;
+ 			} else {
+-				LogFullDebugAlt(COMPONENT_NFS_READDIR,
+-						COMPONENT_CACHE_INODE,
+-						"Calling FSAL readdir whence = NULL, no search");
++				/* Signal start from beginning by passing NULL
++				 * pointer.  */
++				whence_ptr = NULL;
++				if (state.whence_search) {
++					LogFullDebugAlt(COMPONENT_NFS_READDIR,
++							COMPONENT_CACHE_INODE,
++							"Calling FSAL readdir whence = NULL, search %"
++							PRIx64, state.cookie);
++				} else {
++					LogFullDebugAlt(COMPONENT_NFS_READDIR,
++							COMPONENT_CACHE_INODE,
++							"Calling FSAL readdir whence = NULL, no search");
++				}
+ 			}
+ 		}
+ 	} else {
+@@ -2617,6 +2647,10 @@
+ 			mdc_readdir_chunked_cb, attrmask, eod_met)
+ 	       );
+ 
++	if (free_whence) {
++		gsh_free(whence_ptr);
++	}
++
+ 	if (FSAL_IS_ERROR(readdir_status)) {
+ 		LogDebugAlt(COMPONENT_NFS_READDIR, COMPONENT_CACHE_INODE,
+ 			    "FSAL readdir status=%s",
+@@ -2760,6 +2794,7 @@
+ 
+ 
+ 		/* And go start a new FSAL readdir call.  */
++		rescan = true;
+ 		goto again;
+ 	}
+ 
+@@ -2842,9 +2877,12 @@
+ 	bool has_write, set_first_ck;
+ 	fsal_cookie_t next_ck = whence, look_ck = whence;
+ 	struct dir_chunk *chunk = NULL;
+-	bool first_pass = true;
++	int dirent_count = 0;
+ 	bool eod = false;
+ 	bool reload_chunk = false;
++	bool whence_is_name = op_ctx->fsal_export->exp_ops.fs_supports(
++				op_ctx->fsal_export, fso_whence_is_name);
++
+ 
+ #ifdef USE_LTTNG
+ 	tracepoint(mdcache, mdc_readdir,
+@@ -2873,6 +2911,15 @@
+ 		has_write = false;
+ 	}
+ 
++	if (whence_is_name) {
++		/* While we're getting active readdirs, we don't want to
++		 * invalidate a whence-is-name directory.  This will cause the
++		 * entire directory to be reloaded, causing a huge delay that
++		 * can cause the readdir to time out on the client.  To avoid
++		 * this, bump the expire time on the directory */
++		directory->attr_time = time(NULL);
++	}
++
+ restart:
+ 	if (look_ck == 0) {
+ 		/* If starting from beginning, use the first_ck from the
+@@ -2908,8 +2955,7 @@
+ 			PTHREAD_RWLOCK_unlock(&directory->content_lock);
+ 			PTHREAD_RWLOCK_wrlock(&directory->content_lock);
+ 			has_write = true;
+-			first_pass = true;
+-			chunk = NULL;
++			/* We have a ref on chunk; don't null it out */
+ 			goto again;
+ 		}
+ 
+@@ -2924,40 +2970,6 @@
+ 			set_first_ck = true;
+ 		}
+ 
+-		if (op_ctx->fsal_export->exp_ops.fs_supports(
+-				op_ctx->fsal_export, fso_whence_is_name)
+-		    && first_pass && directory->fsobj.fsdir.first_ck != 0) {
+-			/* If whence must be the directory entry name we wish
+-			 * to continue from, we need to start at the beginning
+-			 * of the directory and readdir until we find the
+-			 * caller's cookie, but we have the beginning of the
+-			 * directory cached, so skip any chunks cached from
+-			 * the start.
+-			 *
+-			 * Since the chunk we pass to
+-			 * mdcache_populate_dir_chunk is the previous chunk
+-			 * that function will use the chunk we resolved to
+-			 * fetch the dirent name to continue from.
+-			 *
+-			 * If we DID NOT HAVE at least the first chunk cached,
+-			 * mdcache_populate_dir_chunk MUST start from the
+-			 * beginning, this is signaled by the fact that
+-			 * prev_chunk will be NULL.
+-			 *
+-			 * In any case, whence will be the cookie we are looking
+-			 * for.
+-			 */
+-			LogFullDebugAlt(COMPONENT_NFS_READDIR,
+-					COMPONENT_CACHE_INODE,
+-					"Search skipping initial chunks to find cookie");
+-			chunk = mdcache_skip_chunks(
+-				directory, directory->fsobj.fsdir.first_ck);
+-			/* Since first_ck was not 0, we MUST have found at least
+-			 * one chunk...
+-			 */
+-			assert(chunk != NULL);
+-		}
+-
+ 		LogFullDebugAlt(COMPONENT_NFS_READDIR, COMPONENT_CACHE_INODE,
+ 				"Readdir chunked about to populate chunk %p next_ck=0x%"
+ 				PRIx64, chunk, next_ck);
+@@ -3049,11 +3061,18 @@
+ 			set_first_ck = false;
+ 		}
+ 	} else {
++		fsal_cookie_t *name;
++
+ 		/* We found the dirent... If next_ck is NOT whence, we SHOULD
+ 		 * have found the first dirent in the chunk, if not, then
+ 		 * something went wrong at some point. That chunk is valid,
+ 		 */
+ 		chunk = dirent->chunk;
++
++		name = mdc_lru_unmap_dirent(dirent->ck);
++		if (name)
++			gsh_free(name);
++
+ 		LogFullDebugAlt(COMPONENT_NFS_READDIR,
+ 				COMPONENT_CACHE_INODE,
+ 				"found dirent in cached chunk %p dirent %p %s",
+@@ -3128,7 +3147,6 @@
+ 				 * changed next_ck, so it's still correct for
+ 				 * reloading the chunk.
+ 				 */
+-				first_pass = true;
+ 				mdcache_lru_unref_chunk(chunk);
+ 				chunk = NULL;
+ 
+@@ -3263,6 +3281,16 @@
+ 
+ 		fsal_release_attrs(&attrs);
+ 
++		dirent_count++;
++		if (whence_is_name && dirent_count == 2) {
++			/* HACK!  The linux client doesn't always ask for the
++			 * last cookie we gave it.  About 1/3 of the time, it
++			 * asks for a cookie earlier in the set.  Usually, this
++			 * seems to be the second entry in the set we sent, so
++			 * map that entry as well. */
++			mdc_lru_map_dirent(dirent);
++		}
++
+ 		/* The ref on entry was put by the callback.  Don't use it
+ 		 * anymore */
+ 
+@@ -3291,6 +3319,20 @@
+ 							 MDCACHE_DIR_POPULATED);
+ 			}
+ 
++			if (whence_is_name && cb_result == DIR_TERMINATE) {
++				/* Save the mapping to continue the the readdir
++				 * from this point if the chunk is reaped.  Note
++				 * that the previous dirent is the last one sent
++				 * to the client. */
++				dirent = glist_prev_entry(&chunk->dirents,
++							  mdcache_dir_entry_t,
++							  chunk_list,
++							  &dirent->chunk_list);
++				if (dirent) {
++					mdc_lru_map_dirent(dirent);
++				}
++			}
++
+ 			if (has_write) {
+ 				/* We need to drop the ref on the rest of the
+ 				 * entries in this chunk, so that they don't
+@@ -3304,9 +3346,9 @@
+ 				    "readdir completed, eod = %s",
+ 				    *eod_met ? "true" : "false");
+ 
++			mdcache_lru_unref_chunk(chunk);
+ 			PTHREAD_RWLOCK_unlock(&directory->content_lock);
+ 
+-			mdcache_lru_unref_chunk(chunk);
+ 			return status;
+ 		}
+ 
+@@ -3360,7 +3402,6 @@
+ 	/* Note: We're passing our ref on chunk into
+ 	 * mdcache_populate_dir_chunk(), so don't drop it here.
+ 	 */
+-	first_pass = false;
+ 	goto again;
+ }
+ 
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_int.h nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_int.h
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_int.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_int.h	2019-06-28 18:19:39.000000000 -0400
+@@ -60,6 +60,30 @@
+ 	MDC_REASON_SCAN		/**< Is being inserted by a scan */
+ } mdc_reason_t;
+ 
++typedef struct mdcache_dmap_entry__ {
++	/** AVL node in tree by cookie */
++	struct avltree_node node;
++	/** Entry in LRU */
++	struct glist_head lru_entry;
++	/** Cookie */
++	uint64_t ck;
++	/** Name */
++	char *name;
++	/** Timestamp on entry */
++	struct timespec timestamp;
++} mdcache_dmap_entry_t;
++
++typedef struct {
++	/** Lock protecting this structure */
++	pthread_mutex_t mtx;
++	/** Mapping of ck -> name for whence-is-name */
++	struct avltree map;
++	/** LRU of dirent map entries */
++	struct glist_head lru;
++	/** Count of entries in LRU */
++	uint32_t count;
++} mdc_dirmap_t;
++
+ /*
+  * MDCACHE internal export
+  */
+@@ -76,6 +100,8 @@
+ 	pthread_rwlock_t mdc_exp_lock;
+ 	/** Flags for the export. */
+ 	uint8_t flags;
++	/** Mapping of ck -> name for whence-is-name */
++	mdc_dirmap_t dirent_map;
+ };
+ 
+ /**
+@@ -1145,4 +1171,21 @@
+ 	return status;
+ }
+ 
++static inline int avl_dmap_ck_cmpf(const struct avltree_node *lhs,
++				     const struct avltree_node *rhs)
++{
++	mdcache_dmap_entry_t *lk, *rk;
++
++	lk = avltree_container_of(lhs, mdcache_dmap_entry_t, node);
++	rk = avltree_container_of(rhs, mdcache_dmap_entry_t, node);
++
++	if (lk->ck < rk->ck)
++		return -1;
++
++	if (lk->ck == rk->ck)
++		return 0;
++
++	return 1;
++}
++
+ #endif /* MDCACHE_INT_H */
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.c nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.c	2019-06-28 18:19:39.000000000 -0400
+@@ -1520,6 +1520,13 @@
+ 	time_t new_thread_wait;
+ 	/* Total work done (number of chunks demoted) across all lanes. */
+ 	size_t totalwork = 0;
++	static bool first_time = true;
++
++	if (first_time) {
++		/* Wait for NFS server to properly initialize */
++		nfs_init_wait();
++		first_time = false;
++	}
+ 
+ 	SetNameFunction("chunk_lru");
+ 
+@@ -1692,7 +1699,7 @@
+ 	struct fridgethr_params frp;
+ 
+ 	memset(&frp, 0, sizeof(struct fridgethr_params));
+-	frp.thr_max = 2;
++	frp.thr_max = 0;
+ 	frp.thr_min = 2;
+ 	frp.thread_delay = mdcache_param.lru_run_interval;
+ 	frp.flavor = fridgethr_flavor_looper;
+@@ -2139,4 +2146,184 @@
+ 	return true;
+ }
+ 
++static inline void mdc_lru_dirmap_add(struct mdcache_fsal_export *exp,
++				      mdcache_dmap_entry_t *dmap)
++{
++	avltree_insert(&dmap->node, &exp->dirent_map.map);
++	/* MRU is the tail; Mdd to MRU of list */
++	glist_add_tail(&exp->dirent_map.lru, &dmap->lru_entry);
++	exp->dirent_map.count++;
++}
++
++static inline void mdc_lru_dirmap_del(struct mdcache_fsal_export *exp,
++				      mdcache_dmap_entry_t *dmap)
++{
++	glist_del(&dmap->lru_entry);
++	avltree_remove(&dmap->node, &exp->dirent_map.map);
++	exp->dirent_map.count--;
++}
++
++/**
++ * @brief Add a dirent to the dirmap
++ *
++ * Add this dirent to the dirmap.  The dirmap is a mapping of cookies to names
++ * that allows whence-is-name to restart where it left off if the chunk was
++ * reaped, instead of reloading the whole directory to find the cookie.
++ *
++ * @param[in] dirent	Dirent to add
++ */
++void mdc_lru_map_dirent(mdcache_dir_entry_t *dirent)
++{
++	struct mdcache_fsal_export *exp = mdc_cur_export();
++	mdcache_dmap_entry_t key, *dmap;
++	struct avltree_node *node;
++
++	PTHREAD_MUTEX_lock(&exp->dirent_map.mtx);
++
++	key.ck = dirent->ck;
++	node = avltree_lookup(&key.node, &exp->dirent_map.map);
++	if (node) {
++		LogFullDebug(COMPONENT_NFS_READDIR, "Already map for %s -> %lx",
++			     dirent->name, dirent->ck);
++		PTHREAD_MUTEX_unlock(&exp->dirent_map.mtx);
++		return;
++	}
++
++	if (exp->dirent_map.count > mdcache_param.dirmap_hwmark) {
++		/* LRU end is the head; grab the LRU entry */
++		dmap = glist_first_entry(&exp->dirent_map.lru,
++					 mdcache_dmap_entry_t, lru_entry);
++		mdc_lru_dirmap_del(exp, dmap);
++		/* Free name */
++		gsh_free(dmap->name);
++	} else {
++		dmap = gsh_malloc(sizeof(*dmap));
++	}
++
++	dmap->ck = dirent->ck;
++	dmap->name = gsh_strdup(dirent->name);
++	now(&dmap->timestamp);
++	LogFullDebug(COMPONENT_NFS_READDIR, "Mapping %s -> %lx %p:%d",
++		     dmap->name, dmap->ck, exp, exp->dirent_map.count);
++
++	mdc_lru_dirmap_add(exp, dmap);
++
++	PTHREAD_MUTEX_unlock(&exp->dirent_map.mtx);
++}
++
++/**
++ * @brief Look up and remove an entry from the dirmap
++ *
++ * This looks up the cookie in the dirmap, and returns the associated name, if
++ * it's in the cache.  The entry is removed from the cache and freed, and the
++ * name is returned.
++ *
++ * @note the returned name must be freed by the caller
++ *
++ * @param[in] ck	Cookie to look up
++ * @return Name, if found, or NULL otherwise
++ */
++fsal_cookie_t *mdc_lru_unmap_dirent(uint64_t ck)
++{
++	struct mdcache_fsal_export *exp = mdc_cur_export();
++	struct avltree_node *node;
++	mdcache_dmap_entry_t key, *dmap;
++	char *name;
++
++	PTHREAD_MUTEX_lock(&exp->dirent_map.mtx);
++
++	key.ck = ck;
++	node = avltree_lookup(&key.node, &exp->dirent_map.map);
++	if (!node) {
++		LogFullDebug(COMPONENT_NFS_READDIR, "No map for %lx", ck);
++		PTHREAD_MUTEX_unlock(&exp->dirent_map.mtx);
++		return NULL;
++	}
++
++	dmap = avltree_container_of(node, mdcache_dmap_entry_t, node);
++	mdc_lru_dirmap_del(exp, dmap);
++
++	PTHREAD_MUTEX_unlock(&exp->dirent_map.mtx);
++
++	name = dmap->name;
++
++	LogFullDebug(COMPONENT_NFS_READDIR, "Unmapping %s -> %lx", dmap->name,
++		     dmap->ck);
++
++	/* Don't free name, we're passing it back to the caller */
++	gsh_free(dmap);
++
++	return (fsal_cookie_t *)name;
++}
++
++#define DIRMAP_MAX_PER_SCAN 1000
++#define DIRMAP_KEEP_NS (60 * NS_PER_SEC)
++
++static void dirmap_lru_run(struct fridgethr_context *ctx)
++{
++	struct mdcache_fsal_export *exp = ctx->arg;
++	mdcache_dmap_entry_t *cur, *next;
++	int i;
++	struct timespec curtime;
++	nsecs_elapsed_t age;
++	static bool first_time = true;
++
++	/* XXX dang this needs to be here or this will hijack another thread,
++	 * causing that one to never run again. */
++	if (first_time) {
++		/* Wait for NFS server to properly initialize */
++		nfs_init_wait();
++		first_time = false;
++	}
++
++	PTHREAD_MUTEX_lock(&exp->dirent_map.mtx);
++
++	now(&curtime);
++
++	cur = glist_last_entry(&exp->dirent_map.lru, mdcache_dmap_entry_t,
++			       lru_entry);
++	for (i = 0; i < DIRMAP_MAX_PER_SCAN && cur != NULL; ++i) {
++		next = glist_prev_entry(&exp->dirent_map.lru,
++					mdcache_dmap_entry_t,
++					lru_entry, &cur->lru_entry);
++		age = timespec_diff(&cur->timestamp, &curtime);
++		if (age < DIRMAP_KEEP_NS) {
++			/* LRU is in timestamp order; done */
++			goto out;
++		}
++		mdc_lru_dirmap_del(exp, cur);
++		gsh_free(cur->name);
++		gsh_free(cur);
++		cur = next;
++	}
++
++out:
++	PTHREAD_MUTEX_unlock(&exp->dirent_map.mtx);
++	fridgethr_setwait(ctx, mdcache_param.lru_run_interval);
++}
++
++
++fsal_status_t dirmap_lru_init(struct mdcache_fsal_export *exp)
++{
++	int rc;
++
++	avltree_init(&exp->dirent_map.map, avl_dmap_ck_cmpf, 0 /* flags */);
++	glist_init(&exp->dirent_map.lru);
++	rc = pthread_mutex_init(&exp->dirent_map.mtx, NULL);
++	if (rc != 0) {
++		return posix2fsal_status(rc);
++	}
++
++	rc = fridgethr_submit(lru_fridge, dirmap_lru_run, exp);
++	if (rc != 0) {
++		LogMajor(COMPONENT_CACHE_INODE_LRU,
++			 "Unable to start Chunk LRU thread, error code %d.",
++			 rc);
++		return posix2fsal_status(rc);
++	}
++
++
++	return fsalstat(0, 0);
++}
++
+ /** @} */
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.h nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.h
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.h	2019-06-28 18:19:39.000000000 -0400
+@@ -209,5 +209,8 @@
+ 				    fsal_cookie_t whence);
+ void lru_bump_chunk(struct dir_chunk *chunk);
+ 
++void mdc_lru_map_dirent(mdcache_dir_entry_t *dirent);
++fsal_cookie_t *mdc_lru_unmap_dirent(uint64_t ck);
++fsal_status_t dirmap_lru_init(struct mdcache_fsal_export *exp);
+ #endif				/* MDCACHE_LRU_H */
+ /** @} */
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_main.c nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_main.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_main.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_main.c	2019-06-28 18:19:39.000000000 -0400
+@@ -1,7 +1,7 @@
+ /*
+  * vim:noexpandtab:shiftwidth=8:tabstop=8:
+  *
+- * Copyright 2015-2017 Red Hat, Inc. and/or its affiliates.
++ * Copyright 2015-2019 Red Hat, Inc. and/or its affiliates.
+  * Author: Daniel Gryniewicz <dang@redhat.com>
+  *
+  * This program is free software; you can redistribute it and/or
+@@ -205,6 +205,14 @@
+ 	PTHREAD_RWLOCK_init(&myself->mdc_exp_lock, &attrs);
+ 	pthread_rwlockattr_destroy(&attrs);
+ 
++	status = dirmap_lru_init(myself);
++	if (FSAL_IS_ERROR(status)) {
++		LogMajor(COMPONENT_FSAL, "Failed to call dirmap_lru_init");
++		gsh_free(myself->name);
++		gsh_free(myself);
++		return status;
++	}
++
+ 	status = sub_fsal->m_ops.create_export(sub_fsal,
+ 						 parse_node,
+ 						 err_type,
+diff -ur nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_read_conf.c nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_read_conf.c
+--- nfs-ganesha-2.8.0.2/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_read_conf.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_read_conf.c	2019-06-28 18:19:39.000000000 -0400
+@@ -85,6 +85,8 @@
+ 		       mdcache_parameter, required_progress),
+ 	CONF_ITEM_UI32("Futility_Count", 1, 50, 8,
+ 		       mdcache_parameter, futility_count),
++	CONF_ITEM_UI32("Dirmap_HWMark", 1, UINT32_MAX, 10000,
++		       mdcache_parameter, dirmap_hwmark),
+ 	CONFIG_EOL
+ };
+ 
+diff -ur nfs-ganesha-2.8.0.2/src/idmapper/idmapper.c nfs-ganesha-2.8.0.3/src/idmapper/idmapper.c
+--- nfs-ganesha-2.8.0.2/src/idmapper/idmapper.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/idmapper/idmapper.c	2019-06-28 18:19:39.000000000 -0400
+@@ -51,11 +51,25 @@
+ #endif
+ #include "common_utils.h"
+ #include "gsh_rpc.h"
++#include "gsh_types.h"
++#include "gsh_list.h"
++#ifdef USE_DBUS
++#include "gsh_dbus.h"
++#endif
+ #include "nfs_core.h"
+ #include "idmapper.h"
++#include "server_stats_private.h"
+ 
+ static struct gsh_buffdesc owner_domain;
+ 
++/* winbind auth stats information */
++struct auth_stats winbind_auth_stats;
++pthread_rwlock_t winbind_auth_lock = PTHREAD_RWLOCK_INITIALIZER;
++
++/*group cache auth stats information */
++struct auth_stats gc_auth_stats;
++pthread_rwlock_t gc_auth_lock = PTHREAD_RWLOCK_INITIALIZER;
++
+ /**
+  * @brief Initialize the ID Mapper
+  *
+@@ -620,6 +634,59 @@
+ 	return name2id(name, gid, true, anon);
+ }
+ 
++void winbind_stats_update(struct timespec *s_time, struct timespec *e_time)
++{
++	nsecs_elapsed_t resp_time;
++
++	resp_time = timespec_diff(s_time, e_time);
++
++	PTHREAD_RWLOCK_wrlock(&winbind_auth_lock);
++	(void)atomic_inc_uint64_t(&winbind_auth_stats.total);
++	(void)atomic_add_uint64_t(&winbind_auth_stats.latency,
++					resp_time);
++	if (winbind_auth_stats.max < resp_time)
++		winbind_auth_stats.max = resp_time;
++	if (winbind_auth_stats.min == 0 ||
++	    winbind_auth_stats.min > resp_time)
++		winbind_auth_stats.min = resp_time;
++	PTHREAD_RWLOCK_unlock(&winbind_auth_lock);
++}
++
++void gc_stats_update(struct timespec *s_time, struct timespec *e_time)
++{
++	nsecs_elapsed_t resp_time;
++
++	resp_time = timespec_diff(s_time, e_time);
++
++	PTHREAD_RWLOCK_wrlock(&gc_auth_lock);
++	(void)atomic_inc_uint64_t(&gc_auth_stats.total);
++	(void)atomic_add_uint64_t(&gc_auth_stats.latency,
++					resp_time);
++	if (gc_auth_stats.max < resp_time)
++		gc_auth_stats.max = resp_time;
++	if (gc_auth_stats.min == 0 ||
++	    gc_auth_stats.min > resp_time)
++		gc_auth_stats.min = resp_time;
++	PTHREAD_RWLOCK_unlock(&gc_auth_lock);
++}
++
++void reset_auth_stats(void)
++{
++	PTHREAD_RWLOCK_wrlock(&winbind_auth_lock);
++	winbind_auth_stats.total = 0;
++	winbind_auth_stats.latency = 0;
++	winbind_auth_stats.max = 0;
++	winbind_auth_stats.min = 0;
++	PTHREAD_RWLOCK_unlock(&winbind_auth_lock);
++
++	PTHREAD_RWLOCK_wrlock(&gc_auth_lock);
++	gc_auth_stats.total = 0;
++	gc_auth_stats.latency = 0;
++	gc_auth_stats.max = 0;
++	gc_auth_stats.min = 0;
++	PTHREAD_RWLOCK_unlock(&gc_auth_lock);
++}
++
+ #ifdef _HAVE_GSSAPI
+ #ifdef _MSPAC_SUPPORT
+ /**
+@@ -646,6 +713,10 @@
+ #endif
+ {
+ #ifdef USE_NFSIDMAP
++#ifdef _MSPAC_SUPPORT
++	struct timespec s_time, e_time;
++	bool stats = false;
++#endif
+ 	uid_t gss_uid = -1;
+ 	gid_t gss_gid = -1;
+ 	const gid_t *gss_gidres = NULL;
+@@ -659,8 +730,12 @@
+ 
+ 	if (nfs_param.nfsv4_param.use_getpwnam)
+ 		return false;
+-
+ #ifdef USE_NFSIDMAP
++#ifdef _MSPAC_SUPPORT
++	if (nfs_param.core_param.enable_AUTHSTATS)
++		stats = true;
++#endif
++
+ 	PTHREAD_RWLOCK_rdlock(&idmapper_user_lock);
+ 	success =
+ 	    idmapper_lookup_by_uname(&princbuff, &gss_uid, &gss_gidres, true);
+@@ -713,9 +788,13 @@
+ 				params.password.pac.length =
+ 				    gd->pac.ms_pac.length;
+ 
++				now(&s_time);
+ 				wbc_err =
+ 				    wbcAuthenticateUserEx(&params, &info,
+ 							  &error);
++				now(&e_time);
++				if (stats)
++					winbind_stats_update(&s_time, &e_time);
+ 				if (!WBC_ERROR_IS_OK(wbc_err)) {
+ 					LogCrit(COMPONENT_IDMAPPER,
+ 						"wbcAuthenticateUserEx returned %s",
+@@ -732,9 +811,13 @@
+ 					return false;
+ 				}
+ 
++				now(&s_time);
+ 				/* 1st SID is account sid, see wbclient.h */
+ 				wbc_err =
+ 				    wbcSidToUid(&info->sids[0].sid, &gss_uid);
++				now(&e_time);
++				if (stats)
++					winbind_stats_update(&s_time, &e_time);
+ 				if (!WBC_ERROR_IS_OK(wbc_err)) {
+ 					LogCrit(COMPONENT_IDMAPPER,
+ 						"wbcSidToUid for uid returned %s",
+@@ -743,10 +826,14 @@
+ 					return false;
+ 				}
+ 
++				now(&s_time);
+ 				/* 2nd SID is primary_group sid, see
+ 				   wbclient.h */
+ 				wbc_err =
+ 				    wbcSidToGid(&info->sids[1].sid, &gss_gid);
++				now(&e_time);
++				if (stats)
++					winbind_stats_update(&s_time, &e_time);
+ 				if (!WBC_ERROR_IS_OK(wbc_err)) {
+ 					LogCrit(COMPONENT_IDMAPPER,
+ 						"wbcSidToUid for gid returned %s\n",
+@@ -791,6 +878,93 @@
+ 	return false;
+ #endif
+ }
++
++#ifdef USE_DBUS
++
++/**
++ * DBUS method to collect Auth stats for group cache and winbind
++ */
++static bool all_auth_stats(DBusMessageIter *args, DBusMessage *reply,
++				DBusError *error)
++{
++	bool success = true, stats_exist = false;
++	char *errormsg = "OK";
++	DBusMessageIter iter, struct_iter;
++	struct timespec timestamp;
++	double res = 0.0;
++
++	dbus_message_iter_init_append(reply, &iter);
++	if (!nfs_param.core_param.enable_AUTHSTATS) {
++		success = false;
++		errormsg = "auth related stats disabled";
++		dbus_status_reply(&iter, success, errormsg);
++		return true;
++	}
++	dbus_status_reply(&iter, success, errormsg);
++
++	now(&timestamp);
++	dbus_append_timestamp(&iter, &timestamp);
++	dbus_message_iter_open_container(&iter, DBUS_TYPE_STRUCT,
++		NULL, &struct_iter);
++
++	/* group cache stats */
++	PTHREAD_RWLOCK_rdlock(&gc_auth_lock);
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_UINT64, &gc_auth_stats.total);
++	if (gc_auth_stats.total > 0) {
++		stats_exist = true;
++		res = (double) gc_auth_stats.latency /
++			gc_auth_stats.total * 0.000001;
++	}
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	if (stats_exist)
++		res = (double) gc_auth_stats.max * 0.000001;
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	if (stats_exist)
++		res = (double) gc_auth_stats.min * 0.000001;
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	PTHREAD_RWLOCK_unlock(&gc_auth_lock);
++
++	stats_exist = false;
++	res = 0.0;
++
++	/* winbind stats */
++	PTHREAD_RWLOCK_rdlock(&winbind_auth_lock);
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_UINT64, &winbind_auth_stats.total);
++	if (winbind_auth_stats.total > 0) {
++		stats_exist = true;
++		res = (double) winbind_auth_stats.latency /
++			winbind_auth_stats.total * 0.000001;
++	}
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	if (stats_exist)
++		res = (double) winbind_auth_stats.max * 0.000001;
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	if (stats_exist)
++		res = (double) winbind_auth_stats.min * 0.000001;
++	dbus_message_iter_append_basic(&struct_iter,
++		DBUS_TYPE_DOUBLE, &res);
++	dbus_message_iter_close_container(&iter, &struct_iter);
++	PTHREAD_RWLOCK_unlock(&winbind_auth_lock);
++
++	return true;
++}
++
++struct gsh_dbus_method auth_statistics = {
++	.name = "GetAuthStats",
++	.method = all_auth_stats,
++	.args = {STATUS_REPLY,
++		 TIMESTAMP_REPLY,
++		 AUTH_REPLY,
++		 END_ARG_LIST}
++};
++#endif
+ #endif
+ 
+ /** @} */
+diff -ur nfs-ganesha-2.8.0.2/src/include/FSAL/fsal_commonlib.h nfs-ganesha-2.8.0.3/src/include/FSAL/fsal_commonlib.h
+--- nfs-ganesha-2.8.0.2/src/include/FSAL/fsal_commonlib.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/include/FSAL/fsal_commonlib.h	2019-06-28 18:19:39.000000000 -0400
+@@ -108,6 +108,13 @@
+ 
+ int populate_posix_file_systems(bool force);
+ 
++int reload_posix_filesystems(const char *path,
++			     struct fsal_module *fsal,
++			     struct fsal_export *exp,
++			     claim_filesystem_cb claim,
++			     unclaim_filesystem_cb unclaim,
++			     struct fsal_filesystem **root_fs);
++
+ int resolve_posix_filesystem(const char *path,
+ 			     struct fsal_module *fsal,
+ 			     struct fsal_export *exp,
+diff -ur nfs-ganesha-2.8.0.2/src/include/gsh_config.h nfs-ganesha-2.8.0.3/src/include/gsh_config.h
+--- nfs-ganesha-2.8.0.2/src/include/gsh_config.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/include/gsh_config.h	2019-06-28 18:19:39.000000000 -0400
+@@ -363,6 +363,8 @@
+ 	bool enable_FULLV3STATS;
+ 	/** Whether to collect NFSv4 Detailed stats.  Defaults to false. */
+ 	bool enable_FULLV4STATS;
++	/** Whether to collect Auth related stats. Defaults to false. */
++	bool enable_AUTHSTATS;
+ 	/** Whether tcp sockets should use SO_KEEPALIVE */
+ 	bool enable_tcp_keepalive;
+ 	/** Maximum number of TCP probes before dropping the connection */
+diff -ur nfs-ganesha-2.8.0.2/src/include/idmapper.h nfs-ganesha-2.8.0.3/src/include/idmapper.h
+--- nfs-ganesha-2.8.0.2/src/include/idmapper.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/include/idmapper.h	2019-06-28 18:19:39.000000000 -0400
+@@ -78,6 +78,9 @@
+ bool name2uid(const struct gsh_buffdesc *, uid_t *, const uid_t);
+ bool name2gid(const struct gsh_buffdesc *, gid_t *, const gid_t);
+ 
++void winbind_stats_update(struct timespec *, struct timespec *);
++void gc_stats_update(struct timespec *, struct timespec *);
++
+ #ifdef _HAVE_GSSAPI
+ #ifdef _MSPAC_SUPPORT
+ bool principal2uid(char *, uid_t *, gid_t *, struct svc_rpc_gss_data *);
+@@ -88,6 +91,7 @@
+ 
+ #ifdef USE_DBUS
+ extern struct gsh_dbus_method cachemgr_show_idmapper;
++extern struct gsh_dbus_method auth_statistics;
+ #endif
+ 
+ #endif				/* IDMAPPER_H */
+diff -ur nfs-ganesha-2.8.0.2/src/include/nfsv41.h nfs-ganesha-2.8.0.3/src/include/nfsv41.h
+--- nfs-ganesha-2.8.0.2/src/include/nfsv41.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/include/nfsv41.h	2019-06-28 18:19:39.000000000 -0400
+@@ -21,6 +21,7 @@
+ 
+ #include "gsh_rpc.h"
+ #include "nfs_fh.h"
++#include "log.h"
+ 
+ typedef struct authsys_parms authsys_parms;
+ #endif				/* _AUTH_SYS_DEFINE_FOR_NFSv41 */
+@@ -230,6 +231,22 @@
+ 
+ typedef utf8str_cs linktext4;
+ 
++static inline utf8string *
++utf8string_dup(utf8string *d, const char *s, size_t l)
++{
++	d->utf8string_val = malloc(l + 1);
++
++	if (d->utf8string_val == NULL) {
++		LogMallocFailure(__FILE__, __LINE__, __func__,
++				 "utf8string_dup");
++		abort();
++	}
++	d->utf8string_len = l;
++	memcpy(d->utf8string_val, s, l);
++	d->utf8string_val[l] = '\0';
++	return d;
++}
++
+ typedef struct {
+ 	u_int pathname4_len;
+ 	component4 *pathname4_val;
+diff -ur nfs-ganesha-2.8.0.2/src/include/server_stats_private.h nfs-ganesha-2.8.0.3/src/include/server_stats_private.h
+--- nfs-ganesha-2.8.0.2/src/include/server_stats_private.h	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/include/server_stats_private.h	2019-06-28 18:19:39.000000000 -0400
+@@ -104,6 +104,16 @@
+ 	struct gsh_export export;
+ };
+ 
++/**
++ * @brief Auth stats information
++ */
++struct auth_stats {
++	uint64_t total;
++	uint64_t latency;
++	uint64_t max;
++	uint64_t min;
++};
++
+ #ifdef USE_DBUS
+ 
+ /* Bits for introspect arg structures
+@@ -211,9 +221,13 @@
+ 	.name = "v4_full_status",  \
+ 	.type = "b(tt)",        \
+ 	.direction = "out"      \
++},				\
++{                               \
++	.name = "auth_status",  \
++	.type = "b(tt)",        \
++	.direction = "out"      \
+ }
+ 
+-
+ #define V3_FULL_REPLY		\
+ {				\
+ 	.name = "v3_full_stats",	\
+@@ -228,6 +242,13 @@
+ 	.direction = "out"	\
+ }
+ 
++#define AUTH_REPLY		\
++{                               \
++	.name = "auth",		\
++	.type = "a(tdddtddd)",  \
++	.direction = "out"      \
++}
++
+ #define LAYOUTS_REPLY		\
+ {				\
+ 	.name = "getdevinfo",	\
+@@ -313,6 +334,7 @@
+ void reset_gsh_stats(struct gsh_stats *st);
+ void reset_v3_full_stats(void);
+ void reset_v4_full_stats(void);
++void reset_auth_stats(void);
+ 
+ #ifdef _USE_9P
+ void server_dbus_9p_iostats(struct _9p_stats *_9pp, DBusMessageIter *iter);
+diff -ur nfs-ganesha-2.8.0.2/src/MainNFSD/libganesha_nfsd.ver nfs-ganesha-2.8.0.3/src/MainNFSD/libganesha_nfsd.ver
+--- nfs-ganesha-2.8.0.2/src/MainNFSD/libganesha_nfsd.ver	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/MainNFSD/libganesha_nfsd.ver	2019-06-28 18:19:39.000000000 -0400
+@@ -103,6 +103,7 @@
+   lookup_fsal;
+   lookup_fsid;
+   LogCrit;
++  LogMallocFailure;
+   LogWarn;
+   lru_cleanup_entries;
+   mdcache_param;
+@@ -171,6 +172,8 @@
+   release_posix_file_system;
+   read_log_config;
+   report_config_errors;
++  claim_posix_filesystems;
++  reload_posix_filesystems;
+   resolve_posix_filesystem;
+   ReturnLevelAscii;
+   re_index_fs_fsid;
+diff -ur nfs-ganesha-2.8.0.2/src/MainNFSD/nfs_admin_thread.c nfs-ganesha-2.8.0.3/src/MainNFSD/nfs_admin_thread.c
+--- nfs-ganesha-2.8.0.2/src/MainNFSD/nfs_admin_thread.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/MainNFSD/nfs_admin_thread.c	2019-06-28 18:19:39.000000000 -0400
+@@ -474,6 +474,48 @@
+ 	NULL
+ };
+ 
++#define HANDLE_VERSION_PROP(prop_name, prop_string) \
++static bool dbus_prop_get_VERSION_##prop_name(DBusMessageIter *reply) \
++{ \
++	const char *version_string = prop_string; \
++	if (!dbus_message_iter_append_basic \
++	    (reply, DBUS_TYPE_STRING, &version_string)) \
++		return false; \
++	return true; \
++} \
++\
++static struct gsh_dbus_prop VERSION_##prop_name##_prop = { \
++	.name = "VERSION_" #prop_name, \
++	.access = DBUS_PROP_READ, \
++	.type = "s", \
++	.get = dbus_prop_get_VERSION_##prop_name, \
++	.set = NULL \
++}
++
++#define VERSION_PROPERTY_ITEM(name) (&VERSION_##name##_prop)
++
++HANDLE_VERSION_PROP(RELEASE, GANESHA_VERSION);
++
++#if !GANESHA_BUILD_RELEASE
++HANDLE_VERSION_PROP(COMPILE_DATE, __DATE__);
++HANDLE_VERSION_PROP(COMPILE_TIME, __TIME__);
++HANDLE_VERSION_PROP(COMMENT, VERSION_COMMENT);
++HANDLE_VERSION_PROP(GIT_HEAD, _GIT_HEAD_COMMIT);
++HANDLE_VERSION_PROP(GIT_DESCRIBE, _GIT_DESCRIBE);
++#endif
++
++static struct gsh_dbus_prop *admin_props[] = {
++	VERSION_PROPERTY_ITEM(RELEASE),
++#if !GANESHA_BUILD_RELEASE
++	VERSION_PROPERTY_ITEM(COMPILE_DATE),
++	VERSION_PROPERTY_ITEM(COMPILE_TIME),
++	VERSION_PROPERTY_ITEM(COMMENT),
++	VERSION_PROPERTY_ITEM(GIT_HEAD),
++	VERSION_PROPERTY_ITEM(GIT_DESCRIBE),
++#endif
++	NULL
++};
++
+ static struct gsh_dbus_signal heartbeat_signal = {
+ 	.name = HEARTBEAT_NAME,
+ 	.signal = NULL,
+@@ -488,7 +530,7 @@
+ 
+ static struct gsh_dbus_interface admin_interface = {
+ 	.name = DBUS_ADMIN_IFACE,
+-	.props = NULL,
++	.props = admin_props,
+ 	.methods = admin_methods,
+ 	.signals = admin_signals
+ };
+diff -ur nfs-ganesha-2.8.0.2/src/Protocols/NFS/nfs4_op_readdir.c nfs-ganesha-2.8.0.3/src/Protocols/NFS/nfs4_op_readdir.c
+--- nfs-ganesha-2.8.0.2/src/Protocols/NFS/nfs4_op_readdir.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/Protocols/NFS/nfs4_op_readdir.c	2019-06-28 18:19:39.000000000 -0400
+@@ -319,8 +319,7 @@
+ 	}
+ 
+ 	tracker->mem_left -= RNDUP(namelen);
+-	tracker_entry->name.utf8string_len = namelen;
+-	tracker_entry->name.utf8string_val = gsh_strdup(cb_parms->name);
++	utf8string_dup(&tracker_entry->name, cb_parms->name, namelen);
+ 
+ 	/* If we carried an error from above, now that we have
+ 	 * the name set up, go ahead and try and put error in
+diff -ur nfs-ganesha-2.8.0.2/src/Protocols/NFS/nfs_proto_tools.c nfs-ganesha-2.8.0.3/src/Protocols/NFS/nfs_proto_tools.c
+--- nfs-ganesha-2.8.0.2/src/Protocols/NFS/nfs_proto_tools.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/Protocols/NFS/nfs_proto_tools.c	2019-06-28 18:19:39.000000000 -0400
+@@ -1253,10 +1253,8 @@
+ 			if (strlen(token) > 0) {
+ 				LogDebug(COMPONENT_NFS_V4,
+ 					 "token %d is %s", i, token);
+-				pathname4->pathname4_val[i].utf8string_val =
+-					gsh_strdup(token);
+-				pathname4->pathname4_val[i].utf8string_len =
+-					strlen(token);
++				utf8string_dup(&pathname4->pathname4_val[i],
++						token, strlen(token));
+ 				i++;
+ 			}
+ 		}
+diff -ur nfs-ganesha-2.8.0.2/src/Protocols/NLM/nlm_async.c nfs-ganesha-2.8.0.3/src/Protocols/NLM/nlm_async.c
+--- nfs-ganesha-2.8.0.2/src/Protocols/NLM/nlm_async.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/Protocols/NLM/nlm_async.c	2019-06-28 18:19:39.000000000 -0400
+@@ -268,11 +268,13 @@
+ 
+ 		if (cc->cc_error.re_status == RPC_TIMEDOUT ||
+ 		    cc->cc_error.re_status == RPC_SUCCESS) {
+-			cc->cc_error.re_status = RPC_SUCCESS;
++			retval = RPC_SUCCESS;
+ 			clnt_req_release(cc);
+ 			break;
+ 		}
+ 
++		retval = cc->cc_error.re_status;
++
+ 		t = rpc_sperror(&cc->cc_error, "failed");
+ 		LogCrit(COMPONENT_NLM,
+ 			"NLM async Client procedure call %d %s",
+diff -ur nfs-ganesha-2.8.0.2/src/SAL/nfs4_state.c nfs-ganesha-2.8.0.3/src/SAL/nfs4_state.c
+--- nfs-ganesha-2.8.0.2/src/SAL/nfs4_state.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/SAL/nfs4_state.c	2019-06-28 18:19:39.000000000 -0400
+@@ -456,6 +456,9 @@
+ 	if (state->state_type == STATE_TYPE_LOCK)
+ 		glist_del(&state->state_data.lock.state_sharelist);
+ 
++	if (state->state_type == STATE_TYPE_SHARE)
++		assert(glist_empty(&state->state_data.share.share_lockstates));
++
+ 	/* Reset write delegated and release client ref if this is a
+ 	 * write delegation */
+ 	if (state->state_type == STATE_TYPE_DELEG &&
+@@ -650,8 +653,22 @@
+ 		state = glist_entry(glist, state_t, state_list);
+ 		if (state->state_type > STATE_TYPE_LAYOUT)
+ 			continue;
++		/* Skip STATE_TYPE_SHARE
++		 * It must be deleted after all the related LOCK states
++		 */
++		if (state->state_type == STATE_TYPE_SHARE)
++			continue;
++		state_del_locked(state);
++	}
++
++	/* Loop over again to delete any STATE_TYPE_SHARE */
++	glist_for_each_safe(glist, glistn, &ostate->file.list_of_states) {
++		state = glist_entry(glist, state_t, state_list);
++		if (state->state_type > STATE_TYPE_LAYOUT)
++			continue;
+ 		state_del_locked(state);
+ 	}
++
+ }
+ 
+ /**
+diff -ur nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/Ganesha/ganesha_mgr_utils.py nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/Ganesha/ganesha_mgr_utils.py
+--- nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/Ganesha/ganesha_mgr_utils.py	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/Ganesha/ganesha_mgr_utils.py	2019-06-28 18:19:39.000000000 -0400
+@@ -326,6 +326,20 @@
+         msg = reply[1]
+         return status, msg
+ 
++    def GetAll(self):
++        method = self.dbusobj.get_dbus_method(
++                "GetAll",
++                "org.freedesktop.DBus.Properties")
++        try:
++            dictionary = method(self.dbus_interface)
++        except dbus.exceptions.DBusException as e:
++            return False, e, {}
++
++        prop_dict = {}
++        for key in dictionary.keys():
++            prop_dict[key] = dictionary[key]
++        return True, "Done", prop_dict
++
+ 
+ IDMapper = namedtuple('IDMapper',
+                      ['Name',
+diff -ur nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/Ganesha/glib_dbus_stats.py nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/Ganesha/glib_dbus_stats.py
+--- nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/Ganesha/glib_dbus_stats.py	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/Ganesha/glib_dbus_stats.py	2019-07-01 08:10:41.308197046 -0400
+@@ -137,7 +137,11 @@
+         stats_state = self.exportmgrobj.get_dbus_method("GetFULLV4Stats",
+                                   self.dbus_exportstats_name)
+         return DumpFULLV4Stats(stats_state())
+-
++    # authentication
++    def auth_stats(self):
++        stats_state = self.exportmgrobj.get_dbus_method("GetAuthStats",
++                                  self.dbus_exportstats_name)
++        return DumpAuth(stats_state())
+ 
+ class RetrieveClientStats():
+     def __init__(self):
+@@ -434,6 +438,11 @@
+                 output += time.ctime(self.status[5][1][0]) + str(self.status[5][1][1]) + " nsecs\n"
+             else:
+                  output += "Stats counting for v4_full is currently disabled \n"
++            if self.status[6][0]:
++                output += "Stats counting for authentication is enabled since: \n\t"
++                output += time.ctime(self.status[6][1][0]) + str(self.status[6][1][1]) + " nsecs\n"
++            else:
++                 output += "Stats counting for authentication is currently disabled \n"
+             return output
+ 
+ 
+@@ -483,6 +492,41 @@
+         else:
+             return "Successfully disabled statistics counting"
+ 
++class DumpAuth():
++    def __init__(self, stats):
++        self.success = stats[0]
++        self.status = stats[1]
++        if self.success:
++           self.timestamp = (stats[2][0], stats[2][1])
++           self.gctotal = stats[3][0]
++           self.gclatency = stats[3][1]
++           self.gcmax = stats[3][2]
++           self.gcmin = stats[3][3]
++           self.wbtotal = stats[3][4]
++           self.wblatency = stats[3][5]
++           self.wbmax = stats[3][6]
++           self.wbmin = stats[3][7]
++    def __str__(self):
++        output = ""
++        if not self.success:
++            return "No auth activity, GANESHA RESPONSE STATUS: " + self.status
++        if self.status != "OK":
++            output += self.status + "\n"
++        output += ("Timestamp: " + time.ctime(self.timestamp[0]) + str(self.timestamp[1]) + " nsecs"+
++                   "\nAuthentication related stats" +
++                   "\n\nGroup Cache" +
++                   "\nTotal ops: " + str(self.gctotal) +
++                   "\nAve Latency: " + str(self.gclatency) +
++                   "\nMax Latency: " + str(self.gcmax) +
++                   "\nMin Latency: " + str(self.gcmin) +
++                   "\n\nWinbind" +
++                   "\nTotal ops: " + str(self.wbtotal) +
++                   "\nAve Latency: " + str(self.wblatency) +
++                   "\nMax Latency: " + str(self.wbmax) +
++                   "\nMin Latency: " + str(self.wbmin))
++        return output
++
++
+ class DumpFULLV3Stats():
+     def __init__(self, status):
+         self.stats = status
+Only in nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/Ganesha: glib_dbus_stats.py.orig
+diff -ur nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/ganesha_mgr.py nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/ganesha_mgr.py
+--- nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/ganesha_mgr.py	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/ganesha_mgr.py	2019-06-28 18:19:39.000000000 -0400
+@@ -198,6 +198,22 @@
+         status, msg = self.admin.purge_gids()
+         self.status_message(status, msg)
+ 
++    def show_version(self):
++        status, msg, versions = self.admin.GetAll()
++        if status:
++            print("NFS-Ganesha Release = V{}".format(versions['VERSION_RELEASE']))
++            try:
++                print("ganesha compiled on {} at {}".format(
++                   versions['VERSION_COMPILE_DATE'],
++                   versions['VERSION_COMPILE_TIME']))
++                print("Release comment = {}".format(versions['VERSION_COMMENT']))
++                print("Git HEAD = {}".format(versions['VERSION_GIT_HEAD']))
++                print("Git Describe = {}".format(versions['VERSION_GIT_DESCRIBE']))
++            except KeyError:
++                pass
++        else:
++            self.status_message(status, msg)
++
+     def status_message(self, status, errormsg):
+         print("Returns: status = %s, %s" % (str(status), errormsg))
+ 
+diff -ur nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/ganesha_stats.py nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/ganesha_stats.py
+--- nfs-ganesha-2.8.0.2/src/scripts/ganeshactl/ganesha_stats.py	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/scripts/ganeshactl/ganesha_stats.py	2019-06-28 18:19:39.000000000 -0400
+@@ -22,11 +22,13 @@
+     message += "%s [list_clients | deleg <ip address> | " % (sys.argv[0])
+     message += "inode | iov3 [export id] | iov4 [export id] | export |"
+     message += " total [export id] | fast | pnfs [export id] |"
+-    message += " fsal <fsal name> | v3_full | v4_full] \n"
++    message += " fsal <fsal name> | v3_full | v4_full |"
++    message += " auth] \n"
+     message += "To reset stat counters use \n"
+     message += "%s reset \n" % (sys.argv[0])
+     message += "To enable/disable stat counters use \n"
+-    message += "%s [enable | disable] [all | nfs | fsal | v3_full | v4_full]\n" % (sys.argv[0])
++    message += "%s [enable | disable] [all | nfs | fsal | v3_full | " % (sys.argv[0])
++    message += "v4_full | auth] \n"
+     sys.exit(message)
+ 
+ if len(sys.argv) < 2:
+@@ -37,7 +39,7 @@
+ # check arguments
+ commands = ('help', 'list_clients', 'deleg', 'global', 'inode', 'iov3', 'iov4',
+         'export', 'total', 'fast', 'pnfs', 'fsal', 'reset', 'enable',
+-        'disable', 'status', 'v3_full', 'v4_full')
++        'disable', 'status', 'v3_full', 'v4_full', 'auth')
+ if command not in commands:
+     print("Option '%s' is not correct." % command)
+     usage()
+@@ -65,12 +67,12 @@
+     command_arg = sys.argv[2]
+ elif command in ('enable', 'disable'):
+     if not len(sys.argv) == 3:
+-        print("Option '%s' must be followed by all/nfs/fsal/v3_full/v4_full" %
++        print("Option '%s' must be followed by all/nfs/fsal/v3_full/v4_full/auth" %
+             command)
+         usage()
+     command_arg = sys.argv[2]
+-    if command_arg not in ('all', 'nfs', 'fsal', 'v3_full', 'v4_full'):
+-        print("Option '%s' must be followed by all/nfs/fsal/v3_full/v4_full" %
++    if command_arg not in ('all', 'nfs', 'fsal', 'v3_full', 'v4_full', 'auth'):
++        print("Option '%s' must be followed by all/nfs/fsal/v3_full/v4_full/auth" %
+             command)
+         usage()
+ 
+@@ -105,6 +107,8 @@
+     print(exp_interface.v3_full_stats())
+ elif command == "v4_full":
+     print(exp_interface.v4_full_stats())
++elif command == "auth":
++    print(exp_interface.auth_stats())
+ elif command == "enable":
+     print(exp_interface.enable_stats(command_arg))
+ elif command == "disable":
+diff -ur nfs-ganesha-2.8.0.2/src/selinux/ganesha.te nfs-ganesha-2.8.0.3/src/selinux/ganesha.te
+--- nfs-ganesha-2.8.0.2/src/selinux/ganesha.te	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/selinux/ganesha.te	2019-06-28 18:19:39.000000000 -0400
+@@ -72,6 +72,7 @@
+ corenet_udp_bind_mountd_port(ganesha_t)
+ corenet_tcp_connect_virt_migration_port(ganesha_t)
+ corenet_tcp_connect_all_rpc_ports(ganesha_t)
++corenet_tcp_connect_portmap_port(ganesha_t)
+ 
+ dev_rw_infiniband_dev(ganesha_t)
+ dev_read_gpfs(ganesha_t)
+diff -ur nfs-ganesha-2.8.0.2/src/support/export_mgr.c nfs-ganesha-2.8.0.3/src/support/export_mgr.c
+--- nfs-ganesha-2.8.0.2/src/support/export_mgr.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/support/export_mgr.c	2019-06-28 18:19:39.000000000 -0400
+@@ -64,11 +64,13 @@
+ #include "nfs_exports.h"
+ #include "nfs_proto_functions.h"
+ #include "pnfs_utils.h"
++#include "idmapper.h"
+ 
+ struct timespec nfs_stats_time;
+ struct timespec fsal_stats_time;
+ struct timespec v3_full_stats_time;
+ struct timespec v4_full_stats_time;
++struct timespec auth_stats_time;
+ /**
+  * @brief Exports are stored in an AVL tree with front-end cache.
+  *
+@@ -2018,6 +2020,7 @@
+ 
+ 	reset_fsal_stats();
+ 	reset_server_stats();
++	reset_auth_stats();
+ 
+ 	return true;
+ }
+@@ -2109,7 +2112,7 @@
+ 	bool success = true;
+ 	char *errormsg = "OK";
+ 	DBusMessageIter iter, nfsstatus, fsalstatus;
+-	DBusMessageIter v3_full_status, v4_full_status;
++	DBusMessageIter v3_full_status, v4_full_status, authstatus;
+ 	dbus_bool_t value;
+ 
+ 	dbus_message_iter_init_append(reply, &iter);
+@@ -2149,6 +2152,15 @@
+ 	dbus_append_timestamp(&v4_full_status, &v4_full_stats_time);
+ 	dbus_message_iter_close_container(&iter, &v4_full_status);
+ 
++	/* Send info about auth stats */
++	dbus_message_iter_open_container(&iter, DBUS_TYPE_STRUCT, NULL,
++						&authstatus);
++	value = nfs_param.core_param.enable_AUTHSTATS;
++	dbus_message_iter_append_basic(&authstatus, DBUS_TYPE_BOOLEAN,
++						&value);
++	dbus_append_timestamp(&authstatus, &auth_stats_time);
++	dbus_message_iter_close_container(&iter, &authstatus);
++
+ 	return true;
+ }
+ 
+@@ -2191,6 +2203,7 @@
+ 		nfs_param.core_param.enable_FSALSTATS = false;
+ 		nfs_param.core_param.enable_FULLV3STATS = false;
+ 		nfs_param.core_param.enable_FULLV4STATS = false;
++		nfs_param.core_param.enable_AUTHSTATS = false;
+ 		LogEvent(COMPONENT_CONFIG,
+ 			 "Disabling NFS server statistics counting");
+ 		LogEvent(COMPONENT_CONFIG,
+@@ -2199,6 +2212,10 @@
+ 		reset_fsal_stats();
+ 		/* resetting server stats includes v3_full & v4_full stats */
+ 		reset_server_stats();
++		LogEvent(COMPONENT_CONFIG,
++				"Disabling auth statistics counting");
++		/* reset auth counters */
++		reset_auth_stats();
+ 	}
+ 	if (strcmp(stat_type, "nfs") == 0) {
+ 		nfs_param.core_param.enable_NFSSTATS = false;
+@@ -2231,6 +2248,14 @@
+ 		reset_v4_full_stats();
+ 	}
+ 
++	if (strcmp(stat_type, "auth") == 0) {
++		nfs_param.core_param.enable_AUTHSTATS = false;
++		LogEvent(COMPONENT_CONFIG,
++			"Disabling auth statistics counting");
++		/* reset auth counters */
++		reset_auth_stats();
++	}
++
+ 	dbus_status_reply(&iter, true, errormsg);
+ 	now(&timestamp);
+ 	dbus_append_timestamp(&iter, &timestamp);
+@@ -2299,6 +2324,13 @@
+ 				 "Enabling NFSv4 Detailed statistics counting");
+ 			now(&v4_full_stats_time);
+ 		}
++		if (!nfs_param.core_param.enable_AUTHSTATS) {
++			nfs_param.core_param.enable_AUTHSTATS = true;
++			LogEvent(COMPONENT_CONFIG,
++					"Enabling auth statistics counting");
++			now(&auth_stats_time);
++		}
++
+ 	}
+ 	if (strcmp(stat_type, "nfs") == 0 &&
+ 			!nfs_param.core_param.enable_NFSSTATS) {
+@@ -2338,6 +2370,15 @@
+ 			now(&v4_full_stats_time);
+ 		}
+ 	}
++
++	if (strcmp(stat_type, "auth") == 0 &&
++	    !nfs_param.core_param.enable_AUTHSTATS) {
++		nfs_param.core_param.enable_AUTHSTATS = true;
++		LogEvent(COMPONENT_CONFIG,
++				"Enabling auth statistics counting");
++		now(&auth_stats_time);
++	}
++
+ 	dbus_status_reply(&iter, true, errormsg);
+ 	now(&timestamp);
+ 	dbus_append_timestamp(&iter, &timestamp);
+@@ -2635,6 +2676,7 @@
+ 	&status_stats,
+ 	&v3_full_statistics,
+ 	&v4_full_statistics,
++	&auth_statistics,
+ 	NULL
+ };
+ 
+diff -ur nfs-ganesha-2.8.0.2/src/support/nfs_read_conf.c nfs-ganesha-2.8.0.3/src/support/nfs_read_conf.c
+--- nfs-ganesha-2.8.0.2/src/support/nfs_read_conf.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/support/nfs_read_conf.c	2019-06-28 18:19:39.000000000 -0400
+@@ -178,6 +178,8 @@
+ 		       nfs_core_param, enable_FULLV3STATS),
+ 	CONF_ITEM_BOOL("Enable_FULLV4_Stats", false,
+ 		       nfs_core_param, enable_FULLV4STATS),
++	CONF_ITEM_BOOL("Enable_AUTH_Stats", false,
++		       nfs_core_param, enable_AUTHSTATS),
+ 	CONF_ITEM_BOOL("Short_File_Handle", false,
+ 		       nfs_core_param, short_file_handle),
+ 	CONF_ITEM_I64("Manage_Gids_Expiration", 0, 7*24*60*60, 30*60,
+diff -ur nfs-ganesha-2.8.0.2/src/support/uid2grp.c nfs-ganesha-2.8.0.3/src/support/uid2grp.c
+--- nfs-ganesha-2.8.0.2/src/support/uid2grp.c	2019-06-14 18:23:42.000000000 -0400
++++ nfs-ganesha-2.8.0.3/src/support/uid2grp.c	2019-06-28 18:19:39.000000000 -0400
+@@ -46,6 +46,7 @@
+ #include <stdbool.h>
+ #include "common_utils.h"
+ #include "uid2grp.h"
++#include "idmapper.h"
+ 
+ /* group_data has a reference counter. If it goes to zero, it implies
+  * that it is out of the cache (AVL trees) and should be freed. The
+@@ -91,6 +92,8 @@
+ {
+ 	int ngroups = 0;
+ 	gid_t *groups = NULL;
++	struct timespec s_time, e_time;
++	bool stats = nfs_param.core_param.enable_AUTHSTATS;
+ 
+ 	/* We call getgrouplist() with 0 ngroups first. This should always
+ 	 * return -1, and ngroups should be set to the actual number of
+@@ -112,6 +115,7 @@
+ 	if (ngroups > 0)
+ 		groups = gsh_malloc(ngroups * sizeof(gid_t));
+ 
++	now(&s_time);
+ 	if (getgrouplist(user, gid, groups, &ngroups) == -1) {
+ 		LogEvent(COMPONENT_IDMAPPER,
+ 			 "getgrouplist for user: %s failed retrying", user);
+@@ -122,6 +126,7 @@
+ 		ngroups = 1000;
+ 		groups = gsh_malloc(ngroups * sizeof(gid_t));
+ 
++		now(&s_time);
+ 		if (getgrouplist(user, gid, groups, &ngroups) == -1) {
+ 			LogWarn(COMPONENT_IDMAPPER,
+ 				"getgrouplist for user:%s failed, ngroups: %d",
+@@ -130,6 +135,12 @@
+ 			return false;
+ 		}
+ 
++		now(&e_time);
++		if (stats) {
++			gc_stats_update(&s_time, &e_time);
++			stats = false;
++		}
++
+ 		if (ngroups != 0) {
+ 			/* Resize the buffer, if it fails, gsh_realloc will
+ 			 * abort.
+@@ -142,6 +153,9 @@
+ 		}
+ 	}
+ 
++	now(&e_time);
++	if (stats)
++		gc_stats_update(&s_time, &e_time);
+ 	gdata->groups = groups;
+ 	gdata->nbgroups = ngroups;
+ 
