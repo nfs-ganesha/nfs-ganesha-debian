@@ -1,4 +1,4 @@
-libntirpc (1.8.0-1) buster; urgency=low
+libntirpc (1.8.0-1) bullseye; urgency=low
 
   [ Gluster Packager ]
   * libntirpc-1.8.0 GA
