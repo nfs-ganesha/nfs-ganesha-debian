@@ -83,7 +83,8 @@ Multi-Arch: same
 Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
-         nfs-ganesha (=${binary:Version})
+         nfs-ganesha (=${binary:Version}),
+         libcephfs1
 Description: nfs-ganesha fsal ceph libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
