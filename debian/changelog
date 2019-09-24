@@ -1,24 +1,30 @@
+nfs-ganesha (2.8.2-ubuntu1~eoan2) eoan; urgency=medium
+
+  * nfs-ganesha 2.8.2, we pyqt5, new gluster packages
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 23 Jul 2019 09:45:51 -0400
+
 nfs-ganesha (2.8.2-ubuntu1~eoan1) eoan; urgency=medium
 
-  * nfs-ganesha 2.8.2
+  * nfs-ganesha 2.8.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 23 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.1-ubuntu1~eoan1) eoan; urgency=medium
 
-  * nfs-ganesha 2.8.1
+  * nfs-ganesha 2.8.1 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 3 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.0-ubuntu1~eoan6) eoan; urgency=medium
 
-  * nfs-ganesha 2.8.0.3
+  * nfs-ganesha 2.8.0.3 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 1 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.0-ubuntu1~eoan5) eoan; urgency=medium
 
-  * nfs-ganesha 2.8.0.2
+  * nfs-ganesha 2.8.0.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 17 Jun 2019 09:45:51 -0400
 
@@ -30,7 +36,7 @@ nfs-ganesha (2.8.0-ubuntu1~eoan4) eoan; urgency=medium
 
 nfs-ganesha (2.8.0-ubuntu1~eoan3) eoan; urgency=medium
 
-  * nfs-ganesha 2.8.0, 2.8.0.1
+  * nfs-ganesha 2.8.0, 2.8.0.1 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 12 Jun 2019 09:45:51 -0400
 

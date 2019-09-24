@@ -1,0 +1,27 @@
+--- nfs-ganesha-2.8.2/src/CMakeLists.txt.orig	2019-09-23 10:02:53.360000000 -0400
++++ nfs-ganesha-2.8.2/src/CMakeLists.txt	2019-09-23 10:25:09.028000000 -0400
+@@ -510,12 +510,13 @@
+ gopt_test(USE_GUI_ADMIN_TOOLS)
+ if (USE_ADMIN_TOOLS)
+   if (USE_GUI_ADMIN_TOOLS)
+-    find_program(PYUIC NAMES pyuic4 DOC "PyQT UI-compiler executable")
++    message(WARNING "looking for pyuic5")
++    find_program(PYUIC NAMES pyuic5 DOC "PyQT UI-compiler executable")
+     if (NOT PYUIC)
+       if (USE_GUI_ADMIN_TOOLS_REQUIRED)
+ 	message(FATAL_ERROR "Cannot find PyQt but GUI admin tools requested on command line")
+       else (USE_GUI_ADMIN_TOOLS_REQUIRED)
+-	message(WARNING "Cannot find PyQt4.  Disabling GUI admin tools")
++	message(WARNING "Cannot find PyQt5.  Disabling GUI admin tools")
+ 	set(USE_GUI_ADMIN_TOOLS OFF)
+       endif (USE_GUI_ADMIN_TOOLS_REQUIRED)
+     endif (NOT PYUIC)
+@@ -628,7 +629,7 @@
+     set(ENV{PKG_CONFIG_PATH} "${PKG_CONFIG_PATH}:${GLUSTER_PREFIX}/lib/pkgconfig")
+   ENDIF(GLUSTER_PREFIX)
+   # pkg_check_modules doesn't fatal error on REQUIRED, so handle it ourselves
+-  pkg_check_modules(GFAPI glusterfs-api>=7.3.10.7)
++  pkg_check_modules(GFAPI glusterfs-api>=7.6.0)
+   if(NOT GFAPI_FOUND)
+     if(USE_FSAL_GLUSTER_REQUIRED)
+       message(FATAL_ERROR "Cannot find GLUSTER GFAPI runtime but requested on command line")
