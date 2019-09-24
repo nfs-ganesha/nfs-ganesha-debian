@@ -1,24 +1,30 @@
+nfs-ganesha (2.8.2-ubuntu1~disco3) disco; urgency=medium
+
+  * nfs-ganesha 2.8.2, w/ new gluster packages
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 24 Sep 2019 09:45:51 -0400
+
 nfs-ganesha (2.8.2-ubuntu1~disco1) disco; urgency=medium
 
-  * nfs-ganesha 2.8.2
+  * nfs-ganesha 2.8.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 23 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.1-ubuntu1~disco1) disco; urgency=medium
 
-  * nfs-ganesha 2.8.1
+  * nfs-ganesha 2.8.1 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 3 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.0-ubuntu1~disco10) disco; urgency=medium
 
-  * nfs-ganesha 2.8.0.3
+  * nfs-ganesha 2.8.0.3 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 1 Jul 2019 09:45:51 -0400
 
 nfs-ganesha (2.8.0-ubuntu1~disco9) disco; urgency=medium
 
-  * nfs-ganesha 2.8.0.2
+  * nfs-ganesha 2.8.0.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 17 Jun 2019 09:45:51 -0400
 
@@ -30,7 +36,7 @@ nfs-ganesha (2.8.0-ubuntu1~disco8) disco; urgency=medium
 
 nfs-ganesha (2.8.0-ubuntu1~disco7) disco; urgency=medium
 
-  * nfs-ganesha 2.8.0.1
+  * nfs-ganesha 2.8.0.1 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 12 Jun 2019 09:45:51 -0400
 
