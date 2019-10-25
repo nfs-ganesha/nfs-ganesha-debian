@@ -1,3 +1,9 @@
+libntirpc (1.8.0-ubuntu1~focal1) focal; urgency=medium
+
+  * libntirpc-1.8.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 25 Oct 2019 09:09:51 -0400
+
 libntirpc (1.8.0-ubuntu1~eoan1) disco; urgency=medium
 
   * libntirpc-1.8.0 GA
