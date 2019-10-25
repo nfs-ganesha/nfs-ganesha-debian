@@ -71,7 +71,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version}),
-         libglusterfs0
+         libglusterfs0 (>= 6.0)
 Description: nfs-ganesha fsal gluster libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
@@ -193,7 +193,7 @@ Architecture: all
 Section: python
 Provides: ${python:Provides}
 Depends: python3-dbus,
-         python3-pyqt4,
+         python3-pyqt5,
          ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
