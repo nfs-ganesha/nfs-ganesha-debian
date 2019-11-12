@@ -1,8 +1,8 @@
-libntirpc (1.8.0-ubuntu1~eoan3) eoan; urgency=medium
+libntirpc (1.8.0-ubuntu1~eoan4) eoan; urgency=medium
 
   * libntirpc-1.8.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 31 May 2019 09:09:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 12 Nov 2019 09:09:51 -0400
 
 libntirpc (1.7.3-ubuntu1~disco1) disco; urgency=medium
 
