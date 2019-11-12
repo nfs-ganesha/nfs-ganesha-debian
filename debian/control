@@ -4,7 +4,6 @@ Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
 Build-Depends: debhelper (>= 9),
   cmake,
   libkrb5-dev,
-  libjemalloc-dev,
   liburcu-dev
 Standards-Version: 3.9.7
 Section: libs
@@ -14,7 +13,7 @@ Package: libntirpc-dev
 Section: libdevel
 Priority: extra
 Architecture: any
-Depends: libntirpc1 (= ${binary:Version}), ${misc:Depends}
+Depends: libntirpc3 (= ${binary:Version}), ${misc:Depends}
 Description: new transport-independent RPC library - development files
  This package contains a port of Sun's transport-independent RPC library to
  Linux. The library is intended as a replacement for the RPC code in the GNU C
@@ -22,7 +21,7 @@ Description: new transport-independent RPC library - development files
  .
  This package contains the files needed for development with libntirpc.
 
-Package: libntirpc1
+Package: libntirpc3
 Section: libs
 Architecture: any
 Multi-Arch: same
