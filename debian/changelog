@@ -1,3 +1,9 @@
+nfs-ganesha (3.0-ubuntu1~focal1) focal; urgency=medium
+
+  * nfs-ganesha 3.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 12 Nov 2019 09:45:51 -0400
+
 nfs-ganesha (2.8.2-ubuntu1~eoan3) eoan; urgency=medium
 
   * nfs-ganesha 2.8.2, w/ pyqt5 again
