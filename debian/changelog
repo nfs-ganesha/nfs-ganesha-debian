@@ -1,4 +1,4 @@
-nfs-ganesha (3.0-ubuntu1~focal1) focal; urgency=medium
+nfs-ganesha (3.0-ubuntu1~disco3) disco; urgency=medium
 
   * nfs-ganesha 3.0 GA
 
