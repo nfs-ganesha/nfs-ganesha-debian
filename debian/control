@@ -175,6 +175,7 @@ Description: nfs-ganesha fsal gpfs libraries
 
 Package: python3-nfs-ganesha
 Pre-Depends: ${misc:Pre-Depends}
+Replaces: python-nfs-ganesha
 Architecture: all
 Section: python
 Provides: ${python:Provides}
