@@ -1,4 +1,4 @@
-libntirpc (3.0-1) bullseye; urgency=low
+libntirpc (3.0-1) buster; urgency=low
 
   [ Gluster Packager ]
   * libntirpc-3.0 GA
