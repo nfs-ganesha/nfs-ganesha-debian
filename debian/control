@@ -23,6 +23,7 @@ Description: new transport-independent RPC library - development files
 
 Package: libntirpc3
 Section: libs
+Replaces: libntirpc1
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
