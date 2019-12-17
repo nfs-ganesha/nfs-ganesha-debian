@@ -1,3 +1,15 @@
+libntirpc (3.2-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-3.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 17 Dec 2019 09:09:51 -0400
+
+libntirpc (3.1-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-3.1 GA (not built)
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 13 Dec 2019 09:09:51 -0400
+
 libntirpc (3.0-ubuntu1~bionic2) bionic; urgency=medium
 
   * libntirpc-3.0 Add Replaces: libntirpc1
