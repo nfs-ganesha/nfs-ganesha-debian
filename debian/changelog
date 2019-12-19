@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.3-1) buster; urgency=medium
+
+  * nfs-ganesha 2.8.3 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 19 Dec 2019 15:30:00 -0400
+
 nfs-ganesha (2.8.2-1) buster; urgency=medium
 
   * nfs-ganesha 2.8.2 GA
