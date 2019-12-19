@@ -1,392 +1,206 @@
-nfs-ganesha (3.0-ubuntu1~xenial2) xenial; urgency=medium
+nfs-ganesha (3.0-1) stretch; urgency=medium
 
   * nfs-ganesha 3.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 12 Nov 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 15 Nov 2019 15:30:00 -0400
 
-nfs-ganesha (2.8.2-ubuntu1~eoan3) eoan; urgency=medium
-
-  * nfs-ganesha 2.8.2, w/ pyqt5 again
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 27 Sep 2019 09:45:51 -0400
-
-nfs-ganesha (2.8.2-ubuntu1~eoan2) eoan; urgency=medium
-
-  * nfs-ganesha 2.8.2, w/ pyqt5, new gluster packages
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 23 Sep 2019 09:45:51 -0400
-
-nfs-ganesha (2.8.2-ubuntu1~eoan1) eoan; urgency=medium
+nfs-ganesha (2.8.2-1) stretch; urgency=medium
 
   * nfs-ganesha 2.8.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 23 Jul 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 23 Sep 2019 15:30:00 -0400
 
-nfs-ganesha (2.8.1-ubuntu1~eoan1) eoan; urgency=medium
+nfs-ganesha (2.8.0-3) stretch; urgency=medium
 
-  * nfs-ganesha 2.8.1 GA
+  * nfs-ganesha 2.8.0.3
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 3 Jul 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 1 Jul 2019 15:30:00 -0400
 
-nfs-ganesha (2.8.0-ubuntu1~eoan6) eoan; urgency=medium
+nfs-ganesha (2.8.0-2) stretch; urgency=medium
 
-  * nfs-ganesha 2.8.0.3 GA
+  * nfs-ganesha 2.8.0.2
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 1 Jul 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 31 May 2019 15:30:00 -0400
 
-nfs-ganesha (2.8.0-ubuntu1~eoan5) eoan; urgency=medium
-
-  * nfs-ganesha 2.8.0.2 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 17 Jun 2019 09:45:51 -0400
-
-nfs-ganesha (2.8.0-ubuntu1~eoan4) eoan; urgency=medium
-
-  * nfs-ganesha 2.8.0.1 w/ -rados-grace .deb
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 13 Jun 2019 09:45:51 -0400
-
-nfs-ganesha (2.8.0-ubuntu1~eoan3) eoan; urgency=medium
-
-  * nfs-ganesha 2.8.0, 2.8.0.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 12 Jun 2019 09:45:51 -0400
-
-nfs-ganesha (2.8.0-ubuntu1~eoan2) eoan; urgency=medium
+nfs-ganesha (2.8.0-1) stretch; urgency=medium
 
   * nfs-ganesha 2.8.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 31 May 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 31 May 2019 15:30:00 -0400
 
-nfs-ganesha (2.7.3-ubuntu1~disco2) disco; urgency=medium
+nfs-ganesha (2.7.3-2) stretch; urgency=medium
 
   * nfs-ganesha 2.7.3, w/ nfs-ganesha-conf.sh
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 27 Apr 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 29 Apr 2019 15:30:00 -0400
 
-nfs-ganesha (2.7.3-ubuntu1~disco1) disco; urgency=medium
+nfs-ganesha (2.7.3-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.7.3 GA
+  * nfs-ganesha 2.7.3
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 5 Apr 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 9 Apr 2019 15:30:00 -0400
 
-nfs-ganesha (2.7.2-ubuntu1~disco2) disco; urgency=medium
+nfs-ganesha (2.7.2-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.7.2 /w liburcu6
+  * nfs-ganesha 2.7.2
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 14 Mar 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 7 Mar 2019 15:30:00 -0400
 
-nfs-ganesha (2.7.2-ubuntu1~disco1) disco; urgency=medium
+nfs-ganesha (2.7.1-2) stretch; urgency=medium
 
-  * nfs-ganesha 2.7.2 GA
+  * nfs-ganesha 2.7.1 /w/ fsal-ceph
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 1 Mar 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 10 Dec 2018 15:30:00 -0400
 
-nfs-ganesha (2.7.1-ubuntu1~disco4) disco; urgency=medium
+nfs-ganesha (2.7.0-2) stretch; urgency=medium
 
-  * nfs-ganesha 2.7.1 w/ librados2
+  * nfs-ganesha 2.7.0, gfapi logrotate
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 15 Feb 2019 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 25 Sep 2018 15:30:00 -0400
 
-nfs-ganesha (2.7.1-ubuntu1~disco3) disco; urgency=medium
-
-  * nfs-ganesha 2.7.1 rebuild w/ libntirpc
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 18 Dec 2018 09:45:51 -0400
-
-nfs-ganesha (2.7.1-ubuntu1~disco1) disco; urgency=medium
-
-  * nfs-ganesha 2.7.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 2 Nov 2018 09:45:51 -0400
-
-nfs-ganesha (2.7.1-ubuntu1~cosmic1) cosmic; urgency=medium
-
-  * nfs-ganesha 2.7.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 17 Oct 2018 09:45:51 -0400
-
-nfs-ganesha (2.7.0-ubuntu1~cosmic11) cosmic; urgency=medium
-
-  * nfs-ganesha 2.7.0 gfapi logrotate
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 26 Sep 2018 09:45:51 -0400
-
-nfs-ganesha (2.7.0-ubuntu1~cosmic10) cosmic; urgency=medium
+nfs-ganesha (2.7.0-1) stretch; urgency=medium
 
   * nfs-ganesha 2.7.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 19 Sep 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 21 Sep 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.3-ubuntu1~cosmic1) cosmic; urgency=medium
+nfs-ganesha (2.6.3-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.3, /usr/lib/ganesha/nfs-ganesha-config.sh
+  * nfs-ganesha 2.6.3 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 22 Aug 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 28 Aug 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.2-ubuntu1~cosmic2) cosmic; urgency=medium
+nfs-ganesha (2.6.2-2) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.2, /usr/lib/ganesha/nfs-ganesha-config.sh
+  * nfs-ganesha 2.6.2 /usr/lib/ganesha/nfs-ganesha-config.sh
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 29 May 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 29 May 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.2-ubuntu1~cosmic1) cosmic; urgency=medium
+nfs-ganesha (2.6.2-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.2
+  * nfs-ganesha 2.6.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 11 May 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 11 May 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.1-ubuntu1~bionic3) bionic; urgency=medium
+nfs-ganesha (2.6.1-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.1 rebuild w/ i386 and arm7hl
+  * nfs-ganesha 2.6.1 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 29 Mar 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 22 Mar 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.1-ubuntu1~bionic2) bionic; urgency=medium
+nfs-ganesha (2.6.0-1) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.1
+  * nfs-ganesha 2.6.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 21 Mar 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 23 Feb 2018 15:30:00 -0400
 
-nfs-ganesha (2.6.0-ubuntu1~bionic2) bionic; urgency=medium
+nfs-ganesha (2.6.0-0.1rc3) stretch; urgency=medium
 
-  * nfs-ganesha 2.6.0
+  * nfs-ganesha 2.6 rc3
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 20 Feb 2018 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 19 Jan 2018 15:30:00 -0400
 
-nfs-ganesha (2.5.5-ubuntu1~bionic2) bionic; urgency=medium
-
-  * nfs-ganesha 2.5.5 
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 5 Feb 2018 09:45:51 -0400
-
-nfs-ganesha (2.5.5-ubuntu1~bionic1) bionic; urgency=medium
-
-  * nfs-ganesha 2.5.5 
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 31 Jan 2018 09:45:51 -0400
-
-nfs-ganesha (2.5.5-ubuntu1~bionic1) bionic; urgency=medium
-
-  * nfs-ganesha 2.5.5 
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 31 Jan 2018 09:45:51 -0400
-
-nfs-ganesha (2.5.3-ubuntu1~bionic1) bionic; urgency=medium
-
-  * nfs-ganesha 2.5.3 
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sat, 28 Oct 2017 09:45:51 -0400
-
-nfs-ganesha (2.5.3-ubuntu1~artful2) artful; urgency=medium
+nfs-ganesha (2.5.3-1) stretch; urgency=medium
 
   * nfs-ganesha 2.5.3 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 10 Oct 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 10 Oct 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.2-ubuntu1~artful1) artful; urgency=medium
+nfs-ganesha (2.5.2-1) stretch; urgency=medium
 
   * nfs-ganesha 2.5.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 28 Aug 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 28 Aug 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.1-ubuntu1~artful1) artful; urgency=medium
+nfs-ganesha (2.5.1-1) stretch; urgency=medium
 
   * nfs-ganesha 2.5.1 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sun, 23 Jul 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 14 Jul 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.0-ubuntu1~artful5) artful; urgency=medium
+nfs-ganesha (2.5.0-5) stretch; urgency=medium
 
-  * nfs-ganesha 2.5.0 w/ fsal subpackages
+  * nfs-ganesha 2.5.0 with libntirpc-1.5.3
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 14 Jul 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Wed, 19 Jul 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.0-ubuntu1~artful3) artful; urgency=medium
+nfs-ganesha (2.5.0-4) stretch; urgency=medium
 
-  * nfs-ganesha 2.5.0 w/ nfs-ganesha-config.sh
+  * nfs-ganesha 2.5.0 with fsal subpackages
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 10 Jul 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 14 Jul 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.0-ubuntu1~artful2) artful; urgency=medium
+nfs-ganesha (2.5.0-3) stretch; urgency=medium
+
+  * nfs-ganesha 2.5.0 with nfs-ganesha-config.sh
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 11 Jul 2017 15:30:00 -0400
+
+nfs-ganesha (2.5.0-2) stretch; urgency=medium
 
   * nfs-ganesha 2.5.0 systemd/nfs-ganesha
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 28 Jun 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 27 Jun 2017 15:30:00 -0400
 
-nfs-ganesha (2.5.0-ubuntu1~artful1) artful; urgency=medium
-
-  * nfs-ganesha 2.5.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sun, 18 Jun 2017 09:45:51 -0400
-
-nfs-ganesha (2.5.0-ubuntu1~zesty1) zesty; urgency=medium
+nfs-ganesha (2.5.0-1) stretch; urgency=medium
 
   * nfs-ganesha 2.5.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 13 Jun 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 13 Jun 2017 15:30:00 -0400
 
-nfs-ganesha (2.4.5-ubuntu1~zesty2) zesty; urgency=medium
+nfs-ganesha (2.4.5-2) stretch; urgency=medium
+
+  * nfs-ganesha 2.4.5 rebuild with libntirpc-1.4.4
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 10 Apr 2017 15:30:00 -0400
+
+nfs-ganesha (2.4.5-1) stretch; urgency=medium
 
   * nfs-ganesha 2.4.5 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 7 Apr 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 10 Apr 2017 15:30:00 -0400
 
-nfs-ganesha (2.4.4-ubuntu1~zesty1) zesty; urgency=medium
+nfs-ganesha (2.4.4-1) stretch; urgency=medium
 
   * nfs-ganesha 2.4.4 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 21 Mar 2017 09:45:51 -0400
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 21 Mar 2017 15:30:00 -0400
 
-nfs-ganesha (2.4.3-ubuntu1~zesty2) zesty; urgency=medium
-
-  * nfs-ganesha 2.4.3 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 20 Mar 2017 09:45:51 -0400
-
-nfs-ganesha (2.4.2-ubuntu1~zesty1) zesty; urgency=medium
+nfs-ganesha (2.4.2-1) stretch; urgency=medium
 
   * nfs-ganesha 2.4.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 24 Jan 2017 09:45:51 -0400
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Fri, 27 Jan 2017 15:30:00 +0200
 
-nfs-ganesha (2.4.1-ubuntu1~zesty2) zesty; urgency=medium
-
-  * nfs-ganesha 2.4.1 GA (w/ FSAL_CEPH))
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sun, 25 Dec 2016 09:45:51 -0400
-
-nfs-ganesha (2.4.1-ubuntu1~yakkety10) yakkety; urgency=medium
-
-  * nfs-ganesha 2.4.1 w/ Ceph
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 23 Dec 2016 09:45:51 -0400
-
-nfs-ganesha (2.4.1-ubuntu1~yakkety4) yakkety; urgency=medium
-
-  * nfs-ganesha 2.4.1 plus upcall
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Sat, 10 Dec 2016 09:45:51 -0400
-
-nfs-ganesha (2.4.1-ubuntu1~yakkety3) yakkety; urgency=medium
+nfs-ganesha (2.4.1-1) stretch; urgency=medium
 
   * nfs-ganesha 2.4.1 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 1 Nov 2016 09:45:51 -0400
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Tue, 3 Jan 2017 15:30:00 +0200
 
-nfs-ganesha (2.4.1-ubuntu1~yakkety2) yakkety; urgency=medium
-
-  * nfs-ganesha 2.4.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 31 Oct 2016 09:45:51 -0400
-
-nfs-ganesha (2.4.1-ubuntu1~yakkety1) yakkety; urgency=medium
-
-  * nfs-ganesha 2.4.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 31 Oct 2016 09:40:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~yakkety1) yakkety; urgency=medium
+nfs-ganesha (2.4.0-1) stretch; urgency=medium
 
   * nfs-ganesha 2.4.0 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 28 Sep 2016 09:40:51 -0400
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Fri, 23 Sep 2016 15:30:00 +0200
 
-nfs-ganesha (2.4.0-ubuntu1~xenial8) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:40:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial7) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:35:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial6) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:30:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial5) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:25:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial4) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:20:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial3) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:15:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial2) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 27 Sep 2016 09:09:51 -0400
-
-nfs-ganesha (2.4.0-ubuntu1~xenial1) xenial; urgency=medium
-
-  * nfs-ganesha 2.4.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 26 Sep 2016 09:09:51 -0400
-
-nfs-ganesha (2.3.3-ubuntu1~xenial1) xenial; urgency=medium
-
-  * nfs-ganesha 2.3.3 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 15 Aug 2016 09:09:51 -0400
-
-nfs-ganesha (2.3.2-ubuntu1~xenial7) xenial; urgency=medium
+nfs-ganesha (2.3.2-2) stretch; urgency=medium
 
   * nfs-ganesha 2.3.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 23 Jun 2016 09:09:51 -0400
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Thu, 23 Jun 2016 15:30:00 +0200
 
-nfs-ganesha (2.3.2-ubuntu1~xenial5) xenial; urgency=medium
+nfs-ganesha (2.3.2-1) stretch; urgency=medium
 
   * nfs-ganesha 2.3.2 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 21 Jun 2016 09:09:51 -0400
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Tue, 21 Jun 2016 15:30:00 +0200
 
-nfs-ganesha (2.3.1-ubuntu1~xenial2) xenial; urgency=medium
-
-  * nfs-ganesha 2.3.1 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 8 Apr 2016 09:09:51 -0400
-
-nfs-ganesha (2.3.0-ubuntu1~xenial9) xenial; urgency=medium
-
-  * nfs-ganesha 2.3.0 GA
-
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 6 Apr 2016 09:09:51 -0400
-
-nfs-ganesha (2.3.0-ubuntu1~wily18) wily; urgency=medium
+nfs-ganesha (2.3.0-1) stretch; urgency=medium
 
   * nfs-ganesha 2.3.0 GA + FSAL_GPFS/export.c patch BZs 1300842, 1300845
 
- -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Thu, 10 Dec 2015 15:30:00 +0200
-
-nfs-ganesha (2.3.0-ubuntu1~wily17) wily; urgency=medium
-
-  * nfs-ganesha 2.3.0 GA + FSAL_GPFS/export.c patch
-
- -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Thu, 10 Dec 2015 15:30:00 +0200
-
-nfs-ganesha (2.3.0-ubuntu1~wily7) wily; urgency=medium
-
-  * nfs-ganesha 2.3.0 GA
-
- -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Thu, 10 Dec 2015 15:30:00 +0200
+ -- Kaleb S. KEITHLEY <kkeithle@redhat.com>  Thu, 26 Feb 2016 15:30:00 +0200
 
 nfs-ganesha (2.2.0-1) stable; urgency=low
 

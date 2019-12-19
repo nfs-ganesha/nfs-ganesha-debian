@@ -1,0 +1,12 @@
+--- nfs-ganesha/src/doc/man/ganesha-config.rst.orig	2019-11-15 13:23:30.406462543 -0500
++++ nfs-ganesha/src/doc/man/ganesha-config.rst	2019-11-15 13:23:53.091462543 -0500
+@@ -21,7 +21,7 @@
+ 
+ Comments
+ --------------------------------------------------------------------------------
+-Empty lines and lines starting with â #â are comments.::
++Empty lines and lines starting with '#' are comments.::
+ 
+     # This whole line is a comment
+     Protocol = TCP; # The rest of this line is a comment
+
