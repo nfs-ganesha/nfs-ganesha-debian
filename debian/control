@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 1.8.0),
+               libntirpc-dev (>= 3.2),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -24,7 +24,7 @@ Build-Depends: debhelper (>= 9),
                uuid-dev,
                libcap-dev,
                libglusterfs-dev (>= 6.0),
-               librgw-dev,
+               librados-dev,
                libcephfs-dev,
                python3-dev,
                dh-python,
@@ -43,7 +43,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu6,
-         libntirpc1 (>= 1.8.0),
+         libntirpc3 (>= 3.2),
          libtirpc1,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
@@ -120,33 +120,6 @@ Description: nfs-ganesha ganesha-rados-grace program
  HPSS, LUSTRE, XFS and ZFS.
  This package contains the ganesha-rados-grace program
 
-Package: nfs-ganesha-rgw
-Multi-Arch: same
-Architecture: any
-Section: libs
-Depends: ${misc:Depends}, ${shlibs:Depends},
-         nfs-ganesha (=${binary:Version}),
-         librgw2
-Description: nfs-ganesha fsal rgw libraries
- NFS-GANESHA is a NFS Server running in user space with a large cache.
- It comes with various backend modules to support different file systems
- and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
- HPSS, LUSTRE, XFS and ZFS.
- This package contains a library for a FSAL_RGW and an example rgw.conf file
-
-Package: nfs-ganesha-mem
-Multi-Arch: same
-Architecture: any
-Section: libs
-Depends: ${misc:Depends}, ${shlibs:Depends},
-         nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal mem libraries
- NFS-GANESHA is a NFS Server running in user space with a large cache.
- It comes with various backend modules to support different file systems
- and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
- HPSS, LUSTRE, XFS and ZFS.
- This package contains a library for a FSAL_MEM and an example mem.conf file
-
 Package: nfs-ganesha-nullfs
 Multi-Arch: same
 Architecture: any
@@ -159,6 +132,19 @@ Description: nfs-ganesha fsal nullfs libraries
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
  This package contains a library for a FSAL_NULLFS
+
+Package: nfs-ganesha-mem
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         nfs-ganesha (=${binary:Version})
+Description: nfs-ganesha fsal mem libraries
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ This package contains a library for a FSAL_MEM
 
 Package: nfs-ganesha-proxy
 Multi-Arch: same
@@ -187,7 +173,7 @@ Description: nfs-ganesha fsal gpfs libraries
  This package contains a library for a FSAL_GPFS and conf files.
 
 
-Package: python-nfs-ganesha
+Package: python3-nfs-ganesha
 Pre-Depends: ${misc:Pre-Depends}
 Architecture: all
 Section: python
@@ -195,7 +181,7 @@ Provides: ${python:Provides}
 Depends: python3-dbus,
          python3-pyqt5,
          ${misc:Depends},
-         ${python:Depends},
+         ${python3:Depends},
          ${shlibs:Depends}
 Description: Python bindings for nfs-ganesha
  NFS-GANESHA is a NFS Server running in user space with a large cache.
@@ -208,6 +194,7 @@ Description: Python bindings for nfs-ganesha
 Package: nfs-ganesha-doc
 Architecture: all
 Section: doc
+Depends: ${misc:Depends}
 Description: Documentation for nfs-ganesha
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
