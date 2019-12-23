@@ -1,4 +1,4 @@
-nfs-ganesha (3.2-ubuntu1~focal1) focal; urgency=medium
+nfs-ganesha (3.2-ubuntu1~focal16) focal; urgency=medium
 
   * nfs-ganesha 3.2 GA
 
