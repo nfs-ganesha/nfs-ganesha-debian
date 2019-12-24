@@ -5,6 +5,9 @@ Maintainer: Gluster Packager <glusterpackager@download.gluster.org>
 Standards-Version: 3.9.7
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 9),
+               dh-python,
+               dh-systemd,
+               quilt,
                bison,
                flex,
                cmake,
@@ -26,12 +29,14 @@ Build-Depends: debhelper (>= 9),
                glusterfs-common (>= 6.0),
                libcephfs-dev,
                python3-dev,
-               dh-python,
-               dh-systemd,
+               python3-gi,
                python3-pyqt5,
+               python3-pyparsing,
                python3-sphinx,
                pyqt5-dev-tools,
-               pkgconf
+               pkgconf,
+               lsb-release,
+               doxygen
 Vcs-Git: https://github.com/nfs-ganesha/nfs-ganesha.git
 
 Package: nfs-ganesha
@@ -50,6 +55,8 @@ Description: nfs-ganesha is a NFS server in User Space
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
+ This package contains the binaries.
 
 Package: nfs-ganesha-mount-9p
 Multi-Arch: same
@@ -62,6 +69,7 @@ Description: nfs-ganesha mount.9P
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains mount.9P
 
 Package: nfs-ganesha-gluster
@@ -76,6 +84,7 @@ Description: nfs-ganesha fsal gluster libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for FSAL_GLUSTER and an example .conf file
 
 Package: nfs-ganesha-ceph
@@ -90,6 +99,7 @@ Description: nfs-ganesha fsal ceph libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_CEPH and an example ceph.conf file
 
 Package: nfs-ganesha-vfs
@@ -103,6 +113,7 @@ Description: nfs-ganesha fsal vfs libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_VFS and an example vfs.conf file
 
 Package: nfs-ganesha-nullfs
@@ -116,6 +127,7 @@ Description: nfs-ganesha fsal nullfs libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_NULLFS
 
 Package: nfs-ganesha-mem
@@ -129,6 +141,7 @@ Description: nfs-ganesha fsal mem libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_MEM
 
 Package: nfs-ganesha-proxy
@@ -142,6 +155,7 @@ Description: nfs-ganesha fsal proxy libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_PROXY
 
 Package: nfs-ganesha-gpfs
@@ -155,6 +169,7 @@ Description: nfs-ganesha fsal gpfs libraries
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
+ .
  This package contains a library for a FSAL_GPFS and conf files.
 
 
@@ -174,7 +189,7 @@ Description: Python bindings for nfs-ganesha
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
  .
- This package contains Python bindings for nfs-ganesha admin
+ This package contains Python 3 bindings for nfs-ganesha admin
 
 Package: nfs-ganesha-doc
 Architecture: all

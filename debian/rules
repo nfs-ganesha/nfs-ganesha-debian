@@ -7,10 +7,10 @@
 #   $ cd nfs-ganesha/src
 #   $ dpkg-buildpackage -uc -us
 #
+export DH_VERBOSE=1
 export PREFIX=/usr
 export DESTDIR=$(CURDIR)/debian/tmp
-
-export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
@@ -21,8 +21,9 @@ override_dh_auto_configure:
 	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
 		-DBUILD_CONFIG=debian \
-		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DLIB_INSTALL_DIR:STRING=lib/${DEB_HOST_MULTIARCH} \
+		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
 		-DUSE_FSAL_NULL=YES \
 		-DUSE_FSAL_MEM=YES \
 		-DUSE_FSAL_XFS=NO \
@@ -32,15 +33,15 @@ override_dh_auto_configure:
 		-DUSE_FSAL_GPFS=YES \
 		-DUSE_FSAL_PANFS=NO \
 		-DUSE_FSAL_GLUSTER=YES \
+		-DUSE_FSAL_VFS=ON \
+		-DUSE_FSAL_PROXY=ON \
 		-DUSE_SYSTEM_NTIRPC=YES \
 		-DUSE_9P_RDMA=NO \
 		-DUSE_LTTNG=NO \
-		-DUSE_ADMIN_TOOLS=YES \
 		-DUSE_RADOS_RECOV=NO \
 		-DRADOS_URLS=NO \
+		-DUSE_ADMIN_TOOLS=YES \
 		-DUSE_GUI_ADMIN_TOOLS=YES \
-		-DUSE_FSAL_VFS=ON \
-		-DUSE_FSAL_PROXY=ON \
 		-DUSE_DBUS=ON \
 		-DUSE_9P=ON \
 		-DDISTNAME_HAS_GIT_DATA=OFF \
@@ -60,15 +61,15 @@ override_dh_install:
 	mkdir -p debian/tmp/etc/default
 	mkdir -p debian/tmp/etc/logrotate.d/
 	mkdir -p debian/tmp/etc/dbus-1/system.d/
-	mkdir -p debian/tmp/usr/lib/
 	mkdir -p debian/tmp/usr/lib/ganesha
+	mkdir -p debian/tmp/usr/lib/${DEB_HOST_MULTIARCH}/ganesha
 	mkdir -p debian/tmp/usr/sbin/
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
 	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/vfs.conf
+	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/ceph.conf
 	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/rgw.conf
 	cp src/config_samples/mem.conf debian/tmp/etc/ganesha/mem.conf
 	cp src/config_samples/gluster.conf debian/tmp/etc/ganesha/gluster.conf
-	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/ceph.conf
 	cp src/config_samples/gpfs.conf debian/tmp/etc/ganesha/gpfs.conf
 	cp src/config_samples/gpfs.ganesha.exports.conf debian/tmp/etc/ganesha/gpfs.ganesha.exports.conf
 	cp src/config_samples/gpfs.ganesha.log.conf debian/tmp/etc/ganesha/gpfs.ganesha.log.conf
