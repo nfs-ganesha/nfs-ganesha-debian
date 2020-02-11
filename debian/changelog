@@ -1,3 +1,9 @@
+nfs-ganesha (3.2-2) buster; urgency=medium
+
+  * nfs-ganesha 3.2, libtirpc3 is the correct requires
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 13 Jan 2020 15:30:00 -0400
+
 nfs-ganesha (3.2-1) buster; urgency=medium
 
   * nfs-ganesha 3.2 GA
