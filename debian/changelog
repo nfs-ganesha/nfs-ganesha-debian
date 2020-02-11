@@ -1,3 +1,9 @@
+nfs-ganesha (3.2-2) bullseye; urgency=medium
+
+  * nfs-ganesha 3.2 libtirpc-common -> libtirpc3
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Tue, 11 Feb 2020 15:30:00 -0400
+
 nfs-ganesha (3.2-1) bullseye; urgency=medium
 
   * nfs-ganesha 3.2 GA
