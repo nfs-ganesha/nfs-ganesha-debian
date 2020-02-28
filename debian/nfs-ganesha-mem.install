@@ -1,2 +1,2 @@
-usr/lib/*/ganesha/libfsalmem.so*
+usr/lib/*-linux-gnu/ganesha/libfsalmem.so*
 etc/ganesha/mem.conf
