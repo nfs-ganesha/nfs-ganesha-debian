@@ -49,7 +49,7 @@ Depends: dbus, nfs-common, rpcbind,
          libwbclient0,
          liburcu6,
          libntirpc1 (>= 1.8.0),
-         libtirpc-common,
+         libtirpc3,
          daemon
 Description: NFS server in User Space
  NFS-GANESHA is a NFS Server running in user space with a large cache.
