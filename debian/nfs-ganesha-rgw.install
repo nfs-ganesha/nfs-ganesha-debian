@@ -1,2 +1,2 @@
-usr/lib/*/ganesha/libfsalrgw.so*
+usr/lib/*-linux-gnu/ganesha/libfsalrgw.so*
 etc/ganesha/rgw.conf
