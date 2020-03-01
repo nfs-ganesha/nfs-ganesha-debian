@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.3-ubuntu1~disco4) disco; urgency=medium
+
+  * nfs-ganesha 2.8.3, libtirpc3, libganesha_*.so* to /usr/lib/*-linux-gnu
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 28 Feb 2020 09:45:51 -0400
+
 nfs-ganesha (2.8.3-ubuntu1~disco3) disco; urgency=medium
 
   * nfs-ganesha 2.8.3 fix rados-recov, rados-urls, selected official fixes 
