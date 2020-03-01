@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.3-ubuntu1~xenial3) xenial; urgency=medium
+
+  * nfs-ganesha 2.8.3, libganesha_*.so* to /usr/lib/*-linux-gnu
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 28 Feb 2020 09:50:51 -0400
+
 nfs-ganesha (2.8.3-ubuntu1~xenial2) xenial; urgency=medium
 
   * nfs-ganesha 2.8.3, fix rados-recov, rados-urls, selected official
