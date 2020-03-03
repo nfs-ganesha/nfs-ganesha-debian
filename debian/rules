@@ -21,6 +21,7 @@ override_dh_auto_configure:
 	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
 		-DBUILD_CONFIG=debian \
+		-DLIB_INSTALL_DIR:STRING=lib/${DEB_HOST_MULTIARCH} \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		-DUSE_FSAL_NULL=YES \
@@ -84,7 +85,4 @@ override_dh_install:
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 	install -m 0755 src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/ganesha/
 	install -m 0755 src/tools/mount.9P debian/tmp/usr/sbin/
-	make -C src/obj-*-linux-gnu* install
-	mv debian/tmp/usr/lib/libganesha_* debian/tmp/usr/lib/${DEB_HOST_MULTIARCH}
-	find debian -name libganesha\*
-	dh_install --sourcedir=./src
+	make -C src/obj-*-linux-gnu* install && dh_install --sourcedir=./src
