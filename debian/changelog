@@ -1,3 +1,9 @@
+nfs-ganesha (3.2-ubuntu1~focal19) focal; urgency=medium
+
+  * nfs-ganesha 3.2, NFSv4-compound-op-fails SEGV
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 24 Mar 2020 09:45:51 -0400
+
 nfs-ganesha (3.2-ubuntu1~focal18) focal; urgency=medium
 
   * nfs-ganesha 3.2 libtirpc3, libganesha_*.so* to /usr/lib/*-linux-gnu
