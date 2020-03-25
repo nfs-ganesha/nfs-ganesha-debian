@@ -1,3 +1,9 @@
+nfs-ganesha (3.2-ubuntu1~bionic4) bionic; urgency=medium
+
+  * nfs-ganesha 3.2, NFSv4-compound-op-fails SEGV, armhf
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 25 Mar 2020 09:45:51 -0400
+
 nfs-ganesha (3.2-ubuntu1~bionic3) bionic; urgency=medium
 
   * nfs-ganesha 3.2 libtirpc1, libganesha_*.so* to /usr/lib/*-linux-gnu
