@@ -1,3 +1,9 @@
+nfs-ganesha (3.2-4) buster; urgency=medium
+
+  * nfs-ganesha 3.2, NFSv4-compound-op-fails SEGV
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 27 Mar 2020 15:30:00 -0400
+
 nfs-ganesha (3.2-3) buster; urgency=medium
 
   * nfs-ganesha 3.2, libs in /usr/lib/${DEB_HOST_MULTIARCH}

@@ -1,0 +1,91 @@
+From bbc92214b5b104550bb1bad6865ad4bf461ef935 Mon Sep 17 00:00:00 2001
+From: "ashish.sangwan" <ashishsangwan2@gmail.com>
+Date: Tue, 21 Jan 2020 02:55:02 -0800
+Subject: [PATCH] Fix seg fault when NFSv4 compound op fails for regular files.
+
+We are hitting this seg-fault on our system:
+3  0x00007f2837583f2d in mdcache_handle_to_key (obj_hdl=0x7f281f01a638, fh_desc=0x7f281def8b70) at /usr/src/debug/nfs-ganesha-2.8.3/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_handle.c:1377
+4  0x00007f28374dea77 in state_obj_value_hash_func (hparam=0x7f2831838000, key=0x7f281defb500) at /usr/src/debug/nfs-ganesha-2.8.3/SAL/nfs4_state_id.c:369
+5  0x00007f28374a2f51 in compute (ht=0x7f2831838000, key=0x7f281defb500, index=0x7f281defac54, rbt_hash=0x7f281defac40) at /usr/src/debug/nfs-ganesha-2.8.3/hashtable/hashtable.c:253
+6  0x00007f28374a39b0 in hashtable_getlatch (ht=0x7f2831838000, key=0x7f281defb500, val=0x7f281defb4e0, may_write=true, latch=0x7f281defb4c0) at /usr/src/debug/nfs-ganesha-2.8.3/hashtable/hashtable.c:490
+7  0x00007f28374df971 in nfs4_State_Del (state=0x7f281f04b480) at /usr/src/debug/nfs-ganesha-2.8.3/SAL/nfs4_state_id.c:759
+8  0x00007f28374d9363 in _state_del_locked (state=0x7f281f04b480, func=0x7f28375d7ee0 <__func__.20139> "state_nfs4_state_wipe", line=669) at /usr/src/debug/nfs-ganesha-2.8.3/SAL/nfs4_state.c:351
+9  0x00007f28374db4ac in state_nfs4_state_wipe (ostate=0x7f281f01a890) at /usr/src/debug/nfs-ganesha-2.8.3/SAL/nfs4_state.c:669
+10 0x00007f28374cf045 in state_wipe_file (obj=0x7f281f01a638) at /usr/src/debug/nfs-ganesha-2.8.3/SAL/state_misc.c:1323
+11 0x00007f28375a247c in _mdcache_lru_unref (entry=0x7f281f01a600, flags=0, func=0x7f28375fb8ef <__func__.23337> "mdcache_put", line=199) at /usr/src/debug/nfs-ganesha-2.8.3/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.c:2017
+12 0x00007f283757f363 in mdcache_put (entry=0x7f281f01a600) at /usr/src/debug/nfs-ganesha-2.8.3/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_lru.h:199
+13 0x00007f28375842e0 in mdcache_put_ref (obj_hdl=0x7f281f01a638) at /usr/src/debug/nfs-ganesha-2.8.3/FSAL/Stackable_FSALs/FSAL_MDCACHE/mdcache_handle.c:1540
+14 0x00007f283752e6cc in set_current_entry (data=0x7f2818c4e300, obj=0x0) at /usr/src/debug/nfs-ganesha-2.8.3/include/nfs_proto_data.h:392
+15 0x00007f2837530838 in compound_data_Free (data=0x7f2818c4e300) at /usr/src/debug/nfs-ganesha-2.8.3/Protocols/NFS/nfs4_Compound.c:1451
+16 0x00007f2837530584 in nfs4_Compound (arg=0x7f2818c23028, req=0x7f2818c22800, res=0x7f2818c4e1c0) at /usr/src/debug/nfs-ganesha-2.8.3/Protocols/NFS/nfs4_Compound.c:1362
+17 0x00007f28374576c2 in nfs_rpc_process_request (reqdata=0x7f2818c22800) at /usr/src/debug/nfs-ganesha-2.8.3/MainNFSD/nfs_worker_thread.c:1986
+
+(gdb) f 3
+1377		subcall(
+(gdb) p op_ctx->ctx_export
+$2 = (struct gsh_export *) 0x0
+(gdb) f 11
+2017				state_wipe_file(&entry->obj_handle);
+(gdb) p entry->lru
+$1 = {q = {next = 0x7f2837854aa0 <LRU+3424>, prev = 0x7f2837854aa0 <LRU+3424>}, qid = LRU_ENTRY_CLEANUP, refcnt = 2, flags = 3, lane = 15, cf = 0}
+
+The current compound op being executed is setattr which fails with ERR_FSAL_STALE because the file is deleted.
+When we get ERR_FSAL_STALE in setattr we call mdcache_kill_entry which moves the mdcache entry to cleanup lane
+and when we try to delete the state as part of cleanup, we hit this crash.
+All the ops which are calling mdcache_kill_entry on receiving error for regular files could hit this crash.
+We should not reset ctx_export until the compond data is freed.
+
+Signed-off-by: ashish.sangwan <ashishsangwan2@gmail.com>
+Change-Id: I3859e6e4599233c67d7640711e05cc5ab8647a3e
+---
+ src/Protocols/NFS/nfs4_Compound.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/src/Protocols/NFS/nfs4_Compound.c b/src/Protocols/NFS/nfs4_Compound.c
+index 42fd55009..64186642c 100644
+--- a/src/Protocols/NFS/nfs4_Compound.c
++++ b/src/Protocols/NFS/nfs4_Compound.c
+@@ -1052,12 +1052,6 @@ void complete_nfs4_compound(compound_data_t *data, int status,
+ 		LogDebug(COMPONENT_NFS_V4, "End status = %s lastindex = %d",
+ 			 nfsstat4_to_str(status), data->oppos);
+ 
+-	/* release current active export in op_ctx. */
+-	if (op_ctx->ctx_export) {
+-		put_gsh_export(op_ctx->ctx_export);
+-		op_ctx->ctx_export = NULL;
+-		op_ctx->fsal_export = NULL;
+-	}
+ }
+ 
+ static enum xprt_stat nfs4_compound_resume(struct svc_req *req)
+@@ -1106,6 +1100,13 @@ static enum xprt_stat nfs4_compound_resume(struct svc_req *req)
+ 	complete_nfs4_compound(data, status, result);
+ 
+ 	compound_data_Free(data);
++	/* release current active export in op_ctx. */
++	if (op_ctx->ctx_export) {
++		put_gsh_export(op_ctx->ctx_export);
++		op_ctx->ctx_export = NULL;
++		op_ctx->fsal_export = NULL;
++	}
++
+ 
+ 	nfs_rpc_complete_async_request(reqdata, NFS_REQ_OK);
+ 
+@@ -1342,6 +1343,13 @@ out:
+ 
+ 	compound_data_Free(data);
+ 
++	/* release current active export in op_ctx. */
++	if (op_ctx->ctx_export) {
++		put_gsh_export(op_ctx->ctx_export);
++		op_ctx->ctx_export = NULL;
++		op_ctx->fsal_export = NULL;
++	}
++
+ 	return drop ? NFS_REQ_DROP : NFS_REQ_OK;
+ }				/* nfs4_Compound */
+ 
+-- 
+2.24.1
+
