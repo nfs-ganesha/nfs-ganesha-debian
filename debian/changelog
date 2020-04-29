@@ -1,4 +1,4 @@
-nfs-ganesha (2.8.3-ubuntu1~eoan4) eoan; urgency=medium
+nfs-ganesha (2.8.3-ubuntu1~eoan5) eoan; urgency=medium
 
   * nfs-ganesha 2.8.3 libtirpc3, libganesha_*.so* to /usr/lib/*-linux-gnu
 
