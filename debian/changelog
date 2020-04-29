@@ -1,4 +1,4 @@
-nfs-ganesha (2.8.3-ubuntu1~groovy1) groovy; urgency=medium
+nfs-ganesha (2.8.3-ubuntu1~groovy2) groovy; urgency=medium
 
   * nfs-ganesha 2.8.3, disable rgw again, libtirpc3, libganesha_*.so* to /usr/lib/*-linux-gnu
 
