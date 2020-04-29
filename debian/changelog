@@ -1,4 +1,4 @@
-nfs-ganesha (3.2-ubuntu1~focal20) focal; urgency=medium
+nfs-ganesha (3.2-ubuntu1~groovy1) groovy; urgency=medium
 
   * nfs-ganesha 3.2, armhf
 
