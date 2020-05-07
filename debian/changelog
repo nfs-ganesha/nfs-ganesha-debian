@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.4-ubuntu1~eoan1) eoan; urgency=medium
+
+  * nfs-ganesha 2.8.4 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 6 May 2020 09:45:51 -0400
+
 nfs-ganesha (2.8.3-ubuntu1~eoan5) eoan; urgency=medium
 
   * nfs-ganesha 2.8.3 libtirpc3, libganesha_*.so* to /usr/lib/*-linux-gnu
