@@ -1,3 +1,9 @@
+libntirpc (1.8.1-ubuntu1~bionic1) bionic; urgency=medium
+
+  * libntirpc-1.8.1 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 6 May 2020 09:09:51 -0400
+
 libntirpc (1.8.0-ubuntu1~bionic1) bionic; urgency=medium
 
   * libntirpc-1.8.0 GA
