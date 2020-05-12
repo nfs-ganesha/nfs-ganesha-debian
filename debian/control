@@ -1,7 +1,7 @@
 Source: libntirpc
 Priority: standard
 Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 10),
   cmake,
   libkrb5-dev,
   liburcu-dev
