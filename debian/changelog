@@ -1,6 +1,12 @@
+libntirpc (3.3-ubuntu1~eoan1) eoan; urgency=medium
+
+  * libntirpc-3.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 11 Jun 2020 09:09:51 -0400
+
 libntirpc (3.2-ubuntu1~eoan1) eoan; urgency=medium
 
-  * libntirpc-3.0 GA
+  * libntirpc-3.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 17 Dec 2019 09:09:51 -0400
 
