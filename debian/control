@@ -29,6 +29,7 @@ Build-Depends: debhelper (>= 10~),
                libglusterfs-dev (>= 6.0),
                librados-dev,
                libcephfs-dev,
+               librgw-dev,
                python3-dev,
                python3-gi,
                python3-pyqt5,
@@ -103,6 +104,21 @@ Description: nfs-ganesha fsal ceph libraries
  HPSS, LUSTRE, XFS and ZFS.
  .
  This package contains a library for a FSAL_CEPH and an example ceph.conf file
+
+Package: nfs-ganesha-rgw
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         nfs-ganesha (=${binary:Version}),
+         librgw2
+Description: nfs-ganesha fsal rgw libraries
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ .
+ This package contains a library for a FSAL_RGW and an example rgw.conf file
 
 Package: nfs-ganesha-vfs
 Multi-Arch: same
