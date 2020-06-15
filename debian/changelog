@@ -1,3 +1,9 @@
+nfs-ganesha (3.3-ubuntu1~xenial1) xenial; urgency=medium
+
+  * nfs-ganesha 3.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 11 Jun 2020 09:45:51 -0400
+
 nfs-ganesha (3.2-ubuntu1~xenial6) xenial; urgency=medium
 
   * nfs-ganesha 3.2, NFSv4-compound-op-fails SEGV, armhf
