@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Gluster Packager <glusterpackager@download.gluster.org>
 Standards-Version: 3.9.7
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 10),
                bison,
                flex,
                cmake,
@@ -26,6 +26,7 @@ Build-Depends: debhelper (>= 9),
                libglusterfs-dev (>= 6.0),
                librados-dev,
                libcephfs-dev,
+               librgw-dev,
                python3-dev,
                dh-python,
                dh-systemd,
@@ -92,6 +93,21 @@ Description: nfs-ganesha fsal ceph libraries
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
  This package contains a library for a FSAL_CEPH and an example ceph.conf file
+
+Package: nfs-ganesha-rgw
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+        nfs-ganesha (=${binary:Version}),
+        librgw2
+Description: nfs-ganesha fsal rgw libraries
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ .
+ This package contains a library for a FSAL_RGW and an example rgw.conf file
 
 Package: nfs-ganesha-vfs
 Multi-Arch: same
