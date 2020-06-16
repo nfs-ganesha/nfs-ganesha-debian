@@ -1,3 +1,10 @@
+libntirpc (3.3-1) stretch; urgency=low
+
+  [ Gluster Packager ]
+  * libntirpc-3.3 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 11 Jun 2020 13:52:51 -0400
+
 libntirpc (3.2-1) stretch; urgency=low
 
   [ Gluster Packager ]
