@@ -1,3 +1,9 @@
+nfs-ganesha (3.3-ubuntu1~eoan2) eoan; urgency=medium
+
+  * nfs-ganesha 3.2
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 19 Jun 2020 09:45:51 -0400
+
 nfs-ganesha (3.3-ubuntu1~eoan1) eoan; urgency=medium
 
   * nfs-ganesha 3.2 GA
