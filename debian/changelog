@@ -1,3 +1,9 @@
+nfs-ganesha (2.8.4-ubuntu1~eoan2) eoan; urgency=medium
+
+  * nfs-ganesha 2.8.4, systemd
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 22 Jun 2020 09:45:51 -0400
+
 nfs-ganesha (2.8.4-ubuntu1~eoan1) eoan; urgency=medium
 
   * nfs-ganesha 2.8.4 GA
