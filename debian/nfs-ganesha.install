@@ -3,6 +3,7 @@ etc/logrotate.d/nfs-ganesha
 etc/default/nfs-ganesha
 etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 lib/systemd/system/nfs-ganesha*
+etc/systemd/system/nfs-ganesha-lock.service.d/*
 usr/bin/ganesha.nfsd
 usr/lib/*-linux-gnu*/libganesha_nfsd.so*
 usr/lib/ganesha/nfs-ganesha-config.sh
