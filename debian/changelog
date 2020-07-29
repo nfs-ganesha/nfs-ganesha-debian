@@ -1,3 +1,15 @@
+nfs-ganesha (3.3-2) stretch; urgency=medium
+
+  * nfs-ganesha 3.3, nfs-ganesha.service
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Wed, 29 Jul 2020 15:30:00 -0400
+
+nfs-ganesha (3.3-1) stretch; urgency=medium
+
+  * nfs-ganesha 3.3 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Thu, 11 Jun 2020 15:30:00 -0400
+
 nfs-ganesha (3.2-3) stretch; urgency=medium
 
   * nfs-ganesha 3.2 NFSv4-compound-op-fails SEGV
