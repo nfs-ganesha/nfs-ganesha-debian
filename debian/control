@@ -89,6 +89,21 @@ Description: nfs-ganesha fsal gluster libraries
  .
  This package contains a library for FSAL_GLUSTER and an example .conf file
 
+Package: nfs-ganesha-ceph
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         nfs-ganesha (=${binary:Version}),
+         libcephfs2
+Description: nfs-ganesha fsal ceph libraries
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ .
+ This package contains a library for a FSAL_CEPH and an example ceph.conf file
+
 Package: nfs-ganesha-vfs
 Multi-Arch: same
 Architecture: any
