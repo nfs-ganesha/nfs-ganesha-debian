@@ -64,17 +64,17 @@ override_dh_install:
 	mkdir -p debian/tmp/usr/lib/ganesha
 	mkdir -p debian/tmp/usr/lib/${DEB_HOST_MULTIARCH}/ganesha
 	mkdir -p debian/tmp/usr/sbin/
-	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/ganesha.conf
-	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/vfs.conf
-	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/rgw.conf
-	cp src/config_samples/mem.conf debian/tmp/etc/ganesha/mem.conf
-	cp src/config_samples/gluster.conf debian/tmp/etc/ganesha/gluster.conf
-	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/ceph.conf
-	cp src/config_samples/gpfs.conf debian/tmp/etc/ganesha/gpfs.conf
-	cp src/config_samples/gpfs.ganesha.exports.conf debian/tmp/etc/ganesha/gpfs.ganesha.exports.conf
-	cp src/config_samples/gpfs.ganesha.log.conf debian/tmp/etc/ganesha/gpfs.ganesha.log.conf
-	cp src/config_samples/gpfs.ganesha.main.conf debian/tmp/etc/ganesha/gpfs.ganesha.main.conf
-	cp src/config_samples/gpfs.ganesha.nfsd.conf debian/tmp/etc/ganesha/gpfs.ganesha.nfsd.conf
+	cp src/config_samples/ganesha.conf.example debian/tmp/etc/ganesha/
+	cp src/config_samples/vfs.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/rgw.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/mem.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gluster.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/ceph.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gpfs.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gpfs.ganesha.exports.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gpfs.ganesha.log.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gpfs.ganesha.main.conf debian/tmp/etc/ganesha/
+	cp src/config_samples/gpfs.ganesha.nfsd.conf debian/tmp/etc/ganesha/
 	cp src/config_samples/logrotate_ganesha debian/tmp/etc/logrotate.d/nfs-ganesha
 	cp src/config_samples/logrotate_fsal_gluster debian/tmp/etc/logrotate.d/nfs-ganesha-gfapi
 	cp src/scripts/systemd/nfs-ganesha.service.debian8 debian/tmp/lib/systemd/system/nfs-ganesha.service
