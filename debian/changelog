@@ -1,3 +1,9 @@
+nfs-ganesha (3.3-ubuntu1~bionic7) bionic; urgency=medium
+
+  * nfs-ganesha 3.3, ganesha.conf.example
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 9 Oct 2020 09:45:51 -0400
+
 nfs-ganesha (3.3-ubuntu1~bionic6) bionic; urgency=medium
 
   * nfs-ganesha 3.3, w/ FSAL_CEPH
