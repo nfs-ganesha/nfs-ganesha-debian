@@ -1,3 +1,9 @@
+libntirpc (3.3-ubuntu1~hirsute1) hirsute; urgency=medium
+
+  * libntirpc-3.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 23 Oct 2020 09:09:51 -0400
+
 libntirpc (3.3-ubuntu1~groovy1) groovy; urgency=medium
 
   * libntirpc-3.3 GA
