@@ -1,3 +1,9 @@
+nfs-ganesha (3.3-ubuntu1~hirsute2) hirsute; urgency=medium
+
+  * nfs-ganesha 3.3, attr/acl
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 2 Nov 2020 09:45:51 -0400
+
 nfs-ganesha (3.3-ubuntu1~hirsute1) hirsute; urgency=medium
 
   * nfs-ganesha 3.3, ganesha.conf.example
