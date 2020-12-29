@@ -1,0 +1,30 @@
+From 8adcd2dc2f9f35a3e86be4f3fb26a61e5248c61d Mon Sep 17 00:00:00 2001
+From: "Frank S. Filz" <ffilzlnx@mindspring.com>
+Date: Thu, 22 Oct 2020 12:05:31 -0700
+Subject: [PATCH] When client asks for FATTR4_ACLSUPPORT don't ask for ATTR_ACL
+
+The client is asking if ACL is supported not for the actual ACL so
+don't ask and don't get in trouble when ACL in fact isn't supported...
+
+Change-Id: Id8ba2ebe5f6daaf6d549d5c5a269a9a0bd64e6b9
+Signed-off-by: Frank S. Filz <ffilzlnx@mindspring.com>
+---
+ src/Protocols/NFS/nfs_proto_tools.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Protocols/NFS/nfs_proto_tools.c b/src/Protocols/NFS/nfs_proto_tools.c
+index 4b1bd5d3d..bfd2edce0 100644
+--- a/src/Protocols/NFS/nfs_proto_tools.c
++++ b/src/Protocols/NFS/nfs_proto_tools.c
+@@ -2713,7 +2713,7 @@ const struct fattr4_dent fattr4tab[FATTR4_XATTR_SUPPORT + 1] = {
+ 		.supported = 1,
+ 		.encoded = 1,
+ 		.size_fattr4 = sizeof(fattr4_aclsupport),
+-		.attrmask = ATTR_ACL,
++		.attrmask = 0,
+ 		.encode = encode_aclsupport,
+ 		.decode = decode_aclsupport,
+ 		.access = FATTR4_ATTR_READ}
+-- 
+2.20.1
+
