@@ -1,6 +1,6 @@
-nfs-ganesha (3.3-4) buster; urgency=medium
+nfs-ganesha (3.3-5) buster; urgency=medium
 
-  * nfs-ganesha 3.3, ganesha.conf.example
+  * nfs-ganesha 3.3, test build
 
  -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 9 Oct 2020 15:30:00 -0400
 
