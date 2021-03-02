@@ -1,3 +1,9 @@
+nfs-ganesha (3.5-ubuntu1~focal1) focal; urgency=medium
+
+  * nfs-ganesha 3.5 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 2 Mar 2021 09:45:51 -0400
+
 nfs-ganesha (3.4-ubuntu1~focal1) focal; urgency=medium
 
   * nfs-ganesha 3.4 GA
