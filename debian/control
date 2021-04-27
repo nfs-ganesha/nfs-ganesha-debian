@@ -6,7 +6,6 @@ Standards-Version: 4.3.0
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 10~),
                dh-python,
-               dh-systemd,
                quilt,
                bison,
                flex,
