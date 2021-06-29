@@ -1,4 +1,4 @@
-nfs-ganesha (3.5-ubuntu1~groovy2) groovy; urgency=medium
+nfs-ganesha (3.5-ubuntu1~groovy3) groovy; urgency=medium
 
   * rebuild with libntirpc-3.5
 
