@@ -11,7 +11,7 @@ override_dh_auto_configure:
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_install:
-	# Move libntirpc.so.* to /lib
+	# Move libntirpc.so.* from /usr/lib to /lib/$(DEB_HOST_MULTIARCH)
 	mkdir -p debian/tmp/lib/$(DEB_HOST_MULTIARCH)
 	mv debian/tmp/usr/lib/libntirpc.* debian/tmp/lib/$(DEB_HOST_MULTIARCH)
 	# Fix up the -dev symlink
