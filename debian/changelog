@@ -1,8 +1,8 @@
-libntirpc (3.5-ubuntu1~hirsute1) hirsute; urgency=medium
+libntirpc (3.5-ubuntu1~jammy1) jammy; urgency=medium
 
   * libntirpc-3.5 GA
 
- -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 16 Jun 2021 09:09:51 -0400
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 17 Dec 2021 09:09:51 -0400
 
 libntirpc (3.4-ubuntu1~hirsute1) hirsute; urgency=medium
 
