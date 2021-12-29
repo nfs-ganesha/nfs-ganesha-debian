@@ -1,5 +1,5 @@
 Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
-Name: libntirpc3
+Name: libntirpc4
 Maintainer: Kaleb S. KEITHLEY <kkeithle@redhat.com>
 Source: https://github.org/nfs-ganesha/ntirpc.git
 
