@@ -1,3 +1,9 @@
+nfs-ganesha (4.0-ubuntu1~bionic3) bionic; urgency=medium
+
+  * nfs-ganesha 4.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Thu, 30 Dec 2021 09:45:51 -0400
+
 nfs-ganesha (3.5-ubuntu1~bionic3) bionic; urgency=medium
 
   * nfs-ganesha 3.5 GA
