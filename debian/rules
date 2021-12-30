@@ -21,6 +21,7 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_auto_configure:
 	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
+		-DWITH_PYTHON3=3 \
 		-DBUILD_CONFIG=debian \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		-DLIB_INSTALL_DIR:STRING=lib/${DEB_HOST_MULTIARCH} \
@@ -32,10 +33,11 @@ override_dh_auto_configure:
 		-DUSE_FSAL_CEPH=YES \
 		-DUSE_FSAL_RGW=YES \
 		-DUSE_FSAL_GPFS=YES \
-		-DUSE_FSAL_PANFS=NO \
+		-DUSE_FSAL_KVSFS=NO \
 		-DUSE_FSAL_GLUSTER=YES \
 		-DUSE_FSAL_VFS=ON \
-		-DUSE_FSAL_PROXY=ON \
+		-DUSE_FSAL_PROXY_V4=ON \
+		-DUSE_FSAL_PROXY_V3=OFF \
 		-DUSE_SYSTEM_NTIRPC=YES \
 		-DUSE_9P_RDMA=NO \
 		-DUSE_LTTNG=NO \
