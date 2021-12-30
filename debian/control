@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 9),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 3.4),
+               libntirpc-dev (>= 4.0),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -26,9 +26,10 @@ Build-Depends: debhelper (>= 9),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               glusterfs-common (>= 6.0),
-               libcephfs-dev,
-               python3-dev,
+               glusterfs-common (>= 9.0),
+               python3-all-dev,
+               libpython3-all-dev,
+               python3-setuptools,
                python3-gi,
                python3-pyqt5,
                python3-pyparsing,
@@ -47,7 +48,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu4,
-         libntirpc3 (>= 3.4),
+         libntirpc4 (>= 4.0),
          libtirpc1,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
@@ -86,21 +87,6 @@ Description: nfs-ganesha fsal gluster libraries
  HPSS, LUSTRE, XFS and ZFS.
  .
  This package contains a library for FSAL_GLUSTER and an example .conf file
-
-Package: nfs-ganesha-ceph
-Multi-Arch: same
-Architecture: any
-Section: libs
-Depends: ${misc:Depends}, ${shlibs:Depends},
-         nfs-ganesha (=${binary:Version}),
-         libcephfs2
-Description: nfs-ganesha fsal ceph libraries
- NFS-GANESHA is a NFS Server running in user space with a large cache.
- It comes with various backend modules to support different file systems
- and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
- HPSS, LUSTRE, XFS and ZFS.
- .
- This package contains a library for a FSAL_CEPH and an example ceph.conf file
 
 Package: nfs-ganesha-vfs
 Multi-Arch: same
@@ -144,19 +130,19 @@ Description: nfs-ganesha fsal mem libraries
  .
  This package contains a library for a FSAL_MEM
 
-Package: nfs-ganesha-proxy
+Package: nfs-ganesha-proxy-v4
 Multi-Arch: same
 Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version})
-Description: nfs-ganesha fsal proxy libraries
+Description: nfs-ganesha fsal proxy v4 libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
  and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
  HPSS, LUSTRE, XFS and ZFS.
  .
- This package contains a library for a FSAL_PROXY
+ This package contains a library for a FSAL_PROXY_V4
 
 Package: nfs-ganesha-gpfs
 Multi-Arch: same
