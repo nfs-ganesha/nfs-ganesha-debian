@@ -45,7 +45,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu6,
-         libntirpc3 (>= 3.4),
+         libntirpc4 (>= 4.0),
          libtirpc3,
          daemon
 Description: nfs-ganesha is a NFS server in User Space
