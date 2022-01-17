@@ -1,4 +1,10 @@
-nfs-ganesha (4.0-ubuntu1~xenial3) xenial; urgency=medium
+nfs-ganesha (4.0-ubuntu1~xenial4) xenial; urgency=medium
+
+  * nfs-ganesha 4.0, no libbtrfsutil-dev
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 17 Jan 2022 09:45:51 -0400
+
+nfs-ganesha (4.0-ubuntu1~xenial2) xenial; urgency=medium
 
   * nfs-ganesha 4.0, libbtrfsutil-dev
 
