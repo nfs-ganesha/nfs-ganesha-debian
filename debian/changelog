@@ -1,3 +1,9 @@
+nfs-ganesha (4.0-ubuntu1~kinetic1) kinetic; urgency=medium
+
+  * nfs-ganesha 4.0, kinetic
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 1 Jun 2022 09:45:51 -0400
+
 nfs-ganesha (4.0-ubuntu1~jammy3) jammy; urgency=medium
 
   * nfs-ganesha 4.0 libbtrfsutil-dev

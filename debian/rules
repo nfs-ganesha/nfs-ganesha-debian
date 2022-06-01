@@ -16,7 +16,7 @@ export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 %:
-	 dh $@ --with python3,systemd
+	 dh $@ --with python3
 
 override_dh_auto_configure:
 	 cd src && ln -s ../debian .
