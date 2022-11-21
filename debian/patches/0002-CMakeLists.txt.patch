@@ -1,6 +1,6 @@
---- nfs-ganesha-4.0/src/cmake/modules/FindNTIRPC.cmake.orig	2021-12-21 11:54:23.000000000 -0500
-+++ nfs-ganesha-4.0/src/cmake/modules/FindNTIRPC.cmake	2021-12-23 08:58:46.348000000 -0500
-@@ -46,15 +46,18 @@
+--- nfs-ganesha-4.1/src/cmake/modules/FindNTIRPC.cmake.orig	2022-11-18 19:39:44.000000000 +0000
++++ nfs-ganesha-4.1/src/cmake/modules/FindNTIRPC.cmake	2022-11-21 14:31:09.148000000 +0000
+@@ -67,15 +67,18 @@
  
  if (NOT NTIRPC_LIBRARY_DIR)
  	find_path(NTIRPC_LIBRARY_DIR
@@ -24,18 +24,39 @@
  
  set(NTIRPC_VERSION_HEADER "${NTIRPC_INCLUDE_DIR}/version.h")
  if (EXISTS ${NTIRPC_VERSION_HEADER})
---- nfs-ganesha-4-rc4/src/scripts/ganeshactl/CMakeLists.txt.orig	2021-11-17 09:22:20.860134361 -0500
-+++ nfs-ganesha-4-rc4/src/scripts/ganeshactl/CMakeLists.txt	2021-11-17 09:41:47.651949504 -0500
-@@ -44,7 +44,7 @@
-   Ganesha/QtUI/ui_log_dialog.ui
-   )
+--- nfs-ganesha-4.1/src/scripts/gpfs-epoch/CMakeLists.txt.orig	2022-11-18 19:39:44.000000000 +0000
++++ nfs-ganesha-4.1/src/scripts/gpfs-epoch/CMakeLists.txt	2022-11-21 14:31:09.152000000 +0000
+@@ -21,7 +21,7 @@
+ #-------------------------------------------------------------------------------
  
--if(Python_FOUND)
-+if(PYTHONINTERP_FOUND)
-   set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
-   set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
-   set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/ganeshactl_timestamp")
-@@ -118,7 +118,7 @@
+ if(USE_FSAL_GPFS)
+-  if(Python_FOUND)
++  if(PYTHONINTERP_FOUND)
+     set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
+     set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+     set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/gpfs_epoch_timestamp")
+@@ -59,7 +59,7 @@
+     add_custom_command(
+       OUTPUT ${OUTPUT}
+       COMMAND ${CMAKE_COMMAND} -E touch __init__.py
+-      COMMAND ${Python_EXECUTABLE} "${SETUP_PY}"  build
++      COMMAND ${PYTHON_EXECUTABLE} "${SETUP_PY}"  build
+       COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
+       DEPENDS ${GPFS_EPOCH_SRCS} ${SCRIPTS}
+       )
+@@ -68,7 +68,7 @@
+ 
+     install(
+       CODE
+-      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${Python_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
++      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
+       )
+-  endif(Python_FOUND)
++  endif(PYTHONINTERP_FOUND)
+ endif(USE_FSAL_GPFS)
+--- nfs-ganesha-4.1/src/scripts/ganeshactl/CMakeLists.txt.orig	2022-11-18 19:39:44.000000000 +0000
++++ nfs-ganesha-4.1/src/scripts/ganeshactl/CMakeLists.txt	2022-11-21 14:31:09.152000000 +0000
+@@ -139,7 +139,7 @@
  
    add_custom_command(
      OUTPUT ${OUTPUT}
@@ -44,7 +65,7 @@
      COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
      DEPENDS ${GANESHA_SRCS} ${UI_PY_FILES} ${SCRIPTS}
      )
-@@ -127,9 +127,9 @@
+@@ -148,9 +148,9 @@
  
    install(
      CODE
@@ -56,38 +77,9 @@
  
  # Man page
  set(man8_file ganesha_conf.man)
---- nfs-ganesha-4-rc4/src/scripts/gpfs-epoch/CMakeLists.txt.orig	2021-11-17 09:22:55.938555754 -0500
-+++ nfs-ganesha-4-rc4/src/scripts/gpfs-epoch/CMakeLists.txt	2021-11-17 09:41:32.836208727 -0500
-@@ -1,6 +1,6 @@
- 
- if(USE_FSAL_GPFS)
--  if(Python_FOUND)
-+  if(PYTHONINTERP_FOUND)
-     set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
-     set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
-     set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/gpfs_epoch_timestamp")
-@@ -38,7 +38,7 @@
-     add_custom_command(
-       OUTPUT ${OUTPUT}
-       COMMAND ${CMAKE_COMMAND} -E touch __init__.py
--      COMMAND ${Python_EXECUTABLE} "${SETUP_PY}"  build
-+      COMMAND ${PYTHON_EXECUTABLE} "${SETUP_PY}"  build
-       COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
-       DEPENDS ${GPFS_EPOCH_SRCS} ${SCRIPTS}
-       )
-@@ -47,7 +47,7 @@
- 
-     install(
-       CODE
--      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${Python_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
-+      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
-       )
--  endif(Python_FOUND)
-+  endif(PYTHONINTERP_FOUND)
- endif(USE_FSAL_GPFS)
---- nfs-ganesha-4.0/src/CMakeLists.txt.orig	2021-12-29 12:49:18.916000000 -0500
-+++ nfs-ganesha-4.0/src/CMakeLists.txt	2021-12-29 12:51:19.968000000 -0500
-@@ -558,13 +558,19 @@
+--- nfs-ganesha-4.1/src/CMakeLists.txt.orig	2022-11-18 19:39:44.000000000 +0000
++++ nfs-ganesha-4.1/src/CMakeLists.txt	2022-11-21 14:31:09.152000000 +0000
+@@ -578,13 +578,19 @@
  
  gopt_test(USE_ADMIN_TOOLS)
  if (USE_ADMIN_TOOLS)
@@ -111,7 +103,7 @@
  gopt_test(USE_GUI_ADMIN_TOOLS)
  if (USE_ADMIN_TOOLS)
    if (USE_GUI_ADMIN_TOOLS)
-@@ -1127,6 +1133,7 @@
+@@ -1184,6 +1190,7 @@
  
  set(NTIRPC_MIN_VERSION 4.0)
  if (USE_SYSTEM_NTIRPC)
