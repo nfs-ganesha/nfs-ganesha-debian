@@ -1,4 +1,4 @@
-nfs-ganesha (4.1-ubuntu1~kinetic1) kinetic; urgency=medium
+nfs-ganesha (4.1-ubuntu1~lunar1) lunar; urgency=medium
 
   * nfs-ganesha 4.1, GA
 
