@@ -1,6 +1,12 @@
+libntirpc (4.3-ubuntu1~lunar1) lunar; urgency=medium
+
+  * libntirpc-4.3 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 20 Jan 2023 09:09:51 -0400
+
 libntirpc (4.2-ubuntu1~lunar1) lunar; urgency=medium
 
-  * libntirpc-4.1 GA
+  * libntirpc-4.2 GA
 
  -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 22 Nov 2022 09:09:51 -0400
 
