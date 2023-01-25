@@ -56,9 +56,10 @@
  
  # Man page
  set(man8_file ganesha_conf.man)
---- nfs-ganesha-4-rc4/src/scripts/gpfs-epoch/CMakeLists.txt.orig	2021-11-17 09:22:55.938555754 -0500
-+++ nfs-ganesha-4-rc4/src/scripts/gpfs-epoch/CMakeLists.txt	2021-11-17 09:41:32.836208727 -0500
-@@ -1,6 +1,6 @@
+--- nfs-ganesha-4.3/src/scripts/gpfs-epoch/CMakeLists.txt.orig	2023-01-20 11:27:50.000000000 -0500
++++ nfs-ganesha-4.3/src/scripts/gpfs-epoch/CMakeLists.txt	2023-01-25 10:08:20.328000000 -0500
+@@ -21,7 +21,7 @@
+ #-------------------------------------------------------------------------------
  
  if(USE_FSAL_GPFS)
 -  if(Python_FOUND)
@@ -66,7 +67,7 @@
      set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
      set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
      set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/gpfs_epoch_timestamp")
-@@ -38,7 +38,7 @@
+@@ -59,7 +59,7 @@
      add_custom_command(
        OUTPUT ${OUTPUT}
        COMMAND ${CMAKE_COMMAND} -E touch __init__.py
@@ -75,7 +76,7 @@
        COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
        DEPENDS ${GPFS_EPOCH_SRCS} ${SCRIPTS}
        )
-@@ -47,7 +47,7 @@
+@@ -68,7 +68,7 @@
  
      install(
        CODE
