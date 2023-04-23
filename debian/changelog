@@ -1,3 +1,9 @@
+libntirpc (5.0-ubuntu1~focal1) focal; urgency=medium
+
+  * libntirpc-5.0 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Fri, 21 Apr 2023 09:09:51 -0400
+
 libntirpc (4.3-ubuntu1~focal1) focal; urgency=medium
 
   * libntirpc-4.3 GA
