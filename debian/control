@@ -2,17 +2,18 @@ Source: nfs-ganesha
 Section: net
 Priority: optional
 Maintainer: Gluster Packager <glusterpackager@download.gluster.org>
-Standards-Version: 3.9.7
+Standards-Version: 4.3.0
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
 Build-Depends: debhelper (>= 10),
+               dh-python,
+               quilt,
                bison,
                flex,
                cmake,
-               libc6-dev,
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 4.0),
+               libntirpc-dev (>= 4.3),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -25,16 +26,19 @@ Build-Depends: debhelper (>= 10),
                uuid-dev,
                libcap-dev,
                libglusterfs-dev (>= 9.0),
-               dh-python,
                python-is-python3,
                python-dev-is-python3,
                python3-all-dev,
                libpython3-all-dev,
                python3-setuptools,
-               python3-sphinx,
+               python3-gi,
                python3-pyqt5,
+               python3-pyparsing,
+               python3-sphinx,
                pyqt5-dev-tools,
-               pkgconf
+               pkgconf,
+               lsb-release,
+               doxygen
 Vcs-Git: https://github.com/nfs-ganesha/nfs-ganesha.git
 
 Package: nfs-ganesha
@@ -45,7 +49,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu6,
-         libntirpc4 (>= 4.0),
+         libntirpc4 (>= 4.3),
          libtirpc3,
          daemon
 Description: nfs-ganesha is a NFS server in User Space

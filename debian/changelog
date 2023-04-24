@@ -1,3 +1,9 @@
+nfs-ganesha (4.3-1) bookworm; urgency=medium
+
+  * nfs-ganesha 4.3 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Fri, 20 Jan 2023 15:30:00 -0400
+
 nfs-ganesha (4.1-1) bookworm; urgency=medium
 
   * nfs-ganesha 4.1 GA

@@ -7,9 +7,10 @@
 #   $ cd nfs-ganesha/src
 #   $ dpkg-buildpackage -uc -us
 #
+
+export DH_VERBOSE=1
 export PREFIX=/usr
 export DESTDIR=$(CURDIR)/debian/tmp
-
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
@@ -26,7 +27,7 @@ override_dh_auto_configure:
 	 cd src && ln -s ../debian .
 	 cd src && dh_auto_configure -- \
 		--log-level=VERBOSE \
-                -DWITH_PYTHON3=3 \
+		-DWITH_PYTHON3=3 \
 		-DBUILD_CONFIG=debian \
 		-DLIB_INSTALL_DIR:STRING=lib/${DEB_HOST_MULTIARCH} \
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
@@ -94,4 +95,5 @@ override_dh_install:
 	install -m 0755 src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/ganesha/
 	install -m 0755 src/tools/mount.9P debian/tmp/usr/sbin/
 	make -C src/obj-*-linux-gnu* install
+	sleep 10
 	dh_install --sourcedir=./src
