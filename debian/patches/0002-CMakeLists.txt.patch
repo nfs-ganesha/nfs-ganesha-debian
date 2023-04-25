@@ -24,13 +24,3 @@
  
  set(NTIRPC_VERSION_HEADER "${NTIRPC_INCLUDE_DIR}/version.h")
  if (EXISTS ${NTIRPC_VERSION_HEADER})
---- nfs-ganesha-4.0/src/CMakeLists.txt.orig	2021-12-29 12:49:18.916000000 -0500
-+++ nfs-ganesha-4.0/src/CMakeLists.txt	2021-12-29 12:51:19.968000000 -0500
-@@ -1127,6 +1133,7 @@
- 
- set(NTIRPC_MIN_VERSION 4.0)
- if (USE_SYSTEM_NTIRPC)
-+  set(NTIRPC_INCLUDE_DIR "/usr/include/ntirpc/")
-   find_package(NTIRPC ${NTIRPC_MIN_VERSION} REQUIRED)
-   if (USE_LTTNG)
-     set(NTIRPC_LIBRARY ${NTIRPC_LIBRARY} ${NTIRPC_LTTNG})
