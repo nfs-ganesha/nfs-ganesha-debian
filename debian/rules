@@ -50,7 +50,6 @@ override_dh_auto_configure:
 		-DDISTNAME_HAS_GIT_DATA=OFF \
 		-DUSE_MAN_PAGE=YES \
 		-D_MSPAC_SUPPORT=YES \
-		-DUSE_MONITORING==NO \
 		-DSANITIZE_ADDRESS=NO
 
 
