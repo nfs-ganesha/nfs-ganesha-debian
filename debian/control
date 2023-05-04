@@ -52,8 +52,8 @@ Depends: dbus, nfs-common, rpcbind,
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
-         liburcu6,
-         libntirpc4 (>= 5.0),
+         liburcu8,
+         libntirpc5 (>= 5.0),
          libtirpc3,
          daemon
 Description: NFS server in User Space
