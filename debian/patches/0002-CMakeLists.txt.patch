@@ -1,14 +1,5 @@
 --- nfs-ganesha-5.1/src/CMakeLists.txt.orig	2023-04-28 18:37:27.000000000 -0400
 +++ nfs-ganesha-5.1/src/CMakeLists.txt	2023-05-02 08:10:45.164928763 -0400
-@@ -44,7 +44,7 @@
- # Minor version is blank for development.  On release, it becomes ".0".  On a
- # stable maintenance branch, this becomes ".N" where N is monotonically
- # increasing starting at 1. Remember to include the "." !!
--set(GANESHA_MINOR_VERSION .1)
-+set(GANESHA_MINOR_VERSION .0)
- 
- IF(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
- set(GANESHA_BUILD_RELEASE 1)
 @@ -593,11 +593,11 @@
  
  gopt_test(USE_ADMIN_TOOLS)
