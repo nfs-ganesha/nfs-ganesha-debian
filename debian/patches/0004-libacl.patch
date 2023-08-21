@@ -1,0 +1,11 @@
+--- nfs-ganesha-5.5/src/cmake/modules/FindLibACL.cmake.orig	2023-08-15 15:37:50.522361092 -0400
++++ nfs-ganesha-5.5/src/cmake/modules/FindLibACL.cmake	2023-08-15 15:38:08.922520538 -0400
+@@ -32,6 +32,6 @@
+ 
+ if(HAVE_SYS_ACL_H)
+   # Available on FreeBSD (and perhaps others) - replace on Linux
+-  check_symbol_exists(acl_get_fd_np sys/acl.h HAVE_ACL_GET_FD_NP)
+-  check_symbol_exists(acl_set_fd_np sys/acl.h HAVE_ACL_SET_FD_NP)
++  # check_symbol_exists(acl_get_fd_np sys/acl.h HAVE_ACL_GET_FD_NP)
++  # check_symbol_exists(acl_set_fd_np sys/acl.h HAVE_ACL_SET_FD_NP)
+ endif(HAVE_SYS_ACL_H)

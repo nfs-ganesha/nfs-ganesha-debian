@@ -1,0 +1,79 @@
+--- nfs-ganesha-5.1/src/CMakeLists.txt.orig	2023-04-28 18:37:27.000000000 -0400
++++ nfs-ganesha-5.1/src/CMakeLists.txt	2023-05-02 08:10:45.164928763 -0400
+@@ -593,11 +593,11 @@
+ 
+ gopt_test(USE_ADMIN_TOOLS)
+ if (USE_ADMIN_TOOLS)
+-  find_package (Python3 COMPONENTS Interpreter)
+-  if (NOT Python3_Interpreter_FOUND)
++  find_package (PythonInterp COMPONENTS Interpreter)
++  if (NOT PYTHONINTERP_FOUND)
+     message(WARNING "Cannot find python. Disablin admin tools")
+     set(USE_ADMIN_TOOLS OFF)
+-  endif (NOT Python3_Interpreter_FOUND)
++  endif (NOT PYTHONINTERP_FOUND)
+ endif (USE_ADMIN_TOOLS)
+ 
+ gopt_test(USE_GUI_ADMIN_TOOLS)
+--- nfs-ganesha-5.1/src/scripts/ganeshactl/CMakeLists.txt.orig	2023-05-02 07:58:59.039596775 -0400
++++ nfs-ganesha-5.1/src/scripts/ganeshactl/CMakeLists.txt	2023-05-02 08:09:20.643443421 -0400
+@@ -65,7 +65,7 @@
+   Ganesha/QtUI/ui_log_dialog.ui
+   )
+ 
+-if(Python3_FOUND)
++if(PYTHONINTERP_FOUND)
+   set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
+   set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+   set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/ganeshactl_timestamp")
+@@ -139,7 +139,7 @@
+ 
+   add_custom_command(
+     OUTPUT ${OUTPUT}
+-    COMMAND ${Python3_EXECUTABLE} "${SETUP_PY}"  build
++    COMMAND ${PYTHON_EXECUTABLE} "${SETUP_PY}"  build
+     COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
+     DEPENDS ${GANESHA_SRCS} ${UI_PY_FILES} ${SCRIPTS}
+     )
+@@ -148,9 +148,9 @@
+ 
+   install(
+     CODE
+-    "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${Python3_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX})"
++    "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX})"
+     )
+-endif(Python3_FOUND)
++endif(PYTHONINTERP_FOUND)
+ 
+ # Man page
+ set(man8_file ganesha_conf.man)
+--- nfs-ganesha-5.1/src/scripts/gpfs-epoch/CMakeLists.txt.orig	2023-05-02 07:58:59.049596595 -0400
++++ nfs-ganesha-5.1/src/scripts/gpfs-epoch/CMakeLists.txt	2023-05-02 08:08:01.662858781 -0400
+@@ -21,7 +21,7 @@
+ #-------------------------------------------------------------------------------
+ 
+ if(USE_FSAL_GPFS)
+-  if(Python3_FOUND)
++  if(PYTHONINTERP_FOUND)
+     set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
+     set(SETUP_PY    "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+     set(OUTPUT      "${CMAKE_CURRENT_BINARY_DIR}/build/gpfs_epoch_timestamp")
+@@ -59,7 +59,7 @@
+     add_custom_command(
+       OUTPUT ${OUTPUT}
+       COMMAND ${CMAKE_COMMAND} -E touch __init__.py
+-      COMMAND ${Python3_EXECUTABLE} "${SETUP_PY}"  build
++      COMMAND ${PYTHON_EXECUTABLE} "${SETUP_PY}"  build
+       COMMAND ${CMAKE_COMMAND} -E touch ${OUTPUT}
+       DEPENDS ${GPFS_EPOCH_SRCS} ${SCRIPTS}
+       )
+@@ -68,7 +68,7 @@
+ 
+     install(
+       CODE
+-      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${Python3_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
++      "execute_process(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --skip-build --no-compile --prefix=\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX} --install-scripts=\$ENV{DESTDIR}${LIBEXECDIR}/ganesha)"
+       )
+-  endif(Python3_FOUND)
++  endif(PYTHONINTERP_FOUND)
+ endif(USE_FSAL_GPFS)
