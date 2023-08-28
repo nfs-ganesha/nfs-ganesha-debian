@@ -1,1 +1,16 @@
-usr/lib/python*/site-packages
+usr/lib/python*/dist-packages
+usr/lib/ganesha/gpfs-epoch
+usr/bin/client_stats_9pOps
+usr/bin/export_stats_9pOps
+usr/bin/fake_recall
+usr/bin/ganesha-admin
+usr/bin/ganesha-top
+usr/bin/ganesha_conf
+usr/bin/ganesha_mgr
+usr/bin/ganesha_stats
+usr/bin/ganeshactl
+usr/bin/get_clientids
+usr/bin/grace_period
+usr/bin/manage_clients
+usr/bin/manage_exports
+usr/bin/manage_logger

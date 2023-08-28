@@ -4,12 +4,11 @@ Priority: optional
 Maintainer: Gluster Packager <glusterpackager@download.gluster.org>
 Standards-Version: 4.3.0
 Homepage: https://github.com/nfs-ganesha/nfs-ganesha
-Build-Depends: debhelper (>= 10~),
-               dh-python,
-               quilt,
+Build-Depends: debhelper (>= 10),
                bison,
                flex,
                cmake,
+               libc6-dev,
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
@@ -25,19 +24,15 @@ Build-Depends: debhelper (>= 10~),
                xfslibs-dev,
                uuid-dev,
                libcap-dev,
-               libglusterfs-dev (>= 10.0),
+               libglusterfs-dev (>= 9.0),
                librados-dev,
                libcephfs-dev,
                librgw-dev,
                libbtrfsutil-dev,
-               python-is-python3,
-               python-dev-is-python3,
+               dh-python,
                python3-all-dev,
                libpython3-all-dev,
-               python3-pip,
-               python3-gi,
-               python3-pyqt5,
-               python3-pyparsing,
+               python3-setuptools,
                python3-sphinx,
                pyqt5-dev-tools,
                pkgconf,
@@ -52,8 +47,8 @@ Depends: dbus, nfs-common, rpcbind,
          ${perl:Depends},
          ${misc:Depends},
          libwbclient0,
-         liburcu6,
-         libntirpc4 (>= 5.0),
+         liburcu8,
+         libntirpc5 (>= 5.0),
          libtirpc3,
          daemon
 Description: NFS server in User Space
@@ -85,7 +80,7 @@ Architecture: any
 Section: libs
 Depends: ${misc:Depends}, ${shlibs:Depends},
          nfs-ganesha (=${binary:Version}),
-         libglusterfs0 (>= 6.0)
+         libgfapi0 (>= 9.0)
 Description: nfs-ganesha fsal gluster libraries
  NFS-GANESHA is a NFS Server running in user space with a large cache.
  It comes with various backend modules to support different file systems
