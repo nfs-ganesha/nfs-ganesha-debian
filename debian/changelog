@@ -1,4 +1,4 @@
-nfs-ganesha (5.5-ubuntu1~lunar50) lunar; urgency=medium
+nfs-ganesha (5.5-ubuntu1~mantic1) lunar; urgency=medium
 
   * nfs-ganesha 5.5, GA
 
