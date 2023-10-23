@@ -1,6 +1,3 @@
 0002-CMakeLists.txt.patch
 0003-python.patch
-<<<<<<< HEAD
-=======
 0004-libacl.patch
->>>>>>> 879ab740db6879830da2ed6b44c7de360446cf4a
