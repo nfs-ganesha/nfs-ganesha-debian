@@ -1,3 +1,9 @@
+nfs-ganesha (5.6-ubuntu1~jammy1) jammy; urgency=medium
+
+  * nfs-ganesha 5.6 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 23 Oct 2023 09:45:51 -0400
+
 nfs-ganesha (5.5-ubuntu1~jammy1) jammy; urgency=medium
 
   * nfs-ganesha 5.5 GA
