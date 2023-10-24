@@ -1,3 +1,9 @@
+nfs-ganesha (5.6-1) bullseye; urgency=medium
+
+  * nfs-ganesha 5.6 GA
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 23 Oct 2023 15:30:00 -0400
+
 nfs-ganesha (5.5-1) bullseye; urgency=medium
 
   * nfs-ganesha 5.5 GA
