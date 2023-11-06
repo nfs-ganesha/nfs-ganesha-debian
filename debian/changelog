@@ -1,3 +1,9 @@
+nfs-ganesha (5.7-ubuntu1~lunar1) lunar; urgency=medium
+
+  * nfs-ganesha 5.7, GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 6 Nov 2023 09:45:51 -0400
+
 nfs-ganesha (5.6-ubuntu1~lunar1) lunar; urgency=medium
 
   * nfs-ganesha 5.6, GA
