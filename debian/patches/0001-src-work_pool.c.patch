@@ -1,0 +1,10 @@
+--- ntirpc-5.0/src/work_pool.c.orig	2023-07-25 15:31:26.685271465 -0400
++++ ntirpc-5.0/src/work_pool.c	2023-07-25 15:31:48.948903853 -0400
+@@ -54,6 +54,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <errno.h>
++#include <assert.h>
+ #include <intrinsic.h>
+ #include <urcu-bp.h>
+ 
