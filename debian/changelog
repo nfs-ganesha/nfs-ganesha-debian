@@ -1,3 +1,9 @@
+nfs-ganesha (5.7-2) trixie; urgency=medium
+
+  * nfs-ganesha 5.7, enable VFS ACLs
+
+ -- Gluster Packager <glusterpackager@download.gluster.org>  Mon, 13 May 2024 15:30:00 -0400
+
 nfs-ganesha (5.7-1) trixie; urgency=medium
 
   * nfs-ganesha 5.7 trixie
