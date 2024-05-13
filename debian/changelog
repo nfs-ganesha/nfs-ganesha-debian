@@ -1,3 +1,9 @@
+nfs-ganesha (5.7-ubuntu1~bionic2) bionic; urgency=medium
+
+  * nfs-ganesha 5.7 enable VFS ACLs
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Mon, 13 May 2024 09:45:51 -0400
+
 nfs-ganesha (5.7-ubuntu1~bionic1) bionic; urgency=medium
 
   * nfs-ganesha 5.7 GA
