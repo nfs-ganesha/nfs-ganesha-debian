@@ -1,3 +1,9 @@
+libntirpc (5.8-ubuntu1~noble1) noble; urgency=medium
+
+  * libntirpc-5.8 GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Wed, 29 May 2024 09:09:51 -0400
+
 libntirpc (5.0-ubuntu1~noble2) noble; urgency=medium
 
   * libntirpc-5.0 GA
