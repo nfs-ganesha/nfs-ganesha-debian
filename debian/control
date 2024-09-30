@@ -13,7 +13,7 @@ Package: libntirpc-dev
 Section: libdevel
 Priority: extra
 Architecture: any
-Depends: libntirpc5 (= ${binary:Version}), ${misc:Depends}
+Depends: libntirpc6 (= ${binary:Version}), ${misc:Depends}
 Description: new transport-independent RPC library - development files
  This package contains a port of Sun's transport-independent RPC library to
  Linux. The library is intended as a replacement for the RPC code in the GNU C
@@ -21,9 +21,9 @@ Description: new transport-independent RPC library - development files
  .
  This package contains the files needed for development with libntirpc.
 
-Package: libntirpc5
+Package: libntirpc6
 Section: libs
-Replaces: libntirpc4
+Replaces: libntirpc5
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
