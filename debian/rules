@@ -28,6 +28,7 @@ override_dh_auto_configure:
 		-DFSAL_DESTINATION=/usr/lib/${DEB_HOST_MULTIARCH}/ganesha \
 		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
 		-DUSE_LEGACY_PYTHON_INSTALL=YES \
+		-DUSE_MONITORING=YES \
 		-DUSE_FSAL_NULL=YES \
 		-DUSE_FSAL_MEM=YES \
 		-DUSE_FSAL_XFS=NO \
@@ -94,7 +95,7 @@ override_dh_install:
 	cp src/scripts/ganeshactl/org.ganesha.nfsd.conf debian/tmp/etc/dbus-1/system.d/nfs-ganesha-dbus.conf
 	install -m 0755 src/scripts/nfs-ganesha-config.sh debian/tmp/usr/lib/ganesha/
 	install -m 0755 src/tools/mount.9P debian/tmp/usr/sbin/
-	PYTHONPATH=$(shell pwd)/debian/tmp/usr/local/lib/python3.11/dist-packages make -C src/obj-*-linux-gnu* install
+	PYTHONPATH=$(shell pwd)/debian/tmp/usr/local/lib/python3.12/dist-packages make -C src/obj-*-linux-gnu* install
 	mv debian/tmp/usr/local/bin/* debian/tmp/usr/bin
 	mv debian/tmp/usr/local/lib/python3.* debian/tmp/usr/lib
 	dh_install --sourcedir=./src
