@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 10),
                libdbus-1-dev,
                libnfsidmap-dev,
                libwbclient-dev,
-               libntirpc-dev (>= 5.0),
+               libntirpc-dev (>= 6.0),
                libkrb5-dev,
                libblkid-dev,
                libattr1-dev,
@@ -48,7 +48,7 @@ Depends: dbus, nfs-common, rpcbind,
          ${misc:Depends},
          libwbclient0,
          liburcu8,
-         libntirpc5 (>= 5.0),
+         libntirpc6 (>= 6.0),
          libtirpc3,
          daemon
 Description: NFS server in User Space
@@ -218,6 +218,20 @@ Description: nfs-ganesha fsal gpfs libraries
  HPSS, LUSTRE, XFS and ZFS.
  .
  This package contains a library for a FSAL_GPFS and conf files.
+
+Package: gmonitoring
+Multi-Arch: same
+Architecture: any
+Section: libs
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         nfs-ganesha (=${binary:Version})
+Description: nfs-ganesha prometheus monitoring module
+ NFS-GANESHA is a NFS Server running in user space with a large cache.
+ It comes with various backend modules to support different file systems
+ and namespaces. Supported name spaces are POSIX, PROXY, SNMP, FUSE-like,
+ HPSS, LUSTRE, XFS and ZFS.
+ .
+ This package contains a library for Prometheus monitoring
 
 
 Package: python3-nfs-ganesha
