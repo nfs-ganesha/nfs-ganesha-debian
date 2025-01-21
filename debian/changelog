@@ -1,3 +1,9 @@
+nfs-ganesha (6.5-ubuntu1~noble1) noble; urgency=medium
+
+  * nfs-ganesha 6.5, GA
+
+ -- GlusterFS GlusterFS deb packages <deb.packages@gluster.org>  Tue, 21 Jan 2025 09:45:51 -0400
+
 nfs-ganesha (6.4-ubuntu1~noble1) noble; urgency=medium
 
   * nfs-ganesha 6.4, GA
