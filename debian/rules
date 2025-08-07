@@ -7,14 +7,18 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 override_dh_auto_configure:
 	cd cmake/build_configurations && ln -s everything.cmake debian.cmake
-	dh_auto_configure -- -DBUILD_CONFIG=debian -DTIRPC_EPOLL=1 -DUSE_GSS=ON
+	dh_auto_configure -- -DBUILD_CONFIG=debian -DTIRPC_EPOLL=1 -DUSE_GSS=ON -DUSE_RPC_RDMA=ON
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 override_dh_install:
 	# Move libntirpc.so.* from /usr/lib to /lib/$(DEB_HOST_MULTIARCH)
 	mkdir -p debian/tmp/lib/$(DEB_HOST_MULTIARCH)
-	mv debian/tmp/usr/lib/libntirpc.* debian/tmp/lib/$(DEB_HOST_MULTIARCH)
+	mv debian/tmp/usr/lib/libntirpc*.* debian/tmp/lib/$(DEB_HOST_MULTIARCH)
 	# Fix up the -dev symlink
-	LINKTARGET=`readlink debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpc.so`; \
-	ln -sf /lib/$(DEB_HOST_MULTIARCH)/$$LINKTARGET debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpc.so
+	LINKTARGET1=`readlink debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpc.so`; \
+	ln -sf /lib/$(DEB_HOST_MULTIARCH)/$$LINKTARGET1 debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpc.so
+	LINKTARGET2=`readlink debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpcmonitoring.so`; \
+	ln -sf /lib/$(DEB_HOST_MULTIARCH)/$$LINKTARGET2 debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpcmonitoring.so
 	dh_install
+	mv src/monitoring/include/monitoring.h debian/tmp/usr/include/ntirpc
+	mv src/monitoring/prometheus-cpp-lite/core/include/prometheus debian/tmp/usr/include/ntirpc
