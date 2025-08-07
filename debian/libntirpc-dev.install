@@ -1,3 +1,3 @@
 usr/include/ntirpc/*
-lib/*-linux-gnu*/libntirpc.so
+lib/*-linux-gnu*/libntirpc*.so
 usr/lib/pkgconfig/*
