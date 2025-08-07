@@ -19,6 +19,6 @@ override_dh_install:
 	ln -sf /lib/$(DEB_HOST_MULTIARCH)/$$LINKTARGET1 debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpc.so
 	LINKTARGET2=`readlink debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpcmonitoring.so`; \
 	ln -sf /lib/$(DEB_HOST_MULTIARCH)/$$LINKTARGET2 debian/tmp/lib/$(DEB_HOST_MULTIARCH)/libntirpcmonitoring.so
-	dh_install
 	mv src/monitoring/include/monitoring.h debian/tmp/usr/include/ntirpc
 	mv src/monitoring/prometheus-cpp-lite/core/include/prometheus debian/tmp/usr/include/ntirpc
+	dh_install
